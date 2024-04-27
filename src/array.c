@@ -65,7 +65,7 @@ void* ArrayGet(const Array* const restrict array, const unsigned int index) {
 }
 
 int ArraySet(Array* const restrict array, const unsigned int index,
-             void* const restrict value) {
+             const void* const restrict value) {
     if (array == NULL || value == NULL) {
         errno = EINVAL;
         return -1;
@@ -80,7 +80,8 @@ int ArraySet(Array* const restrict array, const unsigned int index,
     return 0;
 }
 
-int ArrayPushBack(Array* const restrict array, void* const restrict value) {
+int ArrayPushBack(Array* const restrict array,
+                  const void* const restrict value) {
     void* temp = NULL;
     if (array == NULL || value == NULL) {
         errno = EINVAL;
@@ -101,7 +102,8 @@ int ArrayPushBack(Array* const restrict array, void* const restrict value) {
     return 0;
 }
 
-int ArrayPushFront(Array* const restrict array, void* const restrict value) {
+int ArrayPushFront(Array* const restrict array,
+                   const void* const restrict value) {
     void* temp = NULL;
     if (array == NULL || value == NULL) {
         errno = EINVAL;
@@ -125,7 +127,7 @@ int ArrayPushFront(Array* const restrict array, void* const restrict value) {
 }
 
 int ArrayInsert(Array* const restrict array, const unsigned int index,
-                void* const restrict value) {
+                const void* const restrict value) {
     void* temp = NULL;
     if (array == NULL || value == NULL) {
         errno = EINVAL;

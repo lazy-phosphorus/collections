@@ -98,7 +98,7 @@ void* ArrayGet(const Array* const restrict array, const unsigned int index);
  * returned and `errno` will be set.
  */
 int ArraySet(Array* const restrict array, const unsigned int index,
-             void* const restrict value);
+             const void* const restrict value);
 
 /**
  * @brief Add new element at the end of `array`. O(1).
@@ -108,7 +108,8 @@ int ArraySet(Array* const restrict array, const unsigned int index,
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ArrayPushBack(Array* const restrict array, void* const restrict value);
+int ArrayPushBack(Array* const restrict array,
+                  const void* const restrict value);
 
 /**
  * @brief Add new element at the begin of `array`. O(1).
@@ -118,7 +119,8 @@ int ArrayPushBack(Array* const restrict array, void* const restrict value);
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ArrayPushFront(Array* const restrict array, void* const restrict value);
+int ArrayPushFront(Array* const restrict array,
+                   const void* const restrict value);
 
 /**
  * @brief Add new element at the specified index of `array`. After element
@@ -130,6 +132,6 @@ int ArrayPushFront(Array* const restrict array, void* const restrict value);
  * returned and `errno` will be set.
  */
 int ArrayInsert(Array* const restrict array, const unsigned int index,
-                void* const restrict value);
+                const void* const restrict value);
 
 #endif  // __COLLECTIONS_ARRAY__
