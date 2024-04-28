@@ -3,13 +3,15 @@
 #include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <malloc.h>
-#include <stddef.h>
+#include <memory.h>
 #include <string.h>
 
 int ArrayConstruct(Array* const restrict array,
                    const unsigned int initialCapacity,
-                   const unsigned long elementSize) {
-    if (array == NULL || initialCapacity == 0 || elementSize == 0) {
+                   const unsigned long elementSize,
+                   CompareFunction* const compare) {
+    if (array == NULL || initialCapacity == 0 || elementSize == 0 ||
+        compare == NULL) {
         errno = EINVAL;
         return -1;
     }
@@ -19,14 +21,16 @@ int ArrayConstruct(Array* const restrict array,
     array->elementSize = elementSize;
     array->Capacity = initialCapacity;
     array->Size = 0;
+    array->compare = compare;
     return 0;
 }
 
 Array* ArrayNew(const unsigned int initialCapacity,
-                const unsigned long unitSize) {
+                const unsigned long elementSize,
+                CompareFunction* const compare) {
     Array* array = (Array*)malloc(sizeof(Array));
     if (array == NULL) return NULL;
-    if (ArrayConstruct(array, initialCapacity, unitSize) == -1) {
+    if (ArrayConstruct(array, initialCapacity, elementSize, compare) == -1) {
         free(array);
         return NULL;
     }
@@ -44,7 +48,7 @@ void ArrayDestruct(Array* const restrict array) {
 }
 
 void ArrayDelete(Array** const restrict array) {
-    if (array == NULL) return;
+    if (array == NULL || *array == NULL) return;
 
     ArrayDestruct(*array);
     free(*array);
@@ -80,6 +84,24 @@ int ArraySet(Array* const restrict array, const unsigned int index,
     return 0;
 }
 
+void* ArrayBack(const Array* const restrict array) {
+    if (array == NULL) {
+        errno = EINVAL;
+        return NULL;
+    }
+    if (array->Size == 0) return NULL;
+    return array->array + array->elementSize * (array->Size - 1);
+}
+
+void* ArrayFront(const Array* const restrict array) {
+    if (array == NULL) {
+        errno = EINVAL;
+        return NULL;
+    }
+    if (array->Size == 0) return NULL;
+    return array->array;
+}
+
 int ArrayPushBack(Array* const restrict array,
                   const void* const restrict value) {
     void* temp = NULL;
@@ -102,6 +124,11 @@ int ArrayPushBack(Array* const restrict array,
     return 0;
 }
 
+void ArrayPopBack(Array* const restrict array) {
+    if (array == NULL || array->Size == 0) return;
+    array->Size--;
+}
+
 int ArrayPushFront(Array* const restrict array,
                    const void* const restrict value) {
     void* temp = NULL;
@@ -113,6 +140,7 @@ int ArrayPushFront(Array* const restrict array,
     if (array->Size == array->Capacity) {
         array->Capacity *= 2;
         temp = calloc(array->Capacity, array->elementSize);
+        if (temp == NULL) return -1;
         memcpy(temp + array->elementSize, array->array,
                array->Size * array->elementSize);
         free(array->array);
@@ -124,6 +152,13 @@ int ArrayPushFront(Array* const restrict array,
     memcpy(array->array, value, array->elementSize);
     array->Size++;
     return 0;
+}
+
+void ArrayPopFront(Array* const restrict array) {
+    if (array == NULL || array->Size == 0) return;
+    array->Size--;
+    memmove(array->array, array->array + array->elementSize,
+            array->elementSize * array->Size);
 }
 
 int ArrayInsert(Array* const restrict array, const unsigned int index,
@@ -138,6 +173,7 @@ int ArrayInsert(Array* const restrict array, const unsigned int index,
         if (array->Size == array->Capacity) {
             array->Capacity *= 2;
             temp = calloc(array->Capacity, array->elementSize);
+            if (temp == NULL) return -1;
             memcpy(temp, array->array, index * array->elementSize);
             memcpy(temp + array->elementSize * (index + 1),
                    array->array + array->elementSize * index,
@@ -154,4 +190,35 @@ int ArrayInsert(Array* const restrict array, const unsigned int index,
            array->elementSize);
     array->Size++;
     return 0;
+}
+
+int ArrayFind(const Array* const restrict array,
+              const void* const restrict value) {
+    if (array == NULL || value == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+    for (unsigned int i = 0; i < array->Size; i++) {
+        if (array->compare(array->array + array->elementSize * i, value) == 0)
+            return i;
+    }
+    return -1;
+}
+
+Array* ArraySlice(const Array* const restrict array, const unsigned int start,
+                  const unsigned int size) {
+    Array* slice = NULL;
+    if (array == NULL) {
+        errno = EINVAL;
+        return NULL;
+    }
+    if (start + size > array->Size) {
+        errno = EDOM;
+        return NULL;
+    }
+    slice = ArrayNew(size, array->elementSize, array->compare);
+    if (slice == NULL) return NULL;
+    memcpy(slice->array, array->array + array->elementSize * start,
+           array->elementSize * size);
+    return slice;
 }

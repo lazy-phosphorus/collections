@@ -7,9 +7,10 @@ int main() {
         ArrayPushBack(array, &test);
     }
     for (unsigned int i = 0; i < array->Size; i++) {
-        Test *temp = (Test *)ArrayGet(array, i);
-        if (temp->a != i || temp->b != i + 1 || temp->c != i + 2)
-            error(&array, i);
+        Test temp = {i, i + 1, i + 2};
+
+        if (ArrayFind(array, &temp) != i) error(&array, i);
     }
+    ArrayDelete(&array);
     return 0;
 }

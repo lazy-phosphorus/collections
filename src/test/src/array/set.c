@@ -1,7 +1,7 @@
 #include "common.h"
 
 int main() {
-    Array *array = ArrayNew(10, sizeof(Test));
+    Array *array = ArrayNew(10, sizeof(Test), compare);
     for (int i = 0; i < 25; i++) {
         Test test = {i, i + 1, i + 2};
         ArrayPushBack(array, &test);

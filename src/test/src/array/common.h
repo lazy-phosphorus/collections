@@ -5,12 +5,7 @@
 #include <stdlib.h>
 
 #include "array.h"
-
-typedef struct {
-    int a;
-    int b;
-    int c;
-} Test;
+#include "test.h"
 
 int error(Array **const array, unsigned int i) {
     printf("Element Incorrect At [%d]\nArray:\n", i);
