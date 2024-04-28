@@ -8,7 +8,6 @@ int main() {
     }
     for (unsigned int i = 0; i < array->Size; i++) {
         Test temp = {i, i + 1, i + 2};
-
         if (ArrayFind(array, &temp) != i) error(&array, i);
     }
     ArrayDelete(&array);

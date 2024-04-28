@@ -112,7 +112,7 @@ int ArraySet(Array* const restrict array, const unsigned int index,
              const void* const restrict value);
 
 /**
- * @brief Get value of the last element.
+ * @brief Get value of the last element. O(1).
  * @attention The returned value is shallow copied from `array[index]`. Don't
  * free it.
  *
@@ -123,7 +123,7 @@ int ArraySet(Array* const restrict array, const unsigned int index,
 void* ArrayBack(const Array* const restrict array);
 
 /**
- * @brief Get value of the first element.
+ * @brief Get value of the first element. O(1).
  * @attention The returned value is shallow copied from `array[index]`. Don't
  * free it.
  *
@@ -145,7 +145,7 @@ int ArrayPushBack(Array* const restrict array,
                   const void* const restrict value);
 
 /**
- * @brief Remove the last element of `array`.
+ * @brief Remove the last element of `array`. O(1).
  *
  * @param array `this`.
  */
@@ -163,7 +163,7 @@ int ArrayPushFront(Array* const restrict array,
                    const void* const restrict value);
 
 /**
- * @brief Remove the last element of `array`.
+ * @brief Remove the first element of `array`. O(n).
  *
  * @param array `this`.
  */

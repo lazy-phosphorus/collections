@@ -7,7 +7,7 @@
 #include "array.h"
 #include "test.h"
 
-int error(Array **const array, unsigned int i) {
+int error(Array **const restrict array, const unsigned int i) {
     printf("Element Incorrect At [%d]\nArray:\n", i);
     for (unsigned int i = 0; i < (*array)->Size; i++) {
         Test *temp = (Test *)ArrayGet(*array, i);
