@@ -11,18 +11,21 @@
 typedef struct {
     /**
      * @private
-     * @warning Don't operate this member directly. Please use functions below.
+     * @brief All elements will be stored in this member.
+     * @warning Don't modify this member directly. Please use functions below.
      * @see `ArrayGet`, `ArraySet`.
      */
     void* array;
     /**
      * @private
-     * @warning Don't operate this member directly.
+     * @brief Element size of this array.
+     * @warning Don't modify this member directly.
      */
     unsigned long elementSize;
     /**
      * @private
-     * @warning Don't operate this member directly.
+     * @brief Function used in comparing two elements.
+     * @warning Don't modify this member directly.
      */
     CompareFunction* compare;
 

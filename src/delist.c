@@ -1,11 +1,12 @@
-#include "list.h"
+#include "delist.h"
 
 #include <errno.h>
 #include <malloc.h>
 #include <memory.h>
 
-int ListNodeConstruct(ListNode *const node, const void *const restrict value,
-                      unsigned long elementSize) {
+int DelistNodeConstruct(DelistNode *const node,
+                        const void *const restrict value,
+                        unsigned long elementSize) {
     if (node == NULL || value == NULL || elementSize == 0) {
         errno = EINVAL;
         return -1;
@@ -13,36 +14,39 @@ int ListNodeConstruct(ListNode *const node, const void *const restrict value,
     node->value = malloc(elementSize);
     if (node->value == NULL) return -1;
     memcpy(node->value, value, elementSize);
+    node->previous = NULL;
     node->next = NULL;
     return 0;
 }
 
-ListNode *ListNodeNew(const void *const restrict value,
-                      unsigned long elementSize) {
-    ListNode *node = (ListNode *)malloc(sizeof(ListNode));
+DelistNode *DelistNodeNew(const void *const restrict value,
+                          unsigned long elementSize) {
+    DelistNode *node = (DelistNode *)malloc(sizeof(DelistNode));
     if (node == NULL) return NULL;
-    if (ListNodeConstruct(node, value, elementSize) == -1) {
+    if (DelistNodeConstruct(node, value, elementSize) == -1) {
         free(node);
         return NULL;
     }
     return node;
 }
 
-void ListNodeDestruct(ListNode *const node) {
+void DelistNodeDestruct(DelistNode *const node) {
     if (node == NULL) return;
     free(node->value);
 }
 
-void ListNodeDelete(ListNode **const node) {
+void DelistNodeDelete(DelistNode **const node) {
     if (node == NULL) return;
-    ListNodeDestruct(*node);
+    DelistNodeDestruct(*node);
     free(*node);
     *node = NULL;
 }
 
-int ListConstruct(List *const restrict list, const unsigned long elementSize,
-                  CompareFunction *const compare) {
-    if (list == NULL || compare == NULL || elementSize == 0) {
+int DelistConstruct(Delist *const restrict list,
+                    const unsigned long elementSize,
+                    CompareFunction *const compare) {
+    if (list == NULL || compare == NULL || elementSize == 0 ||
+        compare == NULL) {
         errno = EINVAL;
         return -1;
     }
@@ -55,38 +59,39 @@ int ListConstruct(List *const restrict list, const unsigned long elementSize,
     return 0;
 }
 
-List *ListNew(const unsigned long elementSize, CompareFunction *const compare) {
-    List *list = (List *)malloc(sizeof(List));
+Delist *DelistNew(const unsigned long elementSize,
+                  CompareFunction *const compare) {
+    Delist *list = (Delist *)malloc(sizeof(Delist));
     if (list == NULL) return NULL;
-    if (ListConstruct(list, elementSize, compare) == -1) {
+    if (DelistConstruct(list, elementSize, compare) == -1) {
         free(list);
         return NULL;
     }
     return list;
 }
 
-void ListDestruct(List *const restrict list) {
-    ListNode *node = NULL, *temp = NULL;
+void DelistDestruct(Delist *const restrict list) {
+    DelistNode *node = NULL, *temp = NULL;
     if (list == NULL) return;
 
     node = list->head;
     while (node != NULL) {
         temp = node->next;
-        ListNodeDelete(&node);
+        DelistNodeDelete(&node);
         node = temp;
     }
 }
 
-void ListDelete(List **const restrict list) {
+void DelistDelete(Delist **const restrict list) {
     if (list == NULL) return;
 
-    ListDestruct(*list);
+    DelistDestruct(*list);
     free(*list);
     *list = NULL;
 }
 
-void *ListGet(const List *const restrict list, const unsigned int index) {
-    ListNode *node = NULL;
+void *DelistGet(const Delist *const restrict list, const unsigned int index) {
+    DelistNode *node = NULL;
     if (list == NULL) {
         errno = EINVAL;
         return NULL;
@@ -103,9 +108,9 @@ void *ListGet(const List *const restrict list, const unsigned int index) {
     return node->value;
 }
 
-int ListSet(List *const restrict list, const unsigned int index,
-            const void *const restrict value) {
-    ListNode *node = NULL;
+int DelistSet(Delist *const restrict list, const unsigned int index,
+              const void *const restrict value) {
+    DelistNode *node = NULL;
     if (list == NULL || value == NULL) {
         errno = EINVAL;
         return -1;
@@ -123,7 +128,7 @@ int ListSet(List *const restrict list, const unsigned int index,
     return 0;
 }
 
-void *ListBack(List *const restrict list) {
+void *DelistBack(Delist *const restrict list) {
     if (list == NULL) {
         errno = EINVAL;
         return NULL;
@@ -132,7 +137,7 @@ void *ListBack(List *const restrict list) {
     return list->tail->value;
 }
 
-void *ListFront(List *const restrict list) {
+void *DelistFront(Delist *const restrict list) {
     if (list == NULL) {
         errno = EINVAL;
         return NULL;
@@ -141,35 +146,82 @@ void *ListFront(List *const restrict list) {
     return list->head->value;
 }
 
-int ListPushBack(List *const restrict list, const void *const restrict value) {
-    ListNode *node = NULL;
+int DelistPushBack(Delist *const restrict list,
+                   const void *const restrict value) {
+    DelistNode *node = NULL;
     if (list == NULL || value == NULL) {
         errno = EINVAL;
         return -1;
     }
 
-    node = ListNodeNew(value, list->elementSize);
+    node = DelistNodeNew(value, list->elementSize);
     if (node == NULL) return -1;
     if (list->Size == 0) {
         list->head = node;
         list->tail = node;
     } else {
         list->tail->next = node;
+        node->previous = list->tail;
         list->tail = node;
     }
     list->Size++;
     return 0;
 }
 
-int ListPopBack(List *const restrict list) {
-    ListNode *node = NULL;
+int DelistPopBack(Delist *const restrict list) {
+    DelistNode *node = NULL;
     if (list == NULL) {
         errno = EINVAL;
         return -1;
     }
     if (list->Size == 0) return 0;
     if (list->Size == 1) {
-        ListNodeDelete(&list->tail);
+        DelistNodeDelete(&list->tail);
+        list->head = NULL;
+        list->tail = NULL;
+        list->Size = 0;
+        return 0;
+    }
+
+    node = list->tail;
+    list->tail = node->previous;
+    list->tail->next = NULL;
+    DelistNodeDelete(&node);
+    list->Size--;
+    return 0;
+}
+
+int DelistPushFront(Delist *const restrict list,
+                    const void *const restrict value) {
+    DelistNode *node = NULL;
+    if (list == NULL || value == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    node = DelistNodeNew(value, list->elementSize);
+    if (node == NULL) return -1;
+    if (list->Size == 0) {
+        list->head = node;
+        list->tail = node;
+    } else {
+        node->next = list->head;
+        list->head->previous = node;
+        list->head = node;
+    }
+    list->Size++;
+    return 0;
+}
+
+int DelistPopFront(Delist *const restrict list) {
+    DelistNode *node = NULL;
+    if (list == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (list->Size == 0) return 0;
+    if (list->Size == 1) {
+        DelistNodeDelete(&list->head);
         list->head = NULL;
         list->tail = NULL;
         list->Size = 0;
@@ -177,54 +229,16 @@ int ListPopBack(List *const restrict list) {
     }
 
     node = list->head;
-    while (node->next != list->tail) {
-        node = node->next;
-    }
-    ListNodeDelete(&list->tail);
-    list->tail = node;
-    list->Size--;
-    return 0;
-}
-
-int ListPushFront(List *const restrict list, const void *const restrict value) {
-    ListNode *node = NULL;
-    if (list == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    node = ListNodeNew(value, list->elementSize);
-    if (node == NULL) return -1;
-    if (list->Size == 0) {
-        list->head = node;
-        list->tail = node;
-    } else {
-        node->next = list->head;
-        list->head = node;
-    }
-    list->Size++;
-    return 0;
-}
-
-int ListPopFront(List *const restrict list) {
-    ListNode *node = NULL;
-    if (list == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-    if (list->Size == 0) return 0;
-
-    node = list->head;
     list->head = node->next;
-    ListNodeDelete(&node);
-    if (list->Size == 1) list->tail = NULL;
+    list->head->previous = NULL;
+    DelistNodeDelete(&node);
     list->Size--;
     return 0;
 }
 
-int ListInsert(List *const restrict list, const unsigned index,
-               const void *const restrict value) {
-    ListNode *node = NULL, *temp = NULL;
+int DelistInsert(Delist *const restrict list, const unsigned index,
+                 const void *const restrict value) {
+    DelistNode *node = NULL, *temp = NULL;
     if (list == NULL || value == NULL) {
         errno = EINVAL;
         return -1;
@@ -235,25 +249,27 @@ int ListInsert(List *const restrict list, const unsigned index,
     }
 
     if (index == 0)
-        return ListPushFront(list, value);
+        return DelistPushFront(list, value);
     else if (index == list->Size)
-        return ListPushBack(list, value);
+        return DelistPushBack(list, value);
     else {
-        node = ListNodeNew(value, list->elementSize);
+        node = DelistNodeNew(value, list->elementSize);
         if (node == NULL) return -1;
         temp = list->head;
         for (unsigned int i = 0; i < index - 1; i++) {
             temp = temp->next;
         }
         node->next = temp->next;
+        temp->next->previous = node;
         temp->next = node;
+        node->previous = temp;
         list->Size++;
         return 0;
     }
 }
 
-int ListFind(List *const restrict list, const void *const restrict value) {
-    ListNode *node = NULL;
+int DelistFind(Delist *const restrict list, const void *const restrict value) {
+    DelistNode *node = NULL;
     if (list == NULL || value == NULL) {
         errno = EINVAL;
         return -1;

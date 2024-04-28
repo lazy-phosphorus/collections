@@ -1,13 +1,18 @@
-#ifndef __COLLECTIONS_LIST__
-#define __COLLECTIONS_LIST__
+#ifndef __COLLECTIONS_DELIST__
+#define __COLLECTIONS_DELIST__
 
 #include "types.h"
 
 /**
- * @brief Typeof element in `List`.
+ * @brief Typeof element in `Delist`.
  * @attention It is no recommended to use this struct.
  */
-typedef struct __ListNode {
+typedef struct __DelistNode {
+    /**
+     * @private
+     * @brief Pointer refers to the previous node.
+     */
+    struct __DelistNode *previous;
     /**
      * @private
      * @brief Value of this node.
@@ -17,29 +22,29 @@ typedef struct __ListNode {
      * @private
      * @brief Pointer refers to the next node.
      */
-    struct __ListNode *next;
-} ListNode;
+    struct __DelistNode *next;
+} DelistNode;
 
 /**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `ListConstruct`, `ListNew`, `ListDestruct`, `ListDelete`.
+ * @see `DelistConstruct`, `DelistNew`, `DelistDestruct`, `DelistDelete`.
  */
 typedef struct {
     /**
      * @private
      * @brief Pointer refers to the first element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `ListFront`, `ListSet`, `ListPushFront`, `ListPopFront`.
+     * @see `DelistFront`, `DelistSet`, `DelistPushFront`, `DelistPopFront`.
      */
-    ListNode *head;
+    DelistNode *head;
     /**
      * @private
      * @brief Pointer refers to the last element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `ListBack`, `ListSet`, `ListPushBack`, `ListPopBack`.
+     * @see `DelistBack`, `DelistSet`, `DelistPushBack`, `DelistPopBack`.
      */
-    ListNode *tail;
+    DelistNode *tail;
     /**
      * @private
      * @brief Element size of this list.
@@ -60,7 +65,7 @@ typedef struct {
      * maintained automatically.
      */
     unsigned int Size;
-} List;
+} Delist;
 
 /**
  * @brief Construct function. O(1).
@@ -71,26 +76,27 @@ typedef struct {
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListNodeConstruct(ListNode *const node, const void *const restrict value,
-                      unsigned long elementSize);
+int DelistNodeConstruct(DelistNode *const node,
+                        const void *const restrict value,
+                        unsigned long elementSize);
 
 /**
  * @brief Allocate a new node in heap. O(1).
  *
  * @param value Value of node.
  * @param elementSize Size of `value`.
- * @return ListNode* If successful,`0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
+ * @return DelistNode* If successful,`0` will be returned. Otherwise, `-1` will
+ * be returned and `errno` will be set.
  */
-ListNode *ListNodeNew(const void *const restrict value,
-                      unsigned long elementSize);
+DelistNode *DelistNodeNew(const void *const restrict value,
+                          unsigned long elementSize);
 
 /**
  * @brief Destruct function. O(1).
  *
  * @param node Target to be destructed. If `NULL`, nothing will happen.
  */
-void ListNodeDestruct(ListNode *const node);
+void DelistNodeDestruct(DelistNode *const node);
 
 /**
  * @brief Release `node` in heap. O(1).
@@ -98,7 +104,7 @@ void ListNodeDestruct(ListNode *const node);
  * @param node A pointer refers to the target to be deleted. The target will be
  * set to `NULL`. If `NULL`, nothing will happen.
  */
-void ListNodeDelete(ListNode **const node);
+void DelistNodeDelete(DelistNode **const node);
 
 /**
  * @brief Construct function. O(1).
@@ -109,8 +115,9 @@ void ListNodeDelete(ListNode **const node);
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListConstruct(List *const restrict list, const unsigned long elementSize,
-                  CompareFunction *const compare);
+int DelistConstruct(Delist *const restrict list,
+                    const unsigned long elementSize,
+                    CompareFunction *const compare);
 
 /**
  * @brief Allocate a new list in heap. O(1).
@@ -118,17 +125,18 @@ int ListConstruct(List *const restrict list, const unsigned long elementSize,
  * @param initialCapacity Initial capacity of list.
  * @param elementSize Element size of list.
  * @param compare Function used in comparing two elements.
- * @return List* If successful, a pointer refering to a heap address will be
+ * @return Delist* If successful, a pointer refering to a heap address will be
  * returned. Otherwise, `NULL` will be returned and `errno` will be set.
  */
-List *ListNew(const unsigned long elementSize, CompareFunction *const compare);
+Delist *DelistNew(const unsigned long elementSize,
+                  CompareFunction *const compare);
 
 /**
  * @brief Destructor function. O(1).
  *
  * @param list Target to be destructed. If `NULL`, nothing will happen.
  */
-void ListDestruct(List *const restrict list);
+void DelistDestruct(Delist *const restrict list);
 
 /**
  * @brief Release `list` in heap. O(1).
@@ -136,7 +144,7 @@ void ListDestruct(List *const restrict list);
  * @param list A pointer refers to the target to be deleted. The target will be
  * set to `NULL`. If `NULL`, nothing will happen.
  */
-void ListDelete(List **const restrict list);
+void DelistDelete(Delist **const restrict list);
 
 /**
  * @brief Get value of the element at specified `index`. O(n).
@@ -148,7 +156,7 @@ void ListDelete(List **const restrict list);
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
  * will be returned and `errno` will be set.
  */
-void *ListGet(const List *const restrict list, const unsigned int index);
+void *DelistGet(const Delist *const restrict list, const unsigned int index);
 
 /**
  * @brief Set value of element at specified `index`. O(n).
@@ -159,8 +167,8 @@ void *ListGet(const List *const restrict list, const unsigned int index);
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListSet(List *const restrict list, const unsigned int index,
-            const void *const restrict value);
+int DelistSet(Delist *const restrict list, const unsigned int index,
+              const void *const restrict value);
 
 /**
  * @brief Get value of the last element. O(1).
@@ -169,7 +177,7 @@ int ListSet(List *const restrict list, const unsigned int index,
  * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
  * will be returned and `errno` will be set.
  */
-void *ListBack(List *const restrict list);
+void *DelistBack(Delist *const restrict list);
 
 /**
  * @brief Get value of the first element. O(1).
@@ -178,7 +186,7 @@ void *ListBack(List *const restrict list);
  * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
  * will be returned and `errno` will be set.
  */
-void *ListFront(List *const restrict list);
+void *DelistFront(Delist *const restrict list);
 
 /**
  * @brief Add new element at the end of `list`. O(1).
@@ -188,16 +196,17 @@ void *ListFront(List *const restrict list);
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListPushBack(List *const restrict list, const void *const restrict value);
+int DelistPushBack(Delist *const restrict list,
+                   const void *const restrict value);
 
 /**
- * @brief Remove the last element of `list`. O(n).
+ * @brief Remove the last element of `list`. O(1).
  *
  * @param list `this`.
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListPopBack(List *const restrict list);
+int DelistPopBack(Delist *const restrict list);
 
 /**
  * @brief Add new element at the begin of `list`. O(1).
@@ -207,7 +216,8 @@ int ListPopBack(List *const restrict list);
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListPushFront(List *const restrict list, const void *const restrict value);
+int DelistPushFront(Delist *const restrict list,
+                    const void *const restrict value);
 
 /**
  * @brief Remove the first element of `list`. O(1).
@@ -216,7 +226,7 @@ int ListPushFront(List *const restrict list, const void *const restrict value);
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListPopFront(List *const restrict list);
+int DelistPopFront(Delist *const restrict list);
 
 /**
  * @brief Add new element at the specified index of `list`. After element
@@ -227,8 +237,8 @@ int ListPopFront(List *const restrict list);
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int ListInsert(List *const restrict list, const unsigned int index,
-               const void *const restrict value);
+int DelistInsert(Delist *const restrict list, const unsigned int index,
+                 const void *const restrict value);
 
 /**
  * @brief Find the element which has `value`. O(n).
@@ -239,6 +249,6 @@ int ListInsert(List *const restrict list, const unsigned int index,
  * found, only `-1` will be returned. If error, `-1` will be returned and
  * `errno` will be set.
  */
-int ListFind(List *const restrict list, const void *const restrict value);
+int DelistFind(Delist *const restrict list, const void *const restrict value);
 
-#endif  // __COLLECTIONS_LIST__
+#endif  // __COLLECTIONS_DELIST__

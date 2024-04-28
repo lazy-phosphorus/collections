@@ -1,10 +1,8 @@
 #include "array.h"
 
-#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <malloc.h>
 #include <memory.h>
-#include <string.h>
 
 int ArrayConstruct(Array* const restrict array,
                    const unsigned int initialCapacity,

@@ -1,5 +1,5 @@
-#ifndef __ARRAY_TEST__
-#define __ARRAY_TEST__
+#ifndef __LIST_TEST__
+#define __LIST_TEST__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,4 +17,4 @@ int error(List **const restrict list, const unsigned int i) {
     exit(-1);
 }
 
-#endif  // __ARRAY_TEST__
+#endif  // __LIST_TEST__
