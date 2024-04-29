@@ -33,6 +33,9 @@ DelistNode *DelistNodeNew(const void *const restrict value,
 void DelistNodeDestruct(DelistNode *const node) {
     if (node == NULL) return;
     free(node->value);
+    node->value = NULL;
+    node->previous = NULL;
+    node->next = NULL;
 }
 
 void DelistNodeDelete(DelistNode **const node) {
@@ -80,6 +83,11 @@ void DelistDestruct(Delist *const restrict list) {
         DelistNodeDelete(&node);
         node = temp;
     }
+    list->compare = NULL;
+    list->elementSize = 0;
+    list->Size = 0;
+    list->head = NULL;
+    list->tail = NULL;
 }
 
 void DelistDelete(Delist **const restrict list) {

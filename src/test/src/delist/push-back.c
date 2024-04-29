@@ -1,4 +1,5 @@
 #include "common.h"
+#include "delist.h"
 
 int main() {
     Delist *list = DelistNew(sizeof(Test), compare);
@@ -11,5 +12,6 @@ int main() {
         if (temp->a != i || temp->b != i + 1 || temp->c != i + 2)
             error(&list, i);
     }
+    DelistDelete(&list);
     return 0;
 }

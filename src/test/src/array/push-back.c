@@ -1,3 +1,4 @@
+#include "array.h"
 #include "common.h"
 
 int main() {
@@ -11,5 +12,6 @@ int main() {
         if (temp->a != i || temp->b != i + 1 || temp->c != i + 2)
             error(&array, i);
     }
+    ArrayDelete(&array);
     return 0;
 }

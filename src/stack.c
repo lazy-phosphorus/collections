@@ -74,6 +74,8 @@ void StackDestruct(Stack* const restrict stack) {
         StackNodeDelete(&stack->tail);
         stack->tail = temp;
     }
+    stack->elementSize = 0;
+    stack->Size = 0;
 }
 
 void StackDelete(Stack** const restrict stack) {
@@ -83,8 +85,41 @@ void StackDelete(Stack** const restrict stack) {
     *stack = NULL;
 }
 
-void* StackTop(const Stack* const restrict stack);
+void* StackTop(const Stack* const restrict stack) {
+    if (stack == NULL) {
+        errno = EINVAL;
+        return NULL;
+    }
 
-int StackPush(Stack* const restrict stack);
+    return stack->tail->value;
+}
 
-int StackPop(Stack* const restrict stack);
+int StackPush(Stack* const restrict stack, const void* const restrict value) {
+    StackNode* node = NULL;
+    if (stack == NULL || value == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    node = StackNodeNew(value, stack->elementSize);
+    if (node == NULL) return -1;
+    node->previous = stack->tail;
+    stack->tail = node;
+    stack->Size++;
+    return 0;
+}
+
+int StackPop(Stack* const restrict stack) {
+    StackNode* node = NULL;
+    if (stack == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    if (stack->Size == 0) return 0;
+    node = stack->tail;
+    stack->tail = node->previous;
+    StackNodeDelete(&node);
+    stack->Size--;
+    return 0;
+}

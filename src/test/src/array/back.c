@@ -13,4 +13,5 @@ int main() {
         ArrayPopBack(array);
     }
     ArrayDelete(&array);
+    return 0;
 }

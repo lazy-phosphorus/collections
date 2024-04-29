@@ -20,4 +20,5 @@ int main() {
             error(&array, i);
     }
     ArrayDelete(&array);
+    return 0;
 }

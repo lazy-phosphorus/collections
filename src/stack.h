@@ -34,7 +34,7 @@ void StackDelete(Stack** const restrict stack);
 
 void* StackTop(const Stack* const restrict stack);
 
-int StackPush(Stack* const restrict stack);
+int StackPush(Stack* const restrict stack, const void* const restrict value);
 
 int StackPop(Stack* const restrict stack);
 

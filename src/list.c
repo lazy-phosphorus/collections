@@ -31,6 +31,8 @@ ListNode *ListNodeNew(const void *const restrict value,
 void ListNodeDestruct(ListNode *const node) {
     if (node == NULL) return;
     free(node->value);
+    node->value = NULL;
+    node->next = NULL;
 }
 
 void ListNodeDelete(ListNode **const node) {
@@ -75,6 +77,11 @@ void ListDestruct(List *const restrict list) {
         ListNodeDelete(&node);
         node = temp;
     }
+    list->compare = NULL;
+    list->elementSize = 0;
+    list->Size = 0;
+    list->head = NULL;
+    list->tail = NULL;
 }
 
 void ListDelete(List **const restrict list) {

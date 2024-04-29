@@ -13,4 +13,5 @@ int main() {
         ListPopBack(list);
     }
     ListDelete(&list);
+    return 0;
 }

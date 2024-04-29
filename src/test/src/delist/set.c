@@ -20,4 +20,5 @@ int main() {
             error(&list, i);
     }
     DelistDelete(&list);
+    return 0;
 }
