@@ -293,3 +293,33 @@ int DelinkedListFind(DelinkedList *const restrict list,
     }
     return -1;
 }
+
+DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
+                                const unsigned int start,
+                                const unsigned int size) {
+    DelinkedList *slice = NULL;
+    DelinkedListNode *node = NULL;
+    if (list == NULL) {
+        errno = EINVAL;
+        return NULL;
+    }
+    if (start + size > list->Size) {
+        errno = EDOM;
+        return NULL;
+    }
+
+    slice = DelinkedListNew(list->elementSize, list->compare);
+    if (slice == NULL) return NULL;
+    node = list->head;
+    for (unsigned int i = 0; i < start; i++) {
+        node = node->next;
+    }
+    for (unsigned int i = 0; i < size; i++) {
+        if (DelinkedListPushBack(slice, node->value) == -1) {
+            DelinkedListDelete(&slice);
+            return NULL;
+        }
+        node = node->next;
+    }
+    return slice;
+}

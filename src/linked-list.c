@@ -1,5 +1,6 @@
 #include "linked-list.h"
 
+#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <malloc.h>
 #include <memory.h>
@@ -279,4 +280,33 @@ int LinkedListFind(LinkedList *const restrict list,
         node = node->next;
     }
     return -1;
+}
+
+LinkedList *LinkedListSlice(LinkedList *const restrict list,
+                            const unsigned int start, const unsigned int size) {
+    LinkedList *slice = NULL;
+    LinkedListNode *node = NULL;
+    if (list == NULL) {
+        errno = EINVAL;
+        return NULL;
+    }
+    if (start + size > list->Size) {
+        errno = EDOM;
+        return NULL;
+    }
+
+    slice = LinkedListNew(list->elementSize, list->compare);
+    if (slice == NULL) return NULL;
+    node = list->head;
+    for (unsigned int i = 0; i < start; i++) {
+        node = node->next;
+    }
+    for (unsigned int i = 0; i < size; i++) {
+        if (LinkedListPushBack(slice, node->value) == -1) {
+            LinkedListDelete(&slice);
+            return NULL;
+        }
+        node = node->next;
+    }
+    return slice;
 }

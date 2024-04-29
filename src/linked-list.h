@@ -251,4 +251,18 @@ int LinkedListInsert(LinkedList *const restrict list, const unsigned int index,
 int LinkedListFind(LinkedList *const restrict list,
                    const void *const restrict value);
 
+/**
+ * @brief Slice `list`, and return new list which contains DEEP copied
+ * elements from index `start`(contained) and has `size` elements. O(n).
+ *
+ * @param list `this`.
+ * @param start Start index.
+ * @param size Size of returned list.
+ * @return DelinkedList* New list with DEEP copied elements. This pointer will
+ * NOT automatically be released. If error, `NULL` will be returned and `errno`
+ * will be set.
+ */
+LinkedList *LinkedListSlice(LinkedList *const restrict list,
+                            const unsigned int start, const unsigned int size);
+
 #endif  // __COLLECTIONS_LINKED_LIST__

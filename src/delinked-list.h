@@ -79,7 +79,7 @@ typedef struct {
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int DelinkedListNodeConstruct(DelinkedListNode *const node,
+int DelinkedListNodeConstruct(DelinkedListNode *const restrict node,
                               const void *const restrict value,
                               unsigned long elementSize);
 
@@ -99,7 +99,7 @@ DelinkedListNode *DelinkedListNodeNew(const void *const restrict value,
  *
  * @param node Target to be destructed. If `NULL`, nothing will happen.
  */
-void DelinkedListNodeDestruct(DelinkedListNode *const node);
+void DelinkedListNodeDestruct(DelinkedListNode *const restrict node);
 
 /**
  * @brief Release `node` in heap. O(1).
@@ -107,7 +107,7 @@ void DelinkedListNodeDestruct(DelinkedListNode *const node);
  * @param node A pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
-void DelinkedListNodeDelete(DelinkedListNode **const node);
+void DelinkedListNodeDelete(DelinkedListNode **const restrict node);
 
 /**
  * @brief Construct function. O(1).
@@ -256,5 +256,20 @@ int DelinkedListInsert(DelinkedList *const restrict list,
  */
 int DelinkedListFind(DelinkedList *const restrict list,
                      const void *const restrict value);
+
+/**
+ * @brief Slice `list`, and return new list which contains DEEP copied
+ * elements from index `start`(contained) and has `size` elements. O(n).
+ *
+ * @param list `this`.
+ * @param start Start index.
+ * @param size Size of returned list.
+ * @return DelinkedList* New list with DEEP copied elements. This pointer will
+ * NOT automatically be released. If error, `NULL` will be returned and `errno`
+ * will be set.
+ */
+DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
+                                const unsigned int start,
+                                const unsigned int size);
 
 #endif  // __COLLECTIONS_DELINKED_LIST__

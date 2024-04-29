@@ -34,6 +34,8 @@ void LinkedStackNodeDestruct(LinkedStackNode* const restrict node) {
     if (node == NULL) return;
 
     free(node->value);
+    node->value = NULL;
+    node->previous = NULL;
 }
 
 void LinkedStackNodeDelete(LinkedStackNode** const restrict node) {
@@ -50,6 +52,7 @@ int LinkedStackConstruct(LinkedStack* const restrict stack,
         errno = EINVAL;
         return -1;
     }
+
     stack->tail = NULL;
     stack->elementSize = elementSize;
     stack->Size = 0;
@@ -90,6 +93,7 @@ void* LinkedStackTop(const LinkedStack* const restrict stack) {
         return NULL;
     }
 
+    if (stack->Size == 0) return NULL;
     return stack->tail->value;
 }
 
