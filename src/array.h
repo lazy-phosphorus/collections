@@ -76,7 +76,7 @@ Array* ArrayNew(const unsigned int initialCapacity,
                 CompareFunction* const compare);
 
 /**
- * @brief Destructor function. O(1).
+ * @brief Destruct function. O(1).
  *
  * @param array Target to be destructed. If `NULL`, nothing will happen.
  */
@@ -85,8 +85,8 @@ void ArrayDestruct(Array* const restrict array);
 /**
  * @brief Release `array` in heap. O(1).
  *
- * @param array A pointer refers to the target to be deleted. The target will be
- * set to `NULL`. If `NULL`, nothing will happen.
+ * @param array A pointer refers to the target which is to be deleted. The
+ * target will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void ArrayDelete(Array** const restrict array);
 

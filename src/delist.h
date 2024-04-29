@@ -4,7 +4,7 @@
 #include "types.h"
 
 /**
- * @brief Typeof element in `Delist`.
+ * @brief Type of element in `Delist`.
  * @attention It is no recommended to use this struct.
  */
 typedef struct __DelistNode {
@@ -72,7 +72,7 @@ typedef struct {
  *
  * @param node Target to be constructed.
  * @param value Value of `node`.
- * @param elementSize Size of `value`.
+ * @param elementSize Value size of `value`.
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
@@ -85,8 +85,8 @@ int DelistNodeConstruct(DelistNode *const node,
  *
  * @param value Value of node.
  * @param elementSize Size of `value`.
- * @return DelistNode* If successful,`0` will be returned. Otherwise, `-1` will
- * be returned and `errno` will be set.
+ * @return DelistNode* If successful, a pointer refering to a heap address will
+ * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
  */
 DelistNode *DelistNodeNew(const void *const restrict value,
                           unsigned long elementSize);
@@ -101,8 +101,8 @@ void DelistNodeDestruct(DelistNode *const node);
 /**
  * @brief Release `node` in heap. O(1).
  *
- * @param node A pointer refers to the target to be deleted. The target will be
- * set to `NULL`. If `NULL`, nothing will happen.
+ * @param node A pointer refers to the target which is to be deleted. The target
+ * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void DelistNodeDelete(DelistNode **const node);
 
@@ -132,17 +132,17 @@ Delist *DelistNew(const unsigned long elementSize,
                   CompareFunction *const compare);
 
 /**
- * @brief Destructor function. O(1).
+ * @brief Destruct function. O(n).
  *
  * @param list Target to be destructed. If `NULL`, nothing will happen.
  */
 void DelistDestruct(Delist *const restrict list);
 
 /**
- * @brief Release `list` in heap. O(1).
+ * @brief Release `list` in heap. O(n).
  *
- * @param list A pointer refers to the target to be deleted. The target will be
- * set to `NULL`. If `NULL`, nothing will happen.
+ * @param list A pointer refers to the target which is to be deleted. The target
+ * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void DelistDelete(Delist **const restrict list);
 

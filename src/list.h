@@ -4,7 +4,7 @@
 #include "types.h"
 
 /**
- * @brief Typeof element in `List`.
+ * @brief Type of element in `List`.
  * @attention It is no recommended to use this struct.
  */
 typedef struct __ListNode {
@@ -79,8 +79,8 @@ int ListNodeConstruct(ListNode *const node, const void *const restrict value,
  *
  * @param value Value of node.
  * @param elementSize Size of `value`.
- * @return ListNode* If successful,`0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
+ * @return ListNode* If successful, a pointer refering to a heap address will be
+ * returned. Otherwise, `NULL` will be returned and `errno` will be set.
  */
 ListNode *ListNodeNew(const void *const restrict value,
                       unsigned long elementSize);
@@ -95,8 +95,8 @@ void ListNodeDestruct(ListNode *const node);
 /**
  * @brief Release `node` in heap. O(1).
  *
- * @param node A pointer refers to the target to be deleted. The target will be
- * set to `NULL`. If `NULL`, nothing will happen.
+ * @param node A pointer refers to the target which is to be deleted. The target
+ * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void ListNodeDelete(ListNode **const node);
 
@@ -124,17 +124,17 @@ int ListConstruct(List *const restrict list, const unsigned long elementSize,
 List *ListNew(const unsigned long elementSize, CompareFunction *const compare);
 
 /**
- * @brief Destructor function. O(1).
+ * @brief Destruct function. O(n).
  *
  * @param list Target to be destructed. If `NULL`, nothing will happen.
  */
 void ListDestruct(List *const restrict list);
 
 /**
- * @brief Release `list` in heap. O(1).
+ * @brief Release `list` in heap. O(n).
  *
- * @param list A pointer refers to the target to be deleted. The target will be
- * set to `NULL`. If `NULL`, nothing will happen.
+ * @param list A pointer refers to the target which is to be deleted. The target
+ * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void ListDelete(List **const restrict list);
 
