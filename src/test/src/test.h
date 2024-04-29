@@ -1,8 +1,6 @@
 #ifndef __TEST__
 #define __TEST__
 
-#include "list.h"
-
 typedef struct {
     int a;
     int b;
