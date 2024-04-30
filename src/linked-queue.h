@@ -122,7 +122,7 @@ LinkedQueue* LinkedQueueNew(const unsigned long elementSize);
 void LinkedQueueDestruct(LinkedQueue* const restrict queue);
 
 /**
- * @brief Release `heap` in heap. O(n).
+ * @brief Release `queue` in heap. O(n).
  *
  * @param stack A pointer refers to the target which is to be deleted. The
  * target will be set to `NULL. If `NULL`, nothing will happen.
