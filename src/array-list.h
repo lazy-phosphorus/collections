@@ -212,4 +212,13 @@ int ArrayListFind(const ArrayList* const restrict list,
 ArrayList* ArrayListSlice(const ArrayList* const restrict list,
                           const unsigned int start, const unsigned int size);
 
+/**
+ * @brief Use quick sort algorithm to sort `list`. O(nlog₂n).
+ *
+ * @param list `this`.
+ * @return int If successful, `0` will be returned. Otherwise, `-1` will be
+ * returned and `errno` will be set.
+ */
+int ArrayListQuickSort(ArrayList* const restrict list);
+
 #endif  // __COLLECTIONS_ARRAY_LIST__

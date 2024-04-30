@@ -9,10 +9,7 @@ typedef struct {
 
 int compare(const void *const a, const void *const b) {
     const Test *former = (const Test *)a, *latter = (const Test *)b;
-    return former->a == latter->a && former->b == latter->b &&
-                   former->c == latter->c
-               ? 0
-               : 1;
+    return former->a - latter->a;
 }
 
 #endif  // __TEST__

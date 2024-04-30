@@ -1,8 +1,11 @@
 #include "array-list.h"
 
+#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <malloc.h>
 #include <memory.h>
+#include <stdio.h>
+#include <string.h>
 
 int ArrayListConstruct(ArrayList* const restrict list,
                        const unsigned int initialCapacity,
@@ -218,4 +221,53 @@ ArrayList* ArrayListSlice(const ArrayList* const restrict list,
     memcpy(slice->array, list->array + list->elementSize * start,
            list->elementSize * size);
     return slice;
+}
+
+static inline void swap(void* const restrict a, void* const restrict b,
+                        void* const restrict cache,
+                        const unsigned long elementSize) {
+    memcpy(cache, a, elementSize);
+    memcpy(a, b, elementSize);
+    memcpy(b, cache, elementSize);
+}
+
+static int quickSort(ArrayList* const restrict list, const unsigned int left,
+                     const unsigned int right, void* cache) {
+    unsigned int pivot = (left + right) / 2, i = left, j = right;
+    while (i < j) {
+        while (i < pivot &&
+               list->compare(list->array + i * list->elementSize,
+                             list->array + pivot * list->elementSize) <= 0) {
+            i++;
+        }
+        swap(list->array + i * list->elementSize,
+             list->array + pivot * list->elementSize, cache, list->elementSize);
+        pivot = i;
+        while (pivot < j &&
+               list->compare(list->array + j * list->elementSize,
+                             list->array + pivot * list->elementSize) > 0) {
+            j--;
+        }
+        swap(list->array + j * list->elementSize,
+             list->array + pivot * list->elementSize, cache, list->elementSize);
+        pivot = j;
+        printf("i = %d, j = %d, pivot = %d\n", i, j, pivot);
+    }
+
+    if (pivot != left && quickSort(list, left, pivot - 1, cache) == -1)
+        return -1;
+    if (pivot != right && quickSort(list, pivot + 1, right, cache) == -1)
+        return -1;
+    return 0;
+}
+
+int ArrayListQuickSort(ArrayList* const restrict list) {
+    void* cache = NULL;
+    if (list == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+    cache = malloc(list->elementSize);
+    if (cache == NULL) return -1;
+    return quickSort(list, 0, list->Size - 1, cache);
 }

@@ -323,3 +323,46 @@ DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
     }
     return slice;
 }
+
+static inline void swap(void *const restrict a, void *const restrict b,
+                        void *const restrict cache,
+                        const unsigned long elementSize) {
+    memcpy(cache, a, elementSize);
+    memcpy(a, b, elementSize);
+    memcpy(b, cache, elementSize);
+}
+
+static int quickSort(DelinkedList *const restrict list,
+                     DelinkedListNode *const restrict left,
+                     DelinkedListNode *const restrict right, void *cache) {
+    DelinkedListNode *pivot = left, *i = left, *j = right;
+    while (i != j) {
+        while (i != pivot && list->compare(i->value, pivot->value) <= 0) {
+            i = i->next;
+        }
+        swap(i->value, pivot->value, cache, list->elementSize);
+        pivot = i;
+        while (pivot != j && list->compare(j->value, pivot->value) > 0) {
+            j = j->previous;
+        }
+        swap(j->value, pivot->value, cache, list->elementSize);
+        pivot = j;
+    }
+
+    if (left != pivot && quickSort(list, left, pivot->previous, cache) == -1)
+        return -1;
+    if (right != pivot && quickSort(list, pivot->next, right, cache) == -1)
+        return -1;
+    return 0;
+}
+
+int DelinkedListQuickSort(DelinkedList *const restrict list) {
+    void *cache = NULL;
+    if (list == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+    cache = malloc(list->elementSize);
+    if (cache == NULL) return -1;
+    return quickSort(list, list->head, list->tail, cache);
+}

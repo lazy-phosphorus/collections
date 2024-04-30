@@ -272,4 +272,13 @@ DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
                                 const unsigned int start,
                                 const unsigned int size);
 
+/**
+ * @brief Use quick sort algorithm to sort `list`. O(nlog₂n).
+ *
+ * @param list `this`.
+ * @return int If successful, `0` will be returned. Otherwise, `-1` will be
+ * returned and `errno` will be set.
+ */
+int DelinkedListQuickSort(DelinkedList *const restrict list);
+
 #endif  // __COLLECTIONS_DELINKED_LIST__
