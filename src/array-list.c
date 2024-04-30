@@ -14,8 +14,8 @@ int ArrayListConstruct(ArrayList* const restrict list,
         return -1;
     }
 
-    list->list = calloc(initialCapacity, elementSize);
-    if (list->list == NULL) return -1;
+    list->array = calloc(initialCapacity, elementSize);
+    if (list->array == NULL) return -1;
     list->elementSize = elementSize;
     list->Capacity = initialCapacity;
     list->Size = 0;
@@ -38,8 +38,8 @@ ArrayList* ArrayListNew(const unsigned int initialCapacity,
 void ArrayListDestruct(ArrayList* const restrict list) {
     if (list == NULL) return;
 
-    free(list->list);
-    list->list = NULL;
+    free(list->array);
+    list->array = NULL;
     list->elementSize = 0;
     list->Capacity = 0;
     list->Size = 0;
@@ -64,7 +64,7 @@ void* ArrayListGet(const ArrayList* const restrict list,
         return NULL;
     }
 
-    return list->list + index * list->elementSize;
+    return list->array + index * list->elementSize;
 }
 
 int ArrayListSet(ArrayList* const restrict list, const unsigned int index,
@@ -78,7 +78,7 @@ int ArrayListSet(ArrayList* const restrict list, const unsigned int index,
         return -1;
     }
 
-    memcpy(list->list + index * list->elementSize, value, list->elementSize);
+    memcpy(list->array + index * list->elementSize, value, list->elementSize);
     return 0;
 }
 
@@ -88,7 +88,7 @@ void* ArrayListBack(const ArrayList* const restrict list) {
         return NULL;
     }
     if (list->Size == 0) return NULL;
-    return list->list + list->elementSize * (list->Size - 1);
+    return list->array + list->elementSize * (list->Size - 1);
 }
 
 void* ArrayListFront(const ArrayList* const restrict list) {
@@ -97,7 +97,7 @@ void* ArrayListFront(const ArrayList* const restrict list) {
         return NULL;
     }
     if (list->Size == 0) return NULL;
-    return list->list;
+    return list->array;
 }
 
 int ArrayListPushBack(ArrayList* const restrict list,
@@ -112,11 +112,11 @@ int ArrayListPushBack(ArrayList* const restrict list,
         list->Capacity *= 2;
         temp = calloc(list->Capacity, list->elementSize);
         if (temp == NULL) return -1;
-        memcpy(temp, list->list, list->Size * list->elementSize);
-        free(list->list);
-        list->list = temp;
+        memcpy(temp, list->array, list->Size * list->elementSize);
+        free(list->array);
+        list->array = temp;
     }
-    memcpy(list->list + list->Size * list->elementSize, value,
+    memcpy(list->array + list->Size * list->elementSize, value,
            list->elementSize);
     list->Size++;
     return 0;
@@ -139,15 +139,15 @@ int ArrayListPushFront(ArrayList* const restrict list,
         list->Capacity *= 2;
         temp = calloc(list->Capacity, list->elementSize);
         if (temp == NULL) return -1;
-        memcpy(temp + list->elementSize, list->list,
+        memcpy(temp + list->elementSize, list->array,
                list->Size * list->elementSize);
-        free(list->list);
-        list->list = temp;
+        free(list->array);
+        list->array = temp;
     } else {
-        memmove(list->list + list->elementSize, list->list,
+        memmove(list->array + list->elementSize, list->array,
                 list->Size * list->elementSize);
     }
-    memcpy(list->list, value, list->elementSize);
+    memcpy(list->array, value, list->elementSize);
     list->Size++;
     return 0;
 }
@@ -155,7 +155,7 @@ int ArrayListPushFront(ArrayList* const restrict list,
 void ArrayListPopFront(ArrayList* const restrict list) {
     if (list == NULL || list->Size == 0) return;
     list->Size--;
-    memmove(list->list, list->list + list->elementSize,
+    memmove(list->array, list->array + list->elementSize,
             list->elementSize * list->Size);
 }
 
@@ -172,19 +172,19 @@ int ArrayListInsert(ArrayList* const restrict list, const unsigned int index,
             list->Capacity *= 2;
             temp = calloc(list->Capacity, list->elementSize);
             if (temp == NULL) return -1;
-            memcpy(temp, list->list, index * list->elementSize);
+            memcpy(temp, list->array, index * list->elementSize);
             memcpy(temp + list->elementSize * (index + 1),
-                   list->list + list->elementSize * index,
+                   list->array + list->elementSize * index,
                    list->elementSize * (list->Size - index));
-            free(list->list);
-            list->list = temp;
+            free(list->array);
+            list->array = temp;
         }
     } else {
-        memmove(list->list + list->elementSize * (index + 1),
-                list->list + list->elementSize * index,
+        memmove(list->array + list->elementSize * (index + 1),
+                list->array + list->elementSize * index,
                 list->elementSize * (list->Size - index));
     }
-    memcpy(list->list + list->elementSize * index, value, list->elementSize);
+    memcpy(list->array + list->elementSize * index, value, list->elementSize);
     list->Size++;
     return 0;
 }
@@ -196,7 +196,7 @@ int ArrayListFind(const ArrayList* const restrict list,
         return -1;
     }
     for (unsigned int i = 0; i < list->Size; i++) {
-        if (list->compare(list->list + list->elementSize * i, value) == 0)
+        if (list->compare(list->array + list->elementSize * i, value) == 0)
             return i;
     }
     return -1;
@@ -215,7 +215,7 @@ ArrayList* ArrayListSlice(const ArrayList* const restrict list,
     }
     slice = ArrayListNew(size, list->elementSize, list->compare);
     if (slice == NULL) return NULL;
-    memcpy(slice->list, list->list + list->elementSize * start,
+    memcpy(slice->array, list->array + list->elementSize * start,
            list->elementSize * size);
     return slice;
 }

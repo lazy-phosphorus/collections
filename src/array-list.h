@@ -16,7 +16,7 @@ typedef struct {
      * @warning Don't modify this member directly. Please use functions below.
      * @see `ArrayListGet`, `ArrayListSet`.
      */
-    void* list;
+    void* array;
     /**
      * @private
      * @brief Element size of this list.

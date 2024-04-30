@@ -1,12 +1,43 @@
 #ifndef __COLLECTIONS_ARRAY_STACK__
 #define __COLLECTIONS_ARRAY_STACK__
 
+/**
+ * @warning Don't initialize or free instance of this struct directly. Please
+ * use functions below.
+ * @see `ArrayStackConstruct`, `ArrayStackNew`, `ArrayStackDestruct`,
+ * `ArrayStackDelete`.
+ */
 typedef struct {
+    /**
+     * @private
+     * @brief All elements will be stored in this member.
+     * @warning Don't modify this member directly. Please use functions below.
+     * @see `ArrayStackPush`, `ArrayStackPop`.
+     */
     void* array;
+    /**
+     * @private
+     * @brief Element size of this stack.
+     * @warning Don't modify this member directly.
+     */
     unsigned long elementSize;
 
-    unsigned int Capacity;
+    /**
+     * @public
+     * @brief Current element quantity of this stack.
+     * @attention Don't change value of this member directly. It is maintained
+     * automatically.
+     */
     unsigned int Size;
+    /**
+     * @public
+     * @brief Current element capacity of this stack. If `Size` is going to be
+     * larger than `Capacity`, this stack will automatically expand its
+     * capacity.
+     * @attention Don't change value of this member directly. It is maintained
+     * automatically.
+     */
+    unsigned int Capacity;
 } ArrayStack;
 
 /**
