@@ -74,7 +74,7 @@ typedef struct {
  * @return int If successful, `0` will be returned. Otherwise, `-1` will be
  * returned and `errno` will be set.
  */
-int LinkedListNodeConstruct(LinkedListNode *const node,
+int LinkedListNodeConstruct(LinkedListNode *const restrict node,
                             const void *const restrict value,
                             unsigned long elementSize);
 
@@ -94,7 +94,7 @@ LinkedListNode *LinkedListNodeNew(const void *const restrict value,
  *
  * @param node Target to be destructed. If `NULL`, nothing will happen.
  */
-void LinkedListNodeDestruct(LinkedListNode *const node);
+void LinkedListNodeDestruct(LinkedListNode *const restrict node);
 
 /**
  * @brief Release `node` in heap. O(1).
@@ -102,7 +102,7 @@ void LinkedListNodeDestruct(LinkedListNode *const node);
  * @param node A pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
-void LinkedListNodeDelete(LinkedListNode **const node);
+void LinkedListNodeDelete(LinkedListNode **const restrict node);
 
 /**
  * @brief Construct function. O(1).

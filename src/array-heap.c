@@ -1,10 +1,8 @@
 #include "array-heap.h"
 
-#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <malloc.h>
 #include <memory.h>
-#include <string.h>
 
 int ArrayHeapConstruct(ArrayHeap* const restrict heap,
                        const unsigned int initialCapacity,
