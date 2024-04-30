@@ -44,7 +44,7 @@ typedef struct {
      * @brief Element size of this queue.
      * @warning Don't modify this member directly.
      */
-    unsigned int elementSize;
+    unsigned long elementSize;
 
     /**
      * @public
@@ -66,7 +66,7 @@ typedef struct {
  */
 int LinkedQueueNodeConstruct(LinkedQueueNode* const restrict node,
                              const void* const restrict value,
-                             const unsigned int elementSize);
+                             const unsigned long elementSize);
 
 /**
  * @brief Allocate a new node in heap. O(1).
@@ -77,7 +77,7 @@ int LinkedQueueNodeConstruct(LinkedQueueNode* const restrict node,
  * will be returned. Otherwise, `NULL` will be returned and `errno` will be set.
  */
 LinkedQueueNode* LinkedQueueNodeNew(const void* const restrict value,
-                                    const unsigned int elementSize);
+                                    const unsigned long elementSize);
 
 /**
  * @brief Destruct function. O(1).
@@ -103,7 +103,7 @@ void LinkedQueueNodeDelete(LinkedQueueNode** const restrict node);
  * returned and `errno` will be set.
  */
 int LinkedQueueConstruct(LinkedQueue* const restrict queue,
-                         const unsigned int elementSize);
+                         const unsigned long elementSize);
 
 /**
  * @brief Allocate a new queue in heap. O(1).
@@ -112,7 +112,7 @@ int LinkedQueueConstruct(LinkedQueue* const restrict queue,
  * @return LinkedStack* If successful, a pointer refering to a heap address will
  * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
  */
-LinkedQueue* LinkedQueueNew(const unsigned int elementSize);
+LinkedQueue* LinkedQueueNew(const unsigned long elementSize);
 
 /**
  * @brief Destruct function. O(n).

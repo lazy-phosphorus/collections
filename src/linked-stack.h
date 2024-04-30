@@ -59,7 +59,7 @@ typedef struct {
  */
 int LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
                              const void* const restrict value,
-                             const unsigned int elementSize);
+                             const unsigned long elementSize);
 /**
  * @brief Allocate a new node in heap. O(1).
  *
@@ -69,7 +69,7 @@ int LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
  * will be returned. Otherwise, `NULL` will be returned and `errno` will be set.
  */
 LinkedStackNode* LinkedStackNodeNew(const void* const restrict value,
-                                    const unsigned int elementSize);
+                                    const unsigned long elementSize);
 
 /**
  * @brief Destruct function. O(1).
@@ -95,7 +95,7 @@ void LinkedStackNodeDelete(LinkedStackNode** const restrict node);
  * returned and `errno` will be set.
  */
 int LinkedStackConstruct(LinkedStack* const restrict stack,
-                         const unsigned int elementSize);
+                         const unsigned long elementSize);
 
 /**
  * @brief Allocate a new stack in heap. O(1).
@@ -104,7 +104,7 @@ int LinkedStackConstruct(LinkedStack* const restrict stack,
  * @return LinkedStack* If successful, a pointer refering to a heap address will
  * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
  */
-LinkedStack* LinkedStackNew(const unsigned int elementSize);
+LinkedStack* LinkedStackNew(const unsigned long elementSize);
 
 /**
  * @brief Destruct function. O(n).

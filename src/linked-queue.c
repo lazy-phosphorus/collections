@@ -1,13 +1,12 @@
 #include "linked-queue.h"
 
-#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <malloc.h>
 #include <memory.h>
 
 int LinkedQueueNodeConstruct(LinkedQueueNode *const restrict node,
                              const void *const restrict value,
-                             const unsigned int elementSize) {
+                             const unsigned long elementSize) {
     if (node == NULL || value == NULL) {
         errno = EINVAL;
         return -1;
@@ -20,7 +19,7 @@ int LinkedQueueNodeConstruct(LinkedQueueNode *const restrict node,
 }
 
 LinkedQueueNode *LinkedQueueNodeNew(const void *const restrict value,
-                                    const unsigned int elementSize) {
+                                    const unsigned long elementSize) {
     LinkedQueueNode *node = (LinkedQueueNode *)malloc(sizeof(LinkedQueueNode));
     if (node == NULL) return NULL;
     if (LinkedQueueNodeConstruct(node, value, elementSize) == -1) {
@@ -47,7 +46,7 @@ void LinkedQueueNodeDelete(LinkedQueueNode **const restrict node) {
 }
 
 int LinkedQueueConstruct(LinkedQueue *const restrict queue,
-                         const unsigned int elementSize) {
+                         const unsigned long elementSize) {
     if (queue == NULL || elementSize == 0) {
         errno = EINVAL;
         return -1;
@@ -60,7 +59,7 @@ int LinkedQueueConstruct(LinkedQueue *const restrict queue,
     return 0;
 }
 
-LinkedQueue *LinkedQueueNew(const unsigned int elementSize) {
+LinkedQueue *LinkedQueueNew(const unsigned long elementSize) {
     LinkedQueue *queue = (LinkedQueue *)malloc(sizeof(LinkedQueue));
     if (LinkedQueueConstruct(queue, elementSize) == -1) {
         free(queue);

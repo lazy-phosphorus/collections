@@ -6,7 +6,7 @@
 
 int LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
                              const void* const restrict value,
-                             const unsigned int elementSize) {
+                             const unsigned long elementSize) {
     if (node == NULL || value == NULL || elementSize == 0) {
         errno = EINVAL;
         return -1;
@@ -20,7 +20,7 @@ int LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
 }
 
 LinkedStackNode* LinkedStackNodeNew(const void* const restrict value,
-                                    const unsigned int elementSize) {
+                                    const unsigned long elementSize) {
     LinkedStackNode* node = (LinkedStackNode*)malloc(sizeof(LinkedStackNode));
     if (node == NULL) return NULL;
     if (LinkedStackNodeConstruct(node, value, elementSize) == -1) {
@@ -47,7 +47,7 @@ void LinkedStackNodeDelete(LinkedStackNode** const restrict node) {
 }
 
 int LinkedStackConstruct(LinkedStack* const restrict stack,
-                         const unsigned int elementSize) {
+                         const unsigned long elementSize) {
     if (stack == NULL || elementSize == 0) {
         errno = EINVAL;
         return -1;
@@ -59,7 +59,7 @@ int LinkedStackConstruct(LinkedStack* const restrict stack,
     return 0;
 }
 
-LinkedStack* LinkedStackNew(const unsigned int elementSize) {
+LinkedStack* LinkedStackNew(const unsigned long elementSize) {
     LinkedStack* stack = (LinkedStack*)malloc(sizeof(LinkedStack));
     if (LinkedStackConstruct(stack, elementSize) == -1) {
         free(stack);
