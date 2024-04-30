@@ -6,10 +6,6 @@ int main() {
         Test test = {i, i + 1, i + 2};
         ArrayListInsert(list, list->Size / 2, &test);
     }
-    for (unsigned int i = 0; i < list->Size; i++) {
-        Test *temp = (Test *)ArrayListGet(list, i);
-        printf("[%d]: { %d, %d, %d }\n", i, temp->a, temp->b, temp->c);
-    }
     ArrayListQuickSort(list);
     for (unsigned int i = 0; i < list->Size; i += 1) {
         Test *temp = (Test *)ArrayListGet(list, i);

@@ -1,11 +1,8 @@
 #include "array-list.h"
 
-#include <asm-generic/errno-base.h>
 #include <errno.h>
 #include <malloc.h>
 #include <memory.h>
-#include <stdio.h>
-#include <string.h>
 
 int ArrayListConstruct(ArrayList* const restrict list,
                        const unsigned int initialCapacity,
@@ -251,7 +248,6 @@ static int quickSort(ArrayList* const restrict list, const unsigned int left,
         swap(list->array + j * list->elementSize,
              list->array + pivot * list->elementSize, cache, list->elementSize);
         pivot = j;
-        printf("i = %d, j = %d, pivot = %d\n", i, j, pivot);
     }
 
     if (pivot != left && quickSort(list, left, pivot - 1, cache) == -1)

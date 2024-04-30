@@ -1,5 +1,5 @@
-#ifndef __LINKED_STACK_TEST__
-#define __LINKED_STACK_TEST__
+#ifndef __LINKED_QUEUE_TEST__
+#define __LINKED_QUEUE_TEST__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,4 +21,4 @@ int error(LinkedQueue **const restrict queue, const unsigned int i) {
     exit(-1);
 }
 
-#endif  // __LINKED_STACK_TEST__
+#endif  // __LINKED_QUEUE_TEST__
