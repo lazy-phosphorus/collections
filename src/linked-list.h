@@ -69,22 +69,19 @@ typedef struct {
  * @brief Construct function. O(1).
  *
  * @param node Target to be constructed.
- * @param value Value of `node`.
+ * @param value Value of `node`. It will be DEEP copied.
  * @param elementSize Size of `value`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListNodeConstruct(LinkedListNode *const restrict node,
-                            const void *const restrict value,
-                            unsigned long elementSize);
+void LinkedListNodeConstruct(LinkedListNode *const restrict node,
+                             const void *const restrict value,
+                             unsigned long elementSize);
 
 /**
  * @brief Allocate a new node in heap. O(1).
  *
- * @param value Value of node.
+ * @param value Value of node. It will be DEEP copied.
  * @param elementSize Size of `value`.
- * @return LinkedListNode* If successful, a pointer refering to a heap address
- * will be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return LinkedListNode* Pointer refering to a heap address.
  */
 LinkedListNode *LinkedListNodeNew(const void *const restrict value,
                                   unsigned long elementSize);
@@ -99,7 +96,7 @@ void LinkedListNodeDestruct(LinkedListNode *const restrict node);
 /**
  * @brief Release `node` in heap. O(1).
  *
- * @param node A pointer refers to the target which is to be deleted. The target
+ * @param node Pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void LinkedListNodeDelete(LinkedListNode **const restrict node);
@@ -110,12 +107,10 @@ void LinkedListNodeDelete(LinkedListNode **const restrict node);
  * @param list Target to be constructed.
  * @param elementSize Element size of `list`
  * @param compare Function used in comparing two elements.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListConstruct(LinkedList *const restrict list,
-                        const unsigned long elementSize,
-                        CompareFunction *const compare);
+void LinkedListConstruct(LinkedList *const restrict list,
+                         const unsigned long elementSize,
+                         CompareFunction *const compare);
 
 /**
  * @brief Allocate a new list in heap. O(1).
@@ -123,8 +118,7 @@ int LinkedListConstruct(LinkedList *const restrict list,
  * @param initialCapacity Initial capacity of list.
  * @param elementSize Element size of list.
  * @param compare Function used in comparing two elements.
- * @return LinkedList* If successful, a pointer refering to a heap address will
- * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return LinkedList* Pointer refering to a heap address.
  */
 LinkedList *LinkedListNew(const unsigned long elementSize,
                           CompareFunction *const compare);
@@ -139,20 +133,19 @@ void LinkedListDestruct(LinkedList *const restrict list);
 /**
  * @brief Release `list` in heap. O(n).
  *
- * @param list A pointer refers to the target which is to be deleted. The target
+ * @param list Pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void LinkedListDelete(LinkedList **const restrict list);
 
 /**
  * @brief Get value of the element at specified `index`. O(n).
- * @attention The returned value is shallow copied from `list[index]`. Don't
- * free it.
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
  * @param index Specified index.
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
- * will be returned and `errno` will be set.
+ * will be returned.
  */
 void *LinkedListGet(const LinkedList *const restrict list,
                     const unsigned int index);
@@ -163,27 +156,25 @@ void *LinkedListGet(const LinkedList *const restrict list,
  * @param list `this`.
  * @param index Specified index.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListSet(LinkedList *const restrict list, const unsigned int index,
-                  const void *const restrict value);
+void LinkedListSet(LinkedList *const restrict list, const unsigned int index,
+                   const void *const restrict value);
 
 /**
  * @brief Get value of the last element. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
- * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
- * will be returned and `errno` will be set.
+ * @return void* If `list` is empty, `NULL` will be returned.
  */
 void *LinkedListBack(LinkedList *const restrict list);
 
 /**
  * @brief Get value of the first element. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
- * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
- * will be returned and `errno` will be set.
+ * @return void* If `list` is empty, `NULL` will be returned.
  */
 void *LinkedListFront(LinkedList *const restrict list);
 
@@ -192,40 +183,32 @@ void *LinkedListFront(LinkedList *const restrict list);
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListPushBack(LinkedList *const restrict list,
-                       const void *const restrict value);
+void LinkedListPushBack(LinkedList *const restrict list,
+                        const void *const restrict value);
 
 /**
  * @brief Remove the last element of `list`. O(n).
  *
  * @param list `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListPopBack(LinkedList *const restrict list);
+void LinkedListPopBack(LinkedList *const restrict list);
 
 /**
  * @brief Add new element at the begin of `list`. O(1).
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListPushFront(LinkedList *const restrict list,
-                        const void *const restrict value);
+void LinkedListPushFront(LinkedList *const restrict list,
+                         const void *const restrict value);
 
 /**
  * @brief Remove the first element of `list`. O(1).
  *
  * @param list `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListPopFront(LinkedList *const restrict list);
+void LinkedListPopFront(LinkedList *const restrict list);
 
 /**
  * @brief Add new element at the specified index of `list`. After element
@@ -233,11 +216,9 @@ int LinkedListPopFront(LinkedList *const restrict list);
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedListInsert(LinkedList *const restrict list, const unsigned int index,
-                     const void *const restrict value);
+void LinkedListInsert(LinkedList *const restrict list, const unsigned int index,
+                      const void *const restrict value);
 
 /**
  * @brief Find the element which has `value`. O(n).
@@ -245,8 +226,7 @@ int LinkedListInsert(LinkedList *const restrict list, const unsigned int index,
  * @param list `this`.
  * @param value Specified value.
  * @return int If found, the index of the element will be returned. If not
- * found, only `-1` will be returned. If error, `-1` will be returned and
- * `errno` will be set.
+ * found, only `-1` will be returned.
  */
 int LinkedListFind(LinkedList *const restrict list,
                    const void *const restrict value);
@@ -259,8 +239,7 @@ int LinkedListFind(LinkedList *const restrict list,
  * @param start Start index.
  * @param size Size of returned list.
  * @return DelinkedList* New list with DEEP copied elements. This pointer will
- * NOT automatically be released. If error, `NULL` will be returned and `errno`
- * will be set.
+ * NOT automatically be released.
  */
 LinkedList *LinkedListSlice(LinkedList *const restrict list,
                             const unsigned int start, const unsigned int size);

@@ -1,32 +1,25 @@
 #include "linked-stack.h"
 
-#include <errno.h>
+#include <assert.h>
 #include <malloc.h>
 #include <memory.h>
 
-int LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
-                             const void* const restrict value,
-                             const unsigned long elementSize) {
-    if (node == NULL || value == NULL || elementSize == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
+                              const void* const restrict value,
+                              const unsigned long elementSize) {
+    assert(node != NULL);
+    assert(value != NULL);
+    assert(elementSize > 0);
 
     node->value = malloc(elementSize);
-    if (node->value == NULL) return -1;
     memcpy(node->value, value, elementSize);
     node->previous = NULL;
-    return 0;
 }
 
 LinkedStackNode* LinkedStackNodeNew(const void* const restrict value,
                                     const unsigned long elementSize) {
     LinkedStackNode* node = (LinkedStackNode*)malloc(sizeof(LinkedStackNode));
-    if (node == NULL) return NULL;
-    if (LinkedStackNodeConstruct(node, value, elementSize) == -1) {
-        free(node);
-        return NULL;
-    }
+    LinkedStackNodeConstruct(node, value, elementSize);
     return node;
 }
 
@@ -46,25 +39,19 @@ void LinkedStackNodeDelete(LinkedStackNode** const restrict node) {
     *node = NULL;
 }
 
-int LinkedStackConstruct(LinkedStack* const restrict stack,
-                         const unsigned long elementSize) {
-    if (stack == NULL || elementSize == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void LinkedStackConstruct(LinkedStack* const restrict stack,
+                          const unsigned long elementSize) {
+    assert(stack != NULL);
+    assert(elementSize > 0);
 
     stack->tail = NULL;
     stack->elementSize = elementSize;
     stack->Size = 0;
-    return 0;
 }
 
 LinkedStack* LinkedStackNew(const unsigned long elementSize) {
     LinkedStack* stack = (LinkedStack*)malloc(sizeof(LinkedStack));
-    if (LinkedStackConstruct(stack, elementSize) == -1) {
-        free(stack);
-        return NULL;
-    }
+    LinkedStackConstruct(stack, elementSize);
     return stack;
 }
 
@@ -88,42 +75,26 @@ void LinkedStackDelete(LinkedStack** const restrict stack) {
 }
 
 void* LinkedStackTop(const LinkedStack* const restrict stack) {
-    if (stack == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
-
+    assert(stack != NULL);
     if (stack->Size == 0) return NULL;
     return stack->tail->value;
 }
 
-int LinkedStackPush(LinkedStack* const restrict stack,
-                    const void* const restrict value) {
-    LinkedStackNode* node = NULL;
-    if (stack == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    node = LinkedStackNodeNew(value, stack->elementSize);
-    if (node == NULL) return -1;
+void LinkedStackPush(LinkedStack* const restrict stack,
+                     const void* const restrict value) {
+    assert(stack != NULL);
+    assert(value != NULL);
+    LinkedStackNode* node = LinkedStackNodeNew(value, stack->elementSize);
     node->previous = stack->tail;
     stack->tail = node;
     stack->Size++;
-    return 0;
 }
 
-int LinkedStackPop(LinkedStack* const restrict stack) {
-    LinkedStackNode* node = NULL;
-    if (stack == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    if (stack->Size == 0) return 0;
-    node = stack->tail;
+void LinkedStackPop(LinkedStack* const restrict stack) {
+    assert(stack != NULL);
+    assert(stack->Size > 0);
+    LinkedStackNode* node = stack->tail;
     stack->tail = node->previous;
     LinkedStackNodeDelete(&node);
     stack->Size--;
-    return 0;
 }

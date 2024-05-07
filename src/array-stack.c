@@ -1,32 +1,28 @@
 #include "array-stack.h"
 
-#include <errno.h>
+#include <assert.h>
 #include <malloc.h>
 #include <memory.h>
+#include <sys/types.h>
 
-int ArrayStackConstruct(ArrayStack* const restrict stack,
-                        const unsigned int initialCapacity,
-                        const unsigned long elementSize) {
-    if (stack == NULL || elementSize == 0 || initialCapacity == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void ArrayStackConstruct(ArrayStack* const restrict stack,
+                         const unsigned int initialCapacity,
+                         const unsigned long elementSize) {
+    assert(stack != NULL);
+    assert(elementSize > 0);
+    assert(initialCapacity > 0);
 
     stack->array = calloc(initialCapacity, elementSize);
-    if (stack->array == NULL) return -1;
+    assert(stack->array != NULL);
     stack->Capacity = initialCapacity;
     stack->elementSize = elementSize;
     stack->Size = 0;
-    return 0;
 }
 
 ArrayStack* ArrayStackNew(const unsigned int initialCapacity,
                           const unsigned long elementSize) {
     ArrayStack* stack = (ArrayStack*)malloc(sizeof(ArrayStack));
-    if (ArrayStackConstruct(stack, initialCapacity, elementSize) == -1) {
-        free(stack);
-        return NULL;
-    }
+    ArrayStackConstruct(stack, initialCapacity, elementSize);
     return stack;
 }
 
@@ -48,27 +44,20 @@ void ArrayStackDelete(ArrayStack** const restrict stack) {
 }
 
 void* ArrayStackTop(const ArrayStack* const restrict stack) {
-    if (stack == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
-
+    assert(stack != NULL);
     if (stack->Size == 0) return NULL;
     return stack->array + stack->elementSize * (stack->Size - 1);
 }
 
-int ArrayStackPush(ArrayStack* const restrict stack,
-                   const void* const restrict value) {
+void ArrayStackPush(ArrayStack* const restrict stack,
+                    const void* const restrict value) {
+    assert(stack != NULL);
+    assert(value != NULL);
     void* temp = NULL;
-    if (stack == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
     if (stack->Size == stack->Capacity) {
         stack->Capacity *= 2;
         temp = calloc(stack->Capacity, stack->elementSize);
-        if (temp == NULL) return -1;
+        assert(temp != NULL);
         memcpy(temp, stack->array, stack->elementSize * stack->Size);
         free(stack->array);
         stack->array = temp;
@@ -76,16 +65,10 @@ int ArrayStackPush(ArrayStack* const restrict stack,
     memcpy(stack->array + stack->Size * stack->elementSize, value,
            stack->elementSize);
     stack->Size++;
-    return 0;
 }
 
-int ArrayStackPop(ArrayStack* const restrict stack) {
-    if (stack == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    if (stack->Size == 0) return 0;
+void ArrayStackPop(ArrayStack* const restrict stack) {
+    assert(stack != NULL);
+    assert(stack->Size > 0);
     stack->Size--;
-    return 0;
 }

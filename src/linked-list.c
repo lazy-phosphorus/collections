@@ -1,36 +1,31 @@
 #include "linked-list.h"
 
-#include <errno.h>
+#include <assert.h>
 #include <malloc.h>
 #include <memory.h>
 
-int LinkedListNodeConstruct(LinkedListNode *const node,
-                            const void *const restrict value,
-                            unsigned long elementSize) {
-    if (node == NULL || value == NULL || elementSize == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void LinkedListNodeConstruct(LinkedListNode *const node,
+                             const void *const restrict value,
+                             unsigned long elementSize) {
+    assert(node != NULL);
+    assert(value != NULL);
+    assert(elementSize > 0);
     node->value = malloc(elementSize);
-    if (node->value == NULL) return -1;
+    assert(node->value != NULL);
     memcpy(node->value, value, elementSize);
     node->next = NULL;
-    return 0;
 }
 
 LinkedListNode *LinkedListNodeNew(const void *const restrict value,
                                   unsigned long elementSize) {
     LinkedListNode *node = (LinkedListNode *)malloc(sizeof(LinkedListNode));
-    if (node == NULL) return NULL;
-    if (LinkedListNodeConstruct(node, value, elementSize) == -1) {
-        free(node);
-        return NULL;
-    }
+    LinkedListNodeConstruct(node, value, elementSize);
     return node;
 }
 
 void LinkedListNodeDestruct(LinkedListNode *const node) {
     if (node == NULL) return;
+
     free(node->value);
     node->value = NULL;
     node->next = NULL;
@@ -38,35 +33,30 @@ void LinkedListNodeDestruct(LinkedListNode *const node) {
 
 void LinkedListNodeDelete(LinkedListNode **const node) {
     if (node == NULL) return;
+
     LinkedListNodeDestruct(*node);
     free(*node);
     *node = NULL;
 }
 
-int LinkedListConstruct(LinkedList *const restrict list,
-                        const unsigned long elementSize,
-                        CompareFunction *const compare) {
-    if (list == NULL || compare == NULL || elementSize == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void LinkedListConstruct(LinkedList *const restrict list,
+                         const unsigned long elementSize,
+                         CompareFunction *const compare) {
+    assert(list != NULL);
+    assert(compare != NULL);
+    assert(elementSize > 0);
 
     list->head = NULL;
     list->tail = NULL;
     list->elementSize = elementSize;
     list->compare = compare;
     list->Size = 0;
-    return 0;
 }
 
 LinkedList *LinkedListNew(const unsigned long elementSize,
                           CompareFunction *const compare) {
     LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
-    if (list == NULL) return NULL;
-    if (LinkedListConstruct(list, elementSize, compare) == -1) {
-        free(list);
-        return NULL;
-    }
+    LinkedListConstruct(list, elementSize, compare);
     return list;
 }
 
@@ -97,71 +87,44 @@ void LinkedListDelete(LinkedList **const restrict list) {
 
 void *LinkedListGet(const LinkedList *const restrict list,
                     const unsigned int index) {
-    LinkedListNode *node = NULL;
-    if (list == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
-    if (index > list->Size) {
-        errno = EDOM;
-        return NULL;
-    }
-
-    node = list->head;
+    assert(list != NULL);
+    assert(index < list->Size);
+    LinkedListNode *node = list->head;
     for (unsigned int i = 0; i < index; i++) {
         node = node->next;
     }
     return node->value;
 }
 
-int LinkedListSet(LinkedList *const restrict list, const unsigned int index,
-                  const void *const restrict value) {
-    LinkedListNode *node = NULL;
-    if (list == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-    if (index > list->Size) {
-        errno = EDOM;
-        return -1;
-    }
-
-    node = list->head;
+void LinkedListSet(LinkedList *const restrict list, const unsigned int index,
+                   const void *const restrict value) {
+    assert(list != NULL);
+    assert(value != NULL);
+    assert(index < list->Size);
+    LinkedListNode *node = list->head;
     for (unsigned int i = 0; i < index; i++) {
         node = node->next;
     }
     memcpy(node->value, value, list->elementSize);
-    return 0;
 }
 
 void *LinkedListBack(LinkedList *const restrict list) {
-    if (list == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
+    assert(list != NULL);
     if (list->Size == 0) return NULL;
     return list->tail->value;
 }
 
 void *LinkedListFront(LinkedList *const restrict list) {
-    if (list == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
+    assert(list != NULL);
     if (list->Size == 0) return NULL;
     return list->head->value;
 }
 
-int LinkedListPushBack(LinkedList *const restrict list,
-                       const void *const restrict value) {
-    LinkedListNode *node = NULL;
-    if (list == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    node = LinkedListNodeNew(value, list->elementSize);
-    if (node == NULL) return -1;
+void LinkedListPushBack(LinkedList *const restrict list,
+                        const void *const restrict value) {
+    assert(list != NULL);
+    assert(value != NULL);
+    LinkedListNode *node = LinkedListNodeNew(value, list->elementSize);
     if (list->Size == 0) {
         list->head = node;
         list->tail = node;
@@ -170,22 +133,18 @@ int LinkedListPushBack(LinkedList *const restrict list,
         list->tail = node;
     }
     list->Size++;
-    return 0;
 }
 
-int LinkedListPopBack(LinkedList *const restrict list) {
+void LinkedListPopBack(LinkedList *const restrict list) {
+    assert(list != NULL);
+    assert(list->Size > 0);
     LinkedListNode *node = NULL;
-    if (list == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-    if (list->Size == 0) return 0;
     if (list->Size == 1) {
         LinkedListNodeDelete(&list->tail);
         list->head = NULL;
         list->tail = NULL;
         list->Size = 0;
-        return 0;
+        return;
     }
 
     node = list->head;
@@ -195,19 +154,13 @@ int LinkedListPopBack(LinkedList *const restrict list) {
     LinkedListNodeDelete(&list->tail);
     list->tail = node;
     list->Size--;
-    return 0;
 }
 
-int LinkedListPushFront(LinkedList *const restrict list,
-                        const void *const restrict value) {
-    LinkedListNode *node = NULL;
-    if (list == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    node = LinkedListNodeNew(value, list->elementSize);
-    if (node == NULL) return -1;
+void LinkedListPushFront(LinkedList *const restrict list,
+                         const void *const restrict value) {
+    assert(list != NULL);
+    assert(value != NULL);
+    LinkedListNode *node = LinkedListNodeNew(value, list->elementSize);
     if (list->Size == 0) {
         list->head = node;
         list->tail = node;
@@ -216,44 +169,30 @@ int LinkedListPushFront(LinkedList *const restrict list,
         list->head = node;
     }
     list->Size++;
-    return 0;
 }
 
-int LinkedListPopFront(LinkedList *const restrict list) {
-    LinkedListNode *node = NULL;
-    if (list == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-    if (list->Size == 0) return 0;
-
-    node = list->head;
+void LinkedListPopFront(LinkedList *const restrict list) {
+    assert(list != NULL);
+    assert(list->Size > 0);
+    LinkedListNode *node = list->head;
     list->head = node->next;
     LinkedListNodeDelete(&node);
     if (list->Size == 1) list->tail = NULL;
     list->Size--;
-    return 0;
 }
 
-int LinkedListInsert(LinkedList *const restrict list, const unsigned index,
-                     const void *const restrict value) {
+void LinkedListInsert(LinkedList *const restrict list, const unsigned index,
+                      const void *const restrict value) {
+    assert(list != NULL);
+    assert(value != NULL);
+    assert(index <= list->Size);
     LinkedListNode *node = NULL, *temp = NULL;
-    if (list == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-    if (index > list->Size) {
-        errno = EDOM;
-        return -1;
-    }
-
     if (index == 0)
-        return LinkedListPushFront(list, value);
+        LinkedListPushFront(list, value);
     else if (index == list->Size)
-        return LinkedListPushBack(list, value);
+        LinkedListPushBack(list, value);
     else {
         node = LinkedListNodeNew(value, list->elementSize);
-        if (node == NULL) return -1;
         temp = list->head;
         for (unsigned int i = 0; i < index - 1; i++) {
             temp = temp->next;
@@ -261,19 +200,14 @@ int LinkedListInsert(LinkedList *const restrict list, const unsigned index,
         node->next = temp->next;
         temp->next = node;
         list->Size++;
-        return 0;
     }
 }
 
 int LinkedListFind(LinkedList *const restrict list,
                    const void *const restrict value) {
-    LinkedListNode *node = NULL;
-    if (list == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    node = list->head;
+    assert(list != NULL);
+    assert(value != NULL);
+    LinkedListNode *node = list->head;
     for (int i = 0; i < list->Size; i++) {
         if (list->compare(node->value, value) == 0) return i;
         node = node->next;
@@ -283,28 +217,16 @@ int LinkedListFind(LinkedList *const restrict list,
 
 LinkedList *LinkedListSlice(LinkedList *const restrict list,
                             const unsigned int start, const unsigned int size) {
-    LinkedList *slice = NULL;
-    LinkedListNode *node = NULL;
-    if (list == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
-    if (start + size > list->Size) {
-        errno = EDOM;
-        return NULL;
-    }
-
-    slice = LinkedListNew(list->elementSize, list->compare);
-    if (slice == NULL) return NULL;
-    node = list->head;
+    assert(list != NULL);
+    assert(start < list->Size);
+    assert(size > 0);
+    LinkedList *slice = LinkedListNew(list->elementSize, list->compare);
+    LinkedListNode *node = list->head;
     for (unsigned int i = 0; i < start; i++) {
         node = node->next;
     }
     for (unsigned int i = 0; i < size; i++) {
-        if (LinkedListPushBack(slice, node->value) == -1) {
-            LinkedListDelete(&slice);
-            return NULL;
-        }
+        LinkedListPushBack(slice, node->value);
         node = node->next;
     }
     return slice;

@@ -1,36 +1,30 @@
 #include "array-heap.h"
 
-#include <errno.h>
+#include <assert.h>
 #include <malloc.h>
 #include <memory.h>
 
-int ArrayHeapConstruct(ArrayHeap* const restrict heap,
-                       const unsigned int initialCapacity,
-                       const unsigned long elementSize,
-                       CompareFunction* const compare) {
-    if (heap == NULL || initialCapacity == 0 || elementSize == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void ArrayHeapConstruct(ArrayHeap* const restrict heap,
+                        const unsigned int initialCapacity,
+                        const unsigned long elementSize,
+                        CompareFunction* const compare) {
+    assert(heap != NULL);
+    assert(initialCapacity > 0);
+    assert(elementSize > 0);
 
     heap->array = calloc(initialCapacity, elementSize);
-    if (heap->array == NULL) return -1;
+    assert(heap->array != NULL);
     heap->elementSize = elementSize;
     heap->Capacity = initialCapacity;
     heap->compare = compare;
     heap->Size = 0;
-    return 0;
 }
 
 ArrayHeap* ArrayHeapNew(const unsigned int initialCapacity,
                         const unsigned long elementSize,
                         CompareFunction* const compare) {
     ArrayHeap* heap = (ArrayHeap*)malloc(sizeof(ArrayHeap));
-    if (heap == NULL) return NULL;
-    if (ArrayHeapConstruct(heap, initialCapacity, elementSize, compare) == -1) {
-        free(heap);
-        return NULL;
-    }
+    ArrayHeapConstruct(heap, initialCapacity, elementSize, compare);
     return heap;
 }
 
@@ -52,31 +46,24 @@ void ArrayHeapDelete(ArrayHeap** const restrict heap) {
 }
 
 void* ArrayHeapTop(const ArrayHeap* const restrict heap) {
-    if (heap == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
+    assert(heap != NULL);
     return heap->array;
 }
 
-int ArrayHeapPush(ArrayHeap* const restrict heap,
-                  const void* const restrict value) {
+void ArrayHeapPush(ArrayHeap* const restrict heap,
+                   const void* const restrict value) {
+    assert(heap != NULL);
+    assert(value != NULL);
     void* temp = NULL;
-    unsigned int current = 0, parent = 0;
-    if (heap == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
+    unsigned int current = heap->Size, parent = 0;
     if (heap->Size == heap->Capacity) {
         heap->Capacity *= 2;
         temp = calloc(heap->Capacity, heap->elementSize);
-        if (temp == NULL) return -1;
+        assert(temp != NULL);
         memcpy(temp, heap->array, heap->Size * heap->elementSize);
         free(heap->array);
         heap->array = temp;
     }
-    current = heap->Size;
     while (current != 0) {
         parent = current % 2 == 0 ? (current - 1) / 2 : current / 2;
         if (heap->compare(value, heap->array + parent * heap->elementSize) <= 0)
@@ -87,16 +74,12 @@ int ArrayHeapPush(ArrayHeap* const restrict heap,
     }
     memcpy(heap->array + current * heap->elementSize, value, heap->elementSize);
     heap->Size++;
-    return 0;
 }
 
-int ArrayHeapPop(ArrayHeap* const restrict heap) {
+void ArrayHeapPop(ArrayHeap* const restrict heap) {
+    assert(heap != NULL);
+    assert(heap->Size > 0);
     unsigned int current = 0;
-    if (heap == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-    if (heap->Size == 0) return 0;
 
     heap->Size--;
     while ((current * 2 + 1) < heap->Size) {
@@ -145,5 +128,4 @@ int ArrayHeapPop(ArrayHeap* const restrict heap) {
     }
     memcpy(heap->array + heap->elementSize * current,
            heap->array + heap->elementSize * heap->Size, heap->elementSize);
-    return 0;
 }

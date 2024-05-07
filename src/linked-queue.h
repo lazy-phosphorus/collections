@@ -59,22 +59,19 @@ typedef struct {
  * @brief Construct function. O(1).
  *
  * @param node Target to be constructed.
- * @param value Value of `node`.
+ * @param value Value of `node`. It will be DEEP copied.
  * @param elementSize Size of `value`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedQueueNodeConstruct(LinkedQueueNode* const restrict node,
-                             const void* const restrict value,
-                             const unsigned long elementSize);
+void LinkedQueueNodeConstruct(LinkedQueueNode* const restrict node,
+                              const void* const restrict value,
+                              const unsigned long elementSize);
 
 /**
  * @brief Allocate a new node in heap. O(1).
  *
- * @param value Value of node.
+ * @param value Value of node. It will be DEEP copied.
  * @param elementSize Size of `value`.
- * @return LinkedStackNode* If successful, a pointer refering to a heap address
- * will be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return LinkedStackNode* Pointer refering to a heap address.
  */
 LinkedQueueNode* LinkedQueueNodeNew(const void* const restrict value,
                                     const unsigned long elementSize);
@@ -89,7 +86,7 @@ void LinkedQueueNodeDestruct(LinkedQueueNode* const restrict node);
 /**
  * @brief Release `node` in heap. O(1).
  *
- * @param node A pointer refers to the target which is to be deleted. The target
+ * @param node Pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void LinkedQueueNodeDelete(LinkedQueueNode** const restrict node);
@@ -99,18 +96,15 @@ void LinkedQueueNodeDelete(LinkedQueueNode** const restrict node);
  *
  * @param queue Target to be constructed.
  * @param elementSize Element size of `queue`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedQueueConstruct(LinkedQueue* const restrict queue,
-                         const unsigned long elementSize);
+void LinkedQueueConstruct(LinkedQueue* const restrict queue,
+                          const unsigned long elementSize);
 
 /**
  * @brief Allocate a new queue in heap. O(1).
  *
  * @param elementSize Element size of queue.
- * @return LinkedStack* If successful, a pointer refering to a heap address will
- * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return LinkedStack* Pointer refering to a heap address.
  */
 LinkedQueue* LinkedQueueNew(const unsigned long elementSize);
 
@@ -124,17 +118,18 @@ void LinkedQueueDestruct(LinkedQueue* const restrict queue);
 /**
  * @brief Release `queue` in heap. O(n).
  *
- * @param stack A pointer refers to the target which is to be deleted. The
+ * @param stack Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL. If `NULL`, nothing will happen.
  */
 void LinkedQueueDelete(LinkedQueue** const restrict queue);
 
 /**
  * @brief Get value of the first element in `queue`. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param queue `this`.
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
- * will be returned and `errno` will be set.
+ * will be returned.
  */
 void* LinkedQueueFront(const LinkedQueue* const restrict queue);
 
@@ -142,20 +137,16 @@ void* LinkedQueueFront(const LinkedQueue* const restrict queue);
  * @brief Push new element into `queue`. O(1).
  *
  * @param queue `this`.
- * @param value Value of element.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
+ * @param value Value of element. It will be DEEP copied.
  */
-int LinkedQueuePush(LinkedQueue* const restrict queue,
-                    const void* const restrict value);
+void LinkedQueuePush(LinkedQueue* const restrict queue,
+                     const void* const restrict value);
 
 /**
  * @brief Remove the first element in `queue`. O(1).
  *
  * @param queue `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedQueuePop(LinkedQueue* const restrict queue);
+void LinkedQueuePop(LinkedQueue* const restrict queue);
 
 #endif  // __COLLECTIONS_LINKED_QUEUE__

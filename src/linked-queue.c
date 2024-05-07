@@ -1,31 +1,24 @@
 #include "linked-queue.h"
 
-#include <errno.h>
+#include <assert.h>
 #include <malloc.h>
 #include <memory.h>
 
-int LinkedQueueNodeConstruct(LinkedQueueNode *const restrict node,
-                             const void *const restrict value,
-                             const unsigned long elementSize) {
-    if (node == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-    node->next = NULL;
+void LinkedQueueNodeConstruct(LinkedQueueNode *const restrict node,
+                              const void *const restrict value,
+                              const unsigned long elementSize) {
+    assert(node != NULL);
+    assert(value != NULL);
     node->value = malloc(elementSize);
-    if (node->value == NULL) return -1;
+    assert(node->value != NULL);
+    node->next = NULL;
     memcpy(node->value, value, elementSize);
-    return 0;
 }
 
 LinkedQueueNode *LinkedQueueNodeNew(const void *const restrict value,
                                     const unsigned long elementSize) {
     LinkedQueueNode *node = (LinkedQueueNode *)malloc(sizeof(LinkedQueueNode));
-    if (node == NULL) return NULL;
-    if (LinkedQueueNodeConstruct(node, value, elementSize) == -1) {
-        free(node);
-        return NULL;
-    }
+    LinkedQueueNodeConstruct(node, value, elementSize);
     return node;
 }
 
@@ -45,26 +38,20 @@ void LinkedQueueNodeDelete(LinkedQueueNode **const restrict node) {
     *node = NULL;
 }
 
-int LinkedQueueConstruct(LinkedQueue *const restrict queue,
-                         const unsigned long elementSize) {
-    if (queue == NULL || elementSize == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void LinkedQueueConstruct(LinkedQueue *const restrict queue,
+                          const unsigned long elementSize) {
+    assert(queue != NULL);
+    assert(elementSize > 0);
 
     queue->head = NULL;
     queue->tail = NULL;
     queue->elementSize = elementSize;
     queue->Size = 0;
-    return 0;
 }
 
 LinkedQueue *LinkedQueueNew(const unsigned long elementSize) {
     LinkedQueue *queue = (LinkedQueue *)malloc(sizeof(LinkedQueue));
-    if (LinkedQueueConstruct(queue, elementSize) == -1) {
-        free(queue);
-        return NULL;
-    }
+    LinkedQueueConstruct(queue, elementSize);
     return queue;
 }
 
@@ -89,47 +76,31 @@ void LinkedQueueDelete(LinkedQueue **const restrict queue) {
 }
 
 void *LinkedQueueFront(const LinkedQueue *const restrict queue) {
-    if (queue == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
+    assert(queue != NULL);
     if (queue->Size == 0) return NULL;
     return queue->head->value;
 }
 
-int LinkedQueuePush(LinkedQueue *const restrict queue,
-                    const void *const restrict value) {
-    LinkedQueueNode *node = NULL;
-    if (queue == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    node = LinkedQueueNodeNew(value, queue->elementSize);
-    if (node == NULL) return -1;
+void LinkedQueuePush(LinkedQueue *const restrict queue,
+                     const void *const restrict value) {
+    assert(queue != NULL);
+    assert(value != NULL);
+    LinkedQueueNode *node = LinkedQueueNodeNew(value, queue->elementSize);
     if (queue->Size > 0)
         queue->tail->next = node;
     else
         queue->head = node;
     queue->tail = node;
     queue->Size++;
-    return 0;
 }
 
-int LinkedQueuePop(LinkedQueue *const restrict queue) {
+void LinkedQueuePop(LinkedQueue *const restrict queue) {
+    assert(queue != NULL);
+    assert(queue->Size > 0);
     LinkedQueueNode *node = NULL;
-    if (queue == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    if (queue->Size == 0)
-        return 0;
-    else if (queue->Size == 1)
-        queue->tail = NULL;
+    if (queue->Size == 1) queue->tail = NULL;
     node = queue->head;
     queue->head = node->next;
     LinkedQueueNodeDelete(&node);
     queue->Size--;
-    return 0;
 }

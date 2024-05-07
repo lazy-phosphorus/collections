@@ -1,32 +1,27 @@
 #include "array-queue.h"
 
-#include <errno.h>
+#include <assert.h>
 #include <malloc.h>
 #include <memory.h>
 
-int ArrayQueueConstruct(ArrayQueue *const restrict queue,
-                        const unsigned int initialCapacity,
-                        const unsigned long elementSize) {
-    if (queue == NULL || elementSize == 0 || initialCapacity == 0) {
-        errno = EINVAL;
-        return -1;
-    }
+void ArrayQueueConstruct(ArrayQueue *const restrict queue,
+                         const unsigned int initialCapacity,
+                         const unsigned long elementSize) {
+    assert(queue != NULL);
+    assert(initialCapacity > 0);
+    assert(elementSize > 0);
 
     queue->array = calloc(initialCapacity, elementSize);
-    if (queue->array == NULL) return -1;
+    assert(queue->array != NULL);
     queue->Capacity = initialCapacity;
     queue->elementSize = elementSize;
     queue->Size = 0;
-    return 0;
 }
 
 ArrayQueue *ArrayQueueNew(const unsigned int initialCapacity,
                           const unsigned long elementSize) {
     ArrayQueue *queue = (ArrayQueue *)malloc(sizeof(ArrayQueue));
-    if (ArrayQueueConstruct(queue, initialCapacity, elementSize) == -1) {
-        free(queue);
-        return NULL;
-    }
+    ArrayQueueConstruct(queue, initialCapacity, elementSize);
     return queue;
 }
 
@@ -47,26 +42,20 @@ void ArrayQueueDelete(ArrayQueue **const restrict queue) {
 }
 
 void *ArrayQueueFront(const ArrayQueue *const restrict queue) {
-    if (queue == NULL) {
-        errno = EINVAL;
-        return NULL;
-    }
+    assert(queue != NULL);
     if (queue->Size == 0) return NULL;
     return queue->array;
 }
 
-int ArrayQueuePush(ArrayQueue *const restrict queue,
-                   const void *const restrict value) {
+void ArrayQueuePush(ArrayQueue *const restrict queue,
+                    const void *const restrict value) {
+    assert(queue != NULL);
+    assert(value != NULL);
     void *temp = NULL;
-    if (queue == NULL || value == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
-
     if (queue->Size == queue->Capacity) {
         queue->Capacity *= 2;
         temp = calloc(queue->Capacity, queue->elementSize);
-        if (temp == NULL) return -1;
+        assert(temp != NULL);
         memcpy(temp, queue->array, queue->Size * queue->elementSize);
         free(queue->array);
         queue->array = temp;
@@ -74,18 +63,13 @@ int ArrayQueuePush(ArrayQueue *const restrict queue,
     memcpy(queue->array + queue->Size * queue->elementSize, value,
            queue->elementSize);
     queue->Size++;
-    return 0;
 }
 
-int ArrayQueuePop(ArrayQueue *const restrict queue) {
-    if (queue == NULL) {
-        errno = EINVAL;
-        return -1;
-    }
+void ArrayQueuePop(ArrayQueue *const restrict queue) {
+    assert(queue != NULL);
+    assert(queue->Size > 0);
 
-    if (queue->Size == 0) return 0;
     queue->Size--;
     memmove(queue->array, queue->array + queue->elementSize,
             queue->Size * queue->elementSize);
-    return 0;
 }

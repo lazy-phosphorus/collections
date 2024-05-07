@@ -46,20 +46,17 @@ typedef struct {
  * @param queue Target to be constructed.
  * @param initialCapacity Initial capacity of `queue`.
  * @param elementSize Element size of `queue`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayQueueConstruct(ArrayQueue* const restrict queue,
-                        const unsigned int initialCapacity,
-                        const unsigned long elementSize);
+void ArrayQueueConstruct(ArrayQueue* const restrict queue,
+                         const unsigned int initialCapacity,
+                         const unsigned long elementSize);
 
 /**
  * @brief Allocate a new queue in heap. O(1).
  *
  * @param initialCapacity Initial capacity of `queue`.
  * @param elementSize Element size of queue.
- * @return LinkedStack* If successful, a pointer refering to a heap address will
- * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return LinkedStack* Pointer refering to a heap address.
  */
 ArrayQueue* ArrayQueueNew(const unsigned int initialCapacity,
                           const unsigned long elementSize);
@@ -74,17 +71,18 @@ void ArrayQueueDestruct(ArrayQueue* const restrict queue);
 /**
  * @brief Release `queue` in heap. O(1).
  *
- * @param queue A pointer refers to the target which is to be deleted. The
+ * @param queue Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL. If `NULL`, nothing will happen.
  */
 void ArrayQueueDelete(ArrayQueue** const restrict queue);
 
 /**
  * @brief Get value of the first element in `queue`. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param queue `this`.
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
- * will be returned and `errno` will be set.
+ * will be returned.
  */
 void* ArrayQueueFront(const ArrayQueue* const restrict queue);
 
@@ -92,20 +90,16 @@ void* ArrayQueueFront(const ArrayQueue* const restrict queue);
  * @brief Push new element into `queue`. O(1).
  *
  * @param queue `this`.
- * @param value Value of element.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
+ * @param value Value of element. It will be DEEP copied.
  */
-int ArrayQueuePush(ArrayQueue* const restrict queue,
-                   const void* const restrict value);
+void ArrayQueuePush(ArrayQueue* const restrict queue,
+                    const void* const restrict value);
 
 /**
  * @brief Remove the first element in `queue`. O(n).
  *
  * @param queue `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayQueuePop(ArrayQueue* const restrict queue);
+void ArrayQueuePop(ArrayQueue* const restrict queue);
 
 #endif  // __COLLECTIONS_ARRAY_QUEUE__

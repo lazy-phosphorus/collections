@@ -55,13 +55,11 @@ typedef struct {
  * @param initialCapacity Initial capacity of `list`.
  * @param elementSize Element size of `list`.
  * @param compare Function used in comparing two elements.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayListConstruct(ArrayList* const restrict list,
-                       const unsigned int initialCapacity,
-                       const unsigned long elementSize,
-                       CompareFunction* const compare);
+void ArrayListConstruct(ArrayList* const restrict list,
+                        const unsigned int initialCapacity,
+                        const unsigned long elementSize,
+                        CompareFunction* const compare);
 
 /**
  * @brief Allocate a new list in heap. O(1).
@@ -69,8 +67,7 @@ int ArrayListConstruct(ArrayList* const restrict list,
  * @param initialCapacity Initial capacity of list.
  * @param elementSize Element size of list.
  * @param compare Function used in comparing two elements.
- * @return ArrayList* If successful, a pointer refering to a heap address will
- * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return ArrayList* Pointer refering to a heap address.
  */
 ArrayList* ArrayListNew(const unsigned int initialCapacity,
                         const unsigned long elementSize,
@@ -86,20 +83,19 @@ void ArrayListDestruct(ArrayList* const restrict list);
 /**
  * @brief Release `list` in heap. O(1).
  *
- * @param list A pointer refers to the target which is to be deleted. The
+ * @param list Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void ArrayListDelete(ArrayList** const restrict list);
 
 /**
  * @brief Get the value of the element at specified `index`. O(1).
- * @attention The returned value is shallow copied from `list[index]`. Don't
- * free it.
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
  * @param index Specified index.
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
- * will be returned and `errno` will be set.
+ * will be returned.
  */
 void* ArrayListGet(const ArrayList* const restrict list,
                    const unsigned int index);
@@ -110,31 +106,25 @@ void* ArrayListGet(const ArrayList* const restrict list,
  * @param list `this`.
  * @param index Specified index.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayListSet(ArrayList* const restrict list, const unsigned int index,
-                 const void* const restrict value);
+void ArrayListSet(ArrayList* const restrict list, const unsigned int index,
+                  const void* const restrict value);
 
 /**
  * @brief Get value of the last element. O(1).
- * @attention The returned value is shallow copied from `list[index]`. Don't
- * free it.
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
- * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
- * will be returned and `errno` will be set.
+ * @return void* If `list` is empty, `NULL` will be returned.
  */
 void* ArrayListBack(const ArrayList* const restrict list);
 
 /**
  * @brief Get value of the first element. O(1).
- * @attention The returned value is shallow copied from `list[index]`. Don't
- * free it.
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
- * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
- * will be returned and `errno` will be set.
+ * @return void* If `list` is empty, `NULL` will be returned.
  */
 void* ArrayListFront(const ArrayList* const restrict list);
 
@@ -143,11 +133,9 @@ void* ArrayListFront(const ArrayList* const restrict list);
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayListPushBack(ArrayList* const restrict list,
-                      const void* const restrict value);
+void ArrayListPushBack(ArrayList* const restrict list,
+                       const void* const restrict value);
 
 /**
  * @brief Remove the last element of `list`. O(1).
@@ -161,11 +149,9 @@ void ArrayListPopBack(ArrayList* const restrict list);
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayListPushFront(ArrayList* const restrict list,
-                       const void* const restrict value);
+void ArrayListPushFront(ArrayList* const restrict list,
+                        const void* const restrict value);
 
 /**
  * @brief Remove the first element of `list`. O(n).
@@ -180,20 +166,17 @@ void ArrayListPopFront(ArrayList* const restrict list);
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayListInsert(ArrayList* const restrict list, const unsigned int index,
-                    const void* const restrict value);
+void ArrayListInsert(ArrayList* const restrict list, const unsigned int index,
+                     const void* const restrict value);
 
 /**
  * @brief Find the element which is equal to `value`. O(n).
  *
  * @param list `this`.
  * @param value Specified value.
- * @return int If found, the index of the element will be returned. If not
- * found, only `-1` will be returned. If error, `-1` will be returned and
- * `errno` will be set.
+ * @return int If found, the index of the element will be returned. Otherwise,
+ * `-1` will be returned.
  */
 int ArrayListFind(const ArrayList* const restrict list,
                   const void* const restrict value);
@@ -206,8 +189,7 @@ int ArrayListFind(const ArrayList* const restrict list,
  * @param start Start index.
  * @param size Size of returned list.
  * @return ArrayList* New list with DEEP copied elements. This pointer will NOT
- * automatically be released. If error, `NULL` will be returned and `errno` will
- * be set.
+ * automatically be released.
  */
 ArrayList* ArrayListSlice(const ArrayList* const restrict list,
                           const unsigned int start, const unsigned int size);
@@ -216,9 +198,7 @@ ArrayList* ArrayListSlice(const ArrayList* const restrict list,
  * @brief Use quick sort algorithm to sort `list`. O(nlog₂n).
  *
  * @param list `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayListQuickSort(ArrayList* const restrict list);
+void ArrayListQuickSort(ArrayList* const restrict list);
 
 #endif  // __COLLECTIONS_ARRAY_LIST__

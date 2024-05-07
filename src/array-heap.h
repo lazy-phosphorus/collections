@@ -55,13 +55,11 @@ typedef struct {
  * @param initialCapacity Initial capacity of `heap`.
  * @param elementSize Element size of `heap`.
  * @param compare Function used in comparing two elements.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayHeapConstruct(ArrayHeap* const restrict heap,
-                       const unsigned int initialCapacity,
-                       const unsigned long elementSize,
-                       CompareFunction* const compare);
+void ArrayHeapConstruct(ArrayHeap* const restrict heap,
+                        const unsigned int initialCapacity,
+                        const unsigned long elementSize,
+                        CompareFunction* const compare);
 
 /**
  * @brief Allocate a new heap in heap. O(1).
@@ -69,8 +67,7 @@ int ArrayHeapConstruct(ArrayHeap* const restrict heap,
  * @param initialCapacity Initial capacity of heap.
  * @param elementSize Element size of heap.
  * @param compare Function used in comparing two elements.
- * @return ArrayHeap* If successful, a pointer refering to a heap address will
- * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return ArrayHeap* Pointer refering to a heap address.
  */
 ArrayHeap* ArrayHeapNew(const unsigned int initialCapacity,
                         const unsigned long elementSize,
@@ -86,17 +83,18 @@ void ArrayHeapDestruct(ArrayHeap* const restrict heap);
 /**
  * @brief Release `heap` in heap. O(1).
  *
- * @param heap A pointer refers to the target which is to be deleted. The
+ * @param heap Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void ArrayHeapDelete(ArrayHeap** const restrict heap);
 
 /**
  * @brief Get value of the element which is on the top of `heap`. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param heap `this`.
  * @return void* If successful, value of the element will be returned.
- * Otherwise, `NULL` will be returned and `errno` will be set.
+ * Otherwise, `NULL` will be returned.
  */
 void* ArrayHeapTop(const ArrayHeap* const restrict heap);
 
@@ -104,20 +102,16 @@ void* ArrayHeapTop(const ArrayHeap* const restrict heap);
  * @brief Add a new element into `heap. O(log₂n).
  *
  * @param heap `this`.
- * @param value Value of element.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
+ * @param value Value of element. It will be DEEP copied.
  */
-int ArrayHeapPush(ArrayHeap* const restrict heap,
-                  const void* const restrict value);
+void ArrayHeapPush(ArrayHeap* const restrict heap,
+                   const void* const restrict value);
 
 /**
  * @brief Remove the element which is on the top of `heap`. O(log₂n).
  *
  * @param heap `this`
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int ArrayHeapPop(ArrayHeap* const restrict heap);
+void ArrayHeapPop(ArrayHeap* const restrict heap);
 
 #endif  // __COLLECTIONS_ARRAY_HEAP__

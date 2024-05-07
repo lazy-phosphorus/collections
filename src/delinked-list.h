@@ -74,22 +74,19 @@ typedef struct {
  * @brief Construct function. O(1).
  *
  * @param node Target to be constructed.
- * @param value Value of `node`.
+ * @param value Value of `node`. It will be DEEP copied.
  * @param elementSize Value size of `value`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListNodeConstruct(DelinkedListNode *const restrict node,
-                              const void *const restrict value,
-                              unsigned long elementSize);
+void DelinkedListNodeConstruct(DelinkedListNode *const restrict node,
+                               const void *const restrict value,
+                               unsigned long elementSize);
 
 /**
  * @brief Allocate a new node in heap. O(1).
  *
- * @param value Value of node.
+ * @param value Value of node. It will be DEEP copied.
  * @param elementSize Size of `value`.
- * @return DelinkedListNode* If successful, a pointer refering to a heap address
- * will be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return DelinkedListNode* Pointer refering to a heap address.
  */
 DelinkedListNode *DelinkedListNodeNew(const void *const restrict value,
                                       unsigned long elementSize);
@@ -104,7 +101,7 @@ void DelinkedListNodeDestruct(DelinkedListNode *const restrict node);
 /**
  * @brief Release `node` in heap. O(1).
  *
- * @param node A pointer refers to the target which is to be deleted. The target
+ * @param node Pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void DelinkedListNodeDelete(DelinkedListNode **const restrict node);
@@ -115,12 +112,10 @@ void DelinkedListNodeDelete(DelinkedListNode **const restrict node);
  * @param list Target to be constructed.
  * @param elementSize Element size of `list`
  * @param compare Function used in comparing two elements.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListConstruct(DelinkedList *const restrict list,
-                          const unsigned long elementSize,
-                          CompareFunction *const compare);
+void DelinkedListConstruct(DelinkedList *const restrict list,
+                           const unsigned long elementSize,
+                           CompareFunction *const compare);
 
 /**
  * @brief Allocate a new list in heap. O(1).
@@ -128,8 +123,7 @@ int DelinkedListConstruct(DelinkedList *const restrict list,
  * @param initialCapacity Initial capacity of list.
  * @param elementSize Element size of list.
  * @param compare Function used in comparing two elements.
- * @return DelinkedList* If successful, a pointer refering to a heap address
- * will be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return DelinkedList* Pointer refering to a heap address.
  */
 DelinkedList *DelinkedListNew(const unsigned long elementSize,
                               CompareFunction *const compare);
@@ -144,20 +138,19 @@ void DelinkedListDestruct(DelinkedList *const restrict list);
 /**
  * @brief Release `list` in heap. O(n).
  *
- * @param list A pointer refers to the target which is to be deleted. The target
+ * @param list Pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void DelinkedListDelete(DelinkedList **const restrict list);
 
 /**
  * @brief Get value of the element at specified `index`. O(n).
- * @attention The returned value is shallow copied from `list[index]`. Don't
- * free it.
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
  * @param index Specified index.
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
- * will be returned and `errno` will be set.
+ * will be returned.
  */
 void *DelinkedListGet(const DelinkedList *const restrict list,
                       const unsigned int index);
@@ -168,27 +161,26 @@ void *DelinkedListGet(const DelinkedList *const restrict list,
  * @param list `this`.
  * @param index Specified index.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListSet(DelinkedList *const restrict list, const unsigned int index,
-                    const void *const restrict value);
+void DelinkedListSet(DelinkedList *const restrict list,
+                     const unsigned int index,
+                     const void *const restrict value);
 
 /**
  * @brief Get value of the last element. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
- * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
- * will be returned and `errno` will be set.
+ * @return void* If `list` is empty, `NULL` will be returned.
  */
 void *DelinkedListBack(DelinkedList *const restrict list);
 
 /**
  * @brief Get value of the first element. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
- * @return void* If `list` is empty, `NULL` will be returned. If error, `NULL`
- * will be returned and `errno` will be set.
+ * @return void* If `list` is empty, `NULL` will be returned.
  */
 void *DelinkedListFront(DelinkedList *const restrict list);
 
@@ -197,40 +189,32 @@ void *DelinkedListFront(DelinkedList *const restrict list);
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListPushBack(DelinkedList *const restrict list,
-                         const void *const restrict value);
+void DelinkedListPushBack(DelinkedList *const restrict list,
+                          const void *const restrict value);
 
 /**
  * @brief Remove the last element of `list`. O(1).
  *
  * @param list `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListPopBack(DelinkedList *const restrict list);
+void DelinkedListPopBack(DelinkedList *const restrict list);
 
 /**
  * @brief Add new element at the begin of `list`. O(1).
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListPushFront(DelinkedList *const restrict list,
-                          const void *const restrict value);
+void DelinkedListPushFront(DelinkedList *const restrict list,
+                           const void *const restrict value);
 
 /**
  * @brief Remove the first element of `list`. O(1).
  *
  * @param list `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListPopFront(DelinkedList *const restrict list);
+void DelinkedListPopFront(DelinkedList *const restrict list);
 
 /**
  * @brief Add new element at the specified index of `list`. After element
@@ -238,12 +222,10 @@ int DelinkedListPopFront(DelinkedList *const restrict list);
  *
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListInsert(DelinkedList *const restrict list,
-                       const unsigned int index,
-                       const void *const restrict value);
+void DelinkedListInsert(DelinkedList *const restrict list,
+                        const unsigned int index,
+                        const void *const restrict value);
 
 /**
  * @brief Find the element which has `value`. O(n).
@@ -251,8 +233,7 @@ int DelinkedListInsert(DelinkedList *const restrict list,
  * @param list `this`.
  * @param value Specified value.
  * @return int If found, the index of the element will be returned. If not
- * found, only `-1` will be returned. If error, `-1` will be returned and
- * `errno` will be set.
+ * found, `-1` will be returned.
  */
 int DelinkedListFind(DelinkedList *const restrict list,
                      const void *const restrict value);
@@ -265,8 +246,7 @@ int DelinkedListFind(DelinkedList *const restrict list,
  * @param start Start index.
  * @param size Size of returned list.
  * @return DelinkedList* New list with DEEP copied elements. This pointer will
- * NOT automatically be released. If error, `NULL` will be returned and `errno`
- * will be set.
+ * NOT automatically be released.
  */
 DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
                                 const unsigned int start,
@@ -276,9 +256,7 @@ DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
  * @brief Use quick sort algorithm to sort `list`. O(nlog₂n).
  *
  * @param list `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int DelinkedListQuickSort(DelinkedList *const restrict list);
+void DelinkedListQuickSort(DelinkedList *const restrict list);
 
 #endif  // __COLLECTIONS_DELINKED_LIST__

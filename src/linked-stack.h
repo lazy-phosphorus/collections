@@ -52,21 +52,18 @@ typedef struct {
  * @brief Construct function. O(1).
  *
  * @param node Target to be constructed.
- * @param value Value of `node`.
+ * @param value Value of `node`. It will be DEEP copied.
  * @param elementSize Size of `value`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
-                             const void* const restrict value,
-                             const unsigned long elementSize);
+void LinkedStackNodeConstruct(LinkedStackNode* const restrict node,
+                              const void* const restrict value,
+                              const unsigned long elementSize);
 /**
- * @brief Allocate a new node in heap. O(1).
+ * @brief Allocate a new node in stack. O(1).
  *
- * @param value Value of node.
+ * @param value Value of node. It will be DEEP copied.
  * @param elementSize Size of `value`.
- * @return LinkedStackNode* If successful, a pointer refering to a heap address
- * will be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return LinkedStackNode* Pointer refering to a stack address.
  */
 LinkedStackNode* LinkedStackNodeNew(const void* const restrict value,
                                     const unsigned long elementSize);
@@ -79,9 +76,9 @@ LinkedStackNode* LinkedStackNodeNew(const void* const restrict value,
 void LinkedStackNodeDestruct(LinkedStackNode* const restrict node);
 
 /**
- * @brief Release `node` in heap. O(1).
+ * @brief Release `node` in stack. O(1).
  *
- * @param node A pointer refers to the target which is to be deleted. The target
+ * @param node Pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
 void LinkedStackNodeDelete(LinkedStackNode** const restrict node);
@@ -91,18 +88,15 @@ void LinkedStackNodeDelete(LinkedStackNode** const restrict node);
  *
  * @param stack Target to be constructed.
  * @param elementSize Element size of `stack`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedStackConstruct(LinkedStack* const restrict stack,
-                         const unsigned long elementSize);
+void LinkedStackConstruct(LinkedStack* const restrict stack,
+                          const unsigned long elementSize);
 
 /**
- * @brief Allocate a new stack in heap. O(1).
+ * @brief Allocate a new stack in stack. O(1).
  *
  * @param elementSize Element size of stack.
- * @return LinkedStack* If successful, a pointer refering to a heap address will
- * be returned. Otherwise, `NULL` will be returned and `errno` will be set.
+ * @return LinkedStack* Pointer refering to a stack address.
  */
 LinkedStack* LinkedStackNew(const unsigned long elementSize);
 
@@ -114,19 +108,20 @@ LinkedStack* LinkedStackNew(const unsigned long elementSize);
 void LinkedStackDestruct(LinkedStack* const restrict stack);
 
 /**
- * @brief Release `stack` in heap. O(n).
+ * @brief Release `stack` in stack. O(n).
  *
- * @param stack A pointer refers to the target which is to be deleted. The
+ * @param stack Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL. If `NULL`, nothing will happen.
  */
 void LinkedStackDelete(LinkedStack** const restrict stack);
 
 /**
  * @brief Get value of the element which is on the top of `stack`. O(1).
+ * @attention The returned value is shallow copied. Don't free it.
  *
  * @param stack `this`.
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
- * will be returned and `errno` will be set.
+ * will be returned.
  */
 void* LinkedStackTop(const LinkedStack* const restrict stack);
 
@@ -134,20 +129,16 @@ void* LinkedStackTop(const LinkedStack* const restrict stack);
  * @brief Push new element into `stack`. O(1).
  *
  * @param stack `this`.
- * @param value Value of element.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
+ * @param value Value of element. It will be DEEP copied.
  */
-int LinkedStackPush(LinkedStack* const restrict stack,
-                    const void* const restrict value);
+void LinkedStackPush(LinkedStack* const restrict stack,
+                     const void* const restrict value);
 
 /**
  * @brief Remove the element which is on the top of `stack`. O(1).
  *
  * @param stack `this`.
- * @return int If successful, `0` will be returned. Otherwise, `-1` will be
- * returned and `errno` will be set.
  */
-int LinkedStackPop(LinkedStack* const restrict stack);
+void LinkedStackPop(LinkedStack* const restrict stack);
 
 #endif  // __COLLECTIONS_LINKED_STACK__
