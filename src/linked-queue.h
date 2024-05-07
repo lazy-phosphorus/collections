@@ -10,12 +10,12 @@ typedef struct __LinkedQueueNode {
      * @private
      * @brief Value of this node.
      */
-    void* value;
+    void *value;
     /**
      * @private
      * @brief Pointer refers to the next node.
      */
-    struct __LinkedQueueNode* next;
+    struct __LinkedQueueNode *next;
 } LinkedQueueNode;
 
 /**
@@ -31,14 +31,14 @@ typedef struct {
      * @warning Don't modify this member directly. Please use functions below.
      * @see `LinkedQueueTop`, `LinkedQueuePop`.
      */
-    LinkedQueueNode* head;
+    LinkedQueueNode *head;
     /**
      * @private
      * @brief Pointer refers to the last element.
      * @warning Don't modify this member directly. Please use functions below.
      * @see `LinkedQueuePush`.
      */
-    LinkedQueueNode* tail;
+    LinkedQueueNode *tail;
     /**
      * @private
      * @brief Element size of this queue.
@@ -62,8 +62,8 @@ typedef struct {
  * @param value Value of `node`. It will be DEEP copied.
  * @param elementSize Size of `value`.
  */
-void LinkedQueueNodeConstruct(LinkedQueueNode* const restrict node,
-                              const void* const restrict value,
+void LinkedQueueNodeConstruct(LinkedQueueNode *const restrict node,
+                              const void *const restrict value,
                               const unsigned long elementSize);
 
 /**
@@ -73,7 +73,7 @@ void LinkedQueueNodeConstruct(LinkedQueueNode* const restrict node,
  * @param elementSize Size of `value`.
  * @return LinkedStackNode* Pointer refering to a heap address.
  */
-LinkedQueueNode* LinkedQueueNodeNew(const void* const restrict value,
+LinkedQueueNode *LinkedQueueNodeNew(const void *const restrict value,
                                     const unsigned long elementSize);
 
 /**
@@ -81,7 +81,7 @@ LinkedQueueNode* LinkedQueueNodeNew(const void* const restrict value,
  *
  * @param node Target to be destructed. If `NULL`, nothing will happen.
  */
-void LinkedQueueNodeDestruct(LinkedQueueNode* const restrict node);
+void LinkedQueueNodeDestruct(LinkedQueueNode *const restrict node);
 
 /**
  * @brief Release `node` in heap. O(1).
@@ -89,7 +89,7 @@ void LinkedQueueNodeDestruct(LinkedQueueNode* const restrict node);
  * @param node Pointer refers to the target which is to be deleted. The target
  * will be set to `NULL`. If `NULL`, nothing will happen.
  */
-void LinkedQueueNodeDelete(LinkedQueueNode** const restrict node);
+void LinkedQueueNodeDelete(LinkedQueueNode **const restrict node);
 
 /**
  * @brief Construct function. O(1).
@@ -97,7 +97,7 @@ void LinkedQueueNodeDelete(LinkedQueueNode** const restrict node);
  * @param queue Target to be constructed.
  * @param elementSize Element size of `queue`.
  */
-void LinkedQueueConstruct(LinkedQueue* const restrict queue,
+void LinkedQueueConstruct(LinkedQueue *const restrict queue,
                           const unsigned long elementSize);
 
 /**
@@ -106,14 +106,14 @@ void LinkedQueueConstruct(LinkedQueue* const restrict queue,
  * @param elementSize Element size of queue.
  * @return LinkedStack* Pointer refering to a heap address.
  */
-LinkedQueue* LinkedQueueNew(const unsigned long elementSize);
+LinkedQueue *LinkedQueueNew(const unsigned long elementSize);
 
 /**
  * @brief Destruct function. O(n).
  *
  * @param queue Target to be destructed. If `NULL`, nothing will happen.
  */
-void LinkedQueueDestruct(LinkedQueue* const restrict queue);
+void LinkedQueueDestruct(LinkedQueue *const restrict queue);
 
 /**
  * @brief Release `queue` in heap. O(n).
@@ -121,7 +121,7 @@ void LinkedQueueDestruct(LinkedQueue* const restrict queue);
  * @param stack Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL. If `NULL`, nothing will happen.
  */
-void LinkedQueueDelete(LinkedQueue** const restrict queue);
+void LinkedQueueDelete(LinkedQueue **const restrict queue);
 
 /**
  * @brief Get value of the first element in `queue`. O(1).
@@ -131,7 +131,7 @@ void LinkedQueueDelete(LinkedQueue** const restrict queue);
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
  * will be returned.
  */
-void* LinkedQueueFront(const LinkedQueue* const restrict queue);
+void *LinkedQueueFront(const LinkedQueue *const restrict queue);
 
 /**
  * @brief Push new element into `queue`. O(1).
@@ -139,14 +139,14 @@ void* LinkedQueueFront(const LinkedQueue* const restrict queue);
  * @param queue `this`.
  * @param value Value of element. It will be DEEP copied.
  */
-void LinkedQueuePush(LinkedQueue* const restrict queue,
-                     const void* const restrict value);
+void LinkedQueuePush(LinkedQueue *const restrict queue,
+                     const void *const restrict value);
 
 /**
  * @brief Remove the first element in `queue`. O(1).
  *
  * @param queue `this`.
  */
-void LinkedQueuePop(LinkedQueue* const restrict queue);
+void LinkedQueuePop(LinkedQueue *const restrict queue);
 
 #endif  // __COLLECTIONS_LINKED_QUEUE__

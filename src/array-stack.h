@@ -14,7 +14,7 @@ typedef struct {
      * @warning Don't modify this member directly. Please use functions below.
      * @see `ArrayStackPush`, `ArrayStackPop`.
      */
-    void* array;
+    void *array;
     /**
      * @private
      * @brief Element size of this stack.
@@ -47,7 +47,7 @@ typedef struct {
  * @param initialCapacity Initial capacity of `stack`.
  * @param elementSize Element size of `stack`.
  */
-void ArrayStackConstruct(ArrayStack* const restrict stack,
+void ArrayStackConstruct(ArrayStack *const restrict stack,
                          const unsigned int initialCapacity,
                          const unsigned long elementSize);
 
@@ -58,7 +58,7 @@ void ArrayStackConstruct(ArrayStack* const restrict stack,
  * @param elementSize Element size of stack.
  * @return ArrayStack* Pointer refering to a heap address.
  */
-ArrayStack* ArrayStackNew(const unsigned int initialCapacity,
+ArrayStack *ArrayStackNew(const unsigned int initialCapacity,
                           const unsigned long elementSize);
 
 /**
@@ -66,7 +66,7 @@ ArrayStack* ArrayStackNew(const unsigned int initialCapacity,
  *
  * @param stack Target to be destructed. If `NULL`, nothing will happen.
  */
-void ArrayStackDestruct(ArrayStack* const restrict stack);
+void ArrayStackDestruct(ArrayStack *const restrict stack);
 
 /**
  * @brief Release `stack` in heap. O(1).
@@ -74,7 +74,7 @@ void ArrayStackDestruct(ArrayStack* const restrict stack);
  * @param stack Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL. If `NULL`, nothing will happen.
  */
-void ArrayStackDelete(ArrayStack** const restrict stack);
+void ArrayStackDelete(ArrayStack **const restrict stack);
 
 /**
  * @brief Get value of the element which is on the top of `stack`. O(1).
@@ -84,7 +84,7 @@ void ArrayStackDelete(ArrayStack** const restrict stack);
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
  * will be returned.
  */
-void* ArrayStackTop(const ArrayStack* const restrict stack);
+void *ArrayStackTop(const ArrayStack *const restrict stack);
 
 /**
  * @brief Push new element into `stack`. O(1).
@@ -92,14 +92,14 @@ void* ArrayStackTop(const ArrayStack* const restrict stack);
  * @param stack `this`.
  * @param value Value of element. It will be DEEP copied.
  */
-void ArrayStackPush(ArrayStack* const restrict stack,
-                    const void* const restrict value);
+void ArrayStackPush(ArrayStack *const restrict stack,
+                    const void *const restrict value);
 
 /**
  * @brief Remove the element which is on the top of `stack`. O(1).
  *
  * @param stack `this`.
  */
-void ArrayStackPop(ArrayStack* const restrict stack);
+void ArrayStackPop(ArrayStack *const restrict stack);
 
 #endif  // __COLLECTIONS_ARRAY_STACK__

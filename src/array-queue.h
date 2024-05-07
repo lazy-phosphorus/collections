@@ -14,7 +14,7 @@ typedef struct {
      * @warning Don't modify this member directly. Please use functions below.
      * @see `ArrayQueueTop`, `ArrayQueuePop`.
      */
-    void* array;
+    void *array;
     /**
      * @private
      * @brief Element size of this queue.
@@ -47,7 +47,7 @@ typedef struct {
  * @param initialCapacity Initial capacity of `queue`.
  * @param elementSize Element size of `queue`.
  */
-void ArrayQueueConstruct(ArrayQueue* const restrict queue,
+void ArrayQueueConstruct(ArrayQueue *const restrict queue,
                          const unsigned int initialCapacity,
                          const unsigned long elementSize);
 
@@ -58,7 +58,7 @@ void ArrayQueueConstruct(ArrayQueue* const restrict queue,
  * @param elementSize Element size of queue.
  * @return LinkedStack* Pointer refering to a heap address.
  */
-ArrayQueue* ArrayQueueNew(const unsigned int initialCapacity,
+ArrayQueue *ArrayQueueNew(const unsigned int initialCapacity,
                           const unsigned long elementSize);
 
 /**
@@ -66,7 +66,7 @@ ArrayQueue* ArrayQueueNew(const unsigned int initialCapacity,
  *
  * @param queue Target to be destructed. If `NULL`, nothing will happen.
  */
-void ArrayQueueDestruct(ArrayQueue* const restrict queue);
+void ArrayQueueDestruct(ArrayQueue *const restrict queue);
 
 /**
  * @brief Release `queue` in heap. O(1).
@@ -74,7 +74,7 @@ void ArrayQueueDestruct(ArrayQueue* const restrict queue);
  * @param queue Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL. If `NULL`, nothing will happen.
  */
-void ArrayQueueDelete(ArrayQueue** const restrict queue);
+void ArrayQueueDelete(ArrayQueue **const restrict queue);
 
 /**
  * @brief Get value of the first element in `queue`. O(1).
@@ -84,7 +84,7 @@ void ArrayQueueDelete(ArrayQueue** const restrict queue);
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
  * will be returned.
  */
-void* ArrayQueueFront(const ArrayQueue* const restrict queue);
+void *ArrayQueueFront(const ArrayQueue *const restrict queue);
 
 /**
  * @brief Push new element into `queue`. O(1).
@@ -92,14 +92,14 @@ void* ArrayQueueFront(const ArrayQueue* const restrict queue);
  * @param queue `this`.
  * @param value Value of element. It will be DEEP copied.
  */
-void ArrayQueuePush(ArrayQueue* const restrict queue,
-                    const void* const restrict value);
+void ArrayQueuePush(ArrayQueue *const restrict queue,
+                    const void *const restrict value);
 
 /**
  * @brief Remove the first element in `queue`. O(n).
  *
  * @param queue `this`.
  */
-void ArrayQueuePop(ArrayQueue* const restrict queue);
+void ArrayQueuePop(ArrayQueue *const restrict queue);
 
 #endif  // __COLLECTIONS_ARRAY_QUEUE__

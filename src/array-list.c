@@ -4,10 +4,10 @@
 #include <malloc.h>
 #include <memory.h>
 
-void ArrayListConstruct(ArrayList* const restrict list,
+void ArrayListConstruct(ArrayList *const restrict list,
                         const unsigned int initialCapacity,
                         const unsigned long elementSize,
-                        CompareFunction* const compare) {
+                        CompareFunction *const compare) {
     assert(list != NULL);
     assert(initialCapacity > 0);
     assert(elementSize > 0);
@@ -21,15 +21,15 @@ void ArrayListConstruct(ArrayList* const restrict list,
     list->compare = compare;
 }
 
-ArrayList* ArrayListNew(const unsigned int initialCapacity,
+ArrayList *ArrayListNew(const unsigned int initialCapacity,
                         const unsigned long elementSize,
-                        CompareFunction* const compare) {
-    ArrayList* list = (ArrayList*)malloc(sizeof(ArrayList));
+                        CompareFunction *const compare) {
+    ArrayList *list = (ArrayList *)malloc(sizeof(ArrayList));
     ArrayListConstruct(list, initialCapacity, elementSize, compare);
     return list;
 }
 
-void ArrayListDestruct(ArrayList* const restrict list) {
+void ArrayListDestruct(ArrayList *const restrict list) {
     if (list == NULL) return;
 
     free(list->array);
@@ -39,7 +39,7 @@ void ArrayListDestruct(ArrayList* const restrict list) {
     list->Size = 0;
 }
 
-void ArrayListDelete(ArrayList** const restrict list) {
+void ArrayListDelete(ArrayList **const restrict list) {
     if (list == NULL) return;
 
     ArrayListDestruct(*list);
@@ -47,38 +47,38 @@ void ArrayListDelete(ArrayList** const restrict list) {
     *list = NULL;
 }
 
-void* ArrayListGet(const ArrayList* const restrict list,
+void *ArrayListGet(const ArrayList *const restrict list,
                    const unsigned int index) {
     assert(list != NULL);
     assert(index < list->Size);
     return list->array + index * list->elementSize;
 }
 
-void ArrayListSet(ArrayList* const restrict list, const unsigned int index,
-                  const void* const restrict value) {
+void ArrayListSet(ArrayList *const restrict list, const unsigned int index,
+                  const void *const restrict value) {
     assert(list != NULL);
     assert(value != NULL);
     assert(index < list->Size);
     memcpy(list->array + index * list->elementSize, value, list->elementSize);
 }
 
-void* ArrayListBack(const ArrayList* const restrict list) {
+void *ArrayListBack(const ArrayList *const restrict list) {
     assert(list != NULL);
     if (list->Size == 0) return NULL;
     return list->array + list->elementSize * (list->Size - 1);
 }
 
-void* ArrayListFront(const ArrayList* const restrict list) {
+void *ArrayListFront(const ArrayList *const restrict list) {
     assert(list != NULL);
     if (list->Size == 0) return NULL;
     return list->array;
 }
 
-void ArrayListPushBack(ArrayList* const restrict list,
-                       const void* const restrict value) {
+void ArrayListPushBack(ArrayList *const restrict list,
+                       const void *const restrict value) {
     assert(list != NULL);
     assert(value != NULL);
-    void* temp = NULL;
+    void *temp = NULL;
 
     if (list->Size == list->Capacity) {
         list->Capacity *= 2;
@@ -93,17 +93,17 @@ void ArrayListPushBack(ArrayList* const restrict list,
     list->Size++;
 }
 
-void ArrayListPopBack(ArrayList* const restrict list) {
+void ArrayListPopBack(ArrayList *const restrict list) {
     assert(list != NULL);
     assert(list->Size > 0);
     list->Size--;
 }
 
-void ArrayListPushFront(ArrayList* const restrict list,
-                        const void* const restrict value) {
+void ArrayListPushFront(ArrayList *const restrict list,
+                        const void *const restrict value) {
     assert(list != NULL);
     assert(value != NULL);
-    void* temp = NULL;
+    void *temp = NULL;
 
     if (list->Size == list->Capacity) {
         list->Capacity *= 2;
@@ -121,7 +121,7 @@ void ArrayListPushFront(ArrayList* const restrict list,
     list->Size++;
 }
 
-void ArrayListPopFront(ArrayList* const restrict list) {
+void ArrayListPopFront(ArrayList *const restrict list) {
     assert(list != NULL);
     assert(list->Size > 0);
     list->Size--;
@@ -129,12 +129,12 @@ void ArrayListPopFront(ArrayList* const restrict list) {
             list->elementSize * list->Size);
 }
 
-void ArrayListInsert(ArrayList* const restrict list, const unsigned int index,
-                     const void* const restrict value) {
+void ArrayListInsert(ArrayList *const restrict list, const unsigned int index,
+                     const void *const restrict value) {
     assert(list != NULL);
     assert(value != NULL);
     assert(index <= list->Size);
-    void* temp = NULL;
+    void *temp = NULL;
 
     if (list->Size == list->Capacity) {
         if (list->Size == list->Capacity) {
@@ -157,8 +157,8 @@ void ArrayListInsert(ArrayList* const restrict list, const unsigned int index,
     list->Size++;
 }
 
-int ArrayListFind(const ArrayList* const restrict list,
-                  const void* const restrict value) {
+int ArrayListFind(const ArrayList *const restrict list,
+                  const void *const restrict value) {
     assert(list != NULL);
     assert(value != NULL);
     for (unsigned int i = 0; i < list->Size; i++) {
@@ -168,12 +168,12 @@ int ArrayListFind(const ArrayList* const restrict list,
     return -1;
 }
 
-ArrayList* ArrayListSlice(const ArrayList* const restrict list,
+ArrayList *ArrayListSlice(const ArrayList *const restrict list,
                           const unsigned int start, const unsigned int size) {
     assert(list != NULL);
     assert(start < list->Size);
     assert(size > 0);
-    ArrayList* slice = ArrayListNew(size, list->elementSize, list->compare);
+    ArrayList *slice = ArrayListNew(size, list->elementSize, list->compare);
     memcpy(slice->array, list->array + list->elementSize * start,
            list->elementSize * size);
     return slice;
@@ -187,8 +187,8 @@ ArrayList* ArrayListSlice(const ArrayList* const restrict list,
  * @param cache Pointer refers to cache.
  * @param elementSize Element size of list.
  */
-static inline void __swap(void* const restrict a, void* const restrict b,
-                          void* const restrict cache,
+static inline void __swap(void *const restrict a, void *const restrict b,
+                          void *const restrict cache,
                           const unsigned long elementSize) {
     memcpy(cache, a, elementSize);
     memcpy(a, b, elementSize);
@@ -204,8 +204,8 @@ static inline void __swap(void* const restrict a, void* const restrict b,
  * @param right End index.
  * @param cache Pointer refers to cache.
  */
-static void __QuickSort(ArrayList* const restrict list, const unsigned int left,
-                        const unsigned int right, void* cache) {
+static void __QuickSort(ArrayList *const restrict list, const unsigned int left,
+                        const unsigned int right, void *cache) {
     unsigned int pivot = (left + right) / 2, i = left, j = right;
     while (i < j) {
         while (i < pivot &&
@@ -232,9 +232,9 @@ static void __QuickSort(ArrayList* const restrict list, const unsigned int left,
     if (pivot != right) __QuickSort(list, pivot + 1, right, cache);
 }
 
-void ArrayListQuickSort(ArrayList* const restrict list) {
+void ArrayListQuickSort(ArrayList *const restrict list) {
     assert(list != NULL);
-    void* cache = malloc(list->elementSize);
+    void *cache = malloc(list->elementSize);
     assert(cache != NULL);
     __QuickSort(list, 0, list->Size - 1, cache);
     free(cache);

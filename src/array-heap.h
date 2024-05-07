@@ -16,7 +16,7 @@ typedef struct {
      * @warning Don't modify this member directly. Please use functions below.
      * @see `ArrayHeapTop`, `ArrayHeapPush`, `ArrayHeapPop`.
      */
-    void* array;
+    void *array;
     /**
      * @private
      * @brief Element size of this heap.
@@ -28,7 +28,7 @@ typedef struct {
      * @brief Function used in comparing two elements.
      * @warning Don't modify this member directly.
      */
-    CompareFunction* compare;
+    CompareFunction *compare;
 
     /**
      * @public
@@ -56,10 +56,10 @@ typedef struct {
  * @param elementSize Element size of `heap`.
  * @param compare Function used in comparing two elements.
  */
-void ArrayHeapConstruct(ArrayHeap* const restrict heap,
+void ArrayHeapConstruct(ArrayHeap *const restrict heap,
                         const unsigned int initialCapacity,
                         const unsigned long elementSize,
-                        CompareFunction* const compare);
+                        CompareFunction *const compare);
 
 /**
  * @brief Allocate a new heap in heap. O(1).
@@ -69,16 +69,16 @@ void ArrayHeapConstruct(ArrayHeap* const restrict heap,
  * @param compare Function used in comparing two elements.
  * @return ArrayHeap* Pointer refering to a heap address.
  */
-ArrayHeap* ArrayHeapNew(const unsigned int initialCapacity,
+ArrayHeap *ArrayHeapNew(const unsigned int initialCapacity,
                         const unsigned long elementSize,
-                        CompareFunction* const compare);
+                        CompareFunction *const compare);
 
 /**
  * @brief Destruct function. O(1).
  *
  * @param heap Target to be destructed. If `NULL`, nothing will happen.
  */
-void ArrayHeapDestruct(ArrayHeap* const restrict heap);
+void ArrayHeapDestruct(ArrayHeap *const restrict heap);
 
 /**
  * @brief Release `heap` in heap. O(1).
@@ -86,7 +86,7 @@ void ArrayHeapDestruct(ArrayHeap* const restrict heap);
  * @param heap Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL`. If `NULL`, nothing will happen.
  */
-void ArrayHeapDelete(ArrayHeap** const restrict heap);
+void ArrayHeapDelete(ArrayHeap **const restrict heap);
 
 /**
  * @brief Get value of the element which is on the top of `heap`. O(1).
@@ -96,7 +96,7 @@ void ArrayHeapDelete(ArrayHeap** const restrict heap);
  * @return void* If successful, value of the element will be returned.
  * Otherwise, `NULL` will be returned.
  */
-void* ArrayHeapTop(const ArrayHeap* const restrict heap);
+void *ArrayHeapTop(const ArrayHeap *const restrict heap);
 
 /**
  * @brief Add a new element into `heap. O(log₂n).
@@ -104,14 +104,14 @@ void* ArrayHeapTop(const ArrayHeap* const restrict heap);
  * @param heap `this`.
  * @param value Value of element. It will be DEEP copied.
  */
-void ArrayHeapPush(ArrayHeap* const restrict heap,
-                   const void* const restrict value);
+void ArrayHeapPush(ArrayHeap *const restrict heap,
+                   const void *const restrict value);
 
 /**
  * @brief Remove the element which is on the top of `heap`. O(log₂n).
  *
  * @param heap `this`
  */
-void ArrayHeapPop(ArrayHeap* const restrict heap);
+void ArrayHeapPop(ArrayHeap *const restrict heap);
 
 #endif  // __COLLECTIONS_ARRAY_HEAP__

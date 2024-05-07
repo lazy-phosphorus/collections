@@ -16,7 +16,7 @@ typedef struct {
      * @warning Don't modify this member directly. Please use functions below.
      * @see `ArrayListGet`, `ArrayListSet`.
      */
-    void* array;
+    void *array;
     /**
      * @private
      * @brief Element size of this list.
@@ -28,7 +28,7 @@ typedef struct {
      * @brief Function used in comparing two elements.
      * @warning Don't modify this member directly.
      */
-    CompareFunction* compare;
+    CompareFunction *compare;
 
     /**
      * @public
@@ -56,10 +56,10 @@ typedef struct {
  * @param elementSize Element size of `list`.
  * @param compare Function used in comparing two elements.
  */
-void ArrayListConstruct(ArrayList* const restrict list,
+void ArrayListConstruct(ArrayList *const restrict list,
                         const unsigned int initialCapacity,
                         const unsigned long elementSize,
-                        CompareFunction* const compare);
+                        CompareFunction *const compare);
 
 /**
  * @brief Allocate a new list in heap. O(1).
@@ -69,16 +69,16 @@ void ArrayListConstruct(ArrayList* const restrict list,
  * @param compare Function used in comparing two elements.
  * @return ArrayList* Pointer refering to a heap address.
  */
-ArrayList* ArrayListNew(const unsigned int initialCapacity,
+ArrayList *ArrayListNew(const unsigned int initialCapacity,
                         const unsigned long elementSize,
-                        CompareFunction* const compare);
+                        CompareFunction *const compare);
 
 /**
  * @brief Destruct function. O(1).
  *
  * @param list Target to be destructed. If `NULL`, nothing will happen.
  */
-void ArrayListDestruct(ArrayList* const restrict list);
+void ArrayListDestruct(ArrayList *const restrict list);
 
 /**
  * @brief Release `list` in heap. O(1).
@@ -86,7 +86,7 @@ void ArrayListDestruct(ArrayList* const restrict list);
  * @param list Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL`. If `NULL`, nothing will happen.
  */
-void ArrayListDelete(ArrayList** const restrict list);
+void ArrayListDelete(ArrayList **const restrict list);
 
 /**
  * @brief Get the value of the element at specified `index`. O(1).
@@ -97,7 +97,7 @@ void ArrayListDelete(ArrayList** const restrict list);
  * @return void* If successful, the element will be returned. Otherwise, `NULL`
  * will be returned.
  */
-void* ArrayListGet(const ArrayList* const restrict list,
+void *ArrayListGet(const ArrayList *const restrict list,
                    const unsigned int index);
 
 /**
@@ -107,8 +107,8 @@ void* ArrayListGet(const ArrayList* const restrict list,
  * @param index Specified index.
  * @param value Value of element. It will be DEEP copied.
  */
-void ArrayListSet(ArrayList* const restrict list, const unsigned int index,
-                  const void* const restrict value);
+void ArrayListSet(ArrayList *const restrict list, const unsigned int index,
+                  const void *const restrict value);
 
 /**
  * @brief Get value of the last element. O(1).
@@ -117,7 +117,7 @@ void ArrayListSet(ArrayList* const restrict list, const unsigned int index,
  * @param list `this`.
  * @return void* If `list` is empty, `NULL` will be returned.
  */
-void* ArrayListBack(const ArrayList* const restrict list);
+void *ArrayListBack(const ArrayList *const restrict list);
 
 /**
  * @brief Get value of the first element. O(1).
@@ -126,7 +126,7 @@ void* ArrayListBack(const ArrayList* const restrict list);
  * @param list `this`.
  * @return void* If `list` is empty, `NULL` will be returned.
  */
-void* ArrayListFront(const ArrayList* const restrict list);
+void *ArrayListFront(const ArrayList *const restrict list);
 
 /**
  * @brief Add new element at the end of `list`. O(1).
@@ -134,15 +134,15 @@ void* ArrayListFront(const ArrayList* const restrict list);
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
  */
-void ArrayListPushBack(ArrayList* const restrict list,
-                       const void* const restrict value);
+void ArrayListPushBack(ArrayList *const restrict list,
+                       const void *const restrict value);
 
 /**
  * @brief Remove the last element of `list`. O(1).
  *
  * @param list `this`.
  */
-void ArrayListPopBack(ArrayList* const restrict list);
+void ArrayListPopBack(ArrayList *const restrict list);
 
 /**
  * @brief Add new element at the begin of `list`. O(n).
@@ -150,15 +150,15 @@ void ArrayListPopBack(ArrayList* const restrict list);
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
  */
-void ArrayListPushFront(ArrayList* const restrict list,
-                        const void* const restrict value);
+void ArrayListPushFront(ArrayList *const restrict list,
+                        const void *const restrict value);
 
 /**
  * @brief Remove the first element of `list`. O(n).
  *
  * @param list `this`.
  */
-void ArrayListPopFront(ArrayList* const restrict list);
+void ArrayListPopFront(ArrayList *const restrict list);
 
 /**
  * @brief Add new element at the specified index of `list`. After element
@@ -167,8 +167,8 @@ void ArrayListPopFront(ArrayList* const restrict list);
  * @param list `this`.
  * @param value Value of element. It will be DEEP copied.
  */
-void ArrayListInsert(ArrayList* const restrict list, const unsigned int index,
-                     const void* const restrict value);
+void ArrayListInsert(ArrayList *const restrict list, const unsigned int index,
+                     const void *const restrict value);
 
 /**
  * @brief Find the element which is equal to `value`. O(n).
@@ -178,8 +178,8 @@ void ArrayListInsert(ArrayList* const restrict list, const unsigned int index,
  * @return int If found, the index of the element will be returned. Otherwise,
  * `-1` will be returned.
  */
-int ArrayListFind(const ArrayList* const restrict list,
-                  const void* const restrict value);
+int ArrayListFind(const ArrayList *const restrict list,
+                  const void *const restrict value);
 
 /**
  * @brief Slice `list`, and return new list which contains DEEP copied
@@ -191,7 +191,7 @@ int ArrayListFind(const ArrayList* const restrict list,
  * @return ArrayList* New list with DEEP copied elements. This pointer will NOT
  * automatically be released.
  */
-ArrayList* ArrayListSlice(const ArrayList* const restrict list,
+ArrayList *ArrayListSlice(const ArrayList *const restrict list,
                           const unsigned int start, const unsigned int size);
 
 /**
@@ -199,6 +199,6 @@ ArrayList* ArrayListSlice(const ArrayList* const restrict list,
  *
  * @param list `this`.
  */
-void ArrayListQuickSort(ArrayList* const restrict list);
+void ArrayListQuickSort(ArrayList *const restrict list);
 
 #endif  // __COLLECTIONS_ARRAY_LIST__
