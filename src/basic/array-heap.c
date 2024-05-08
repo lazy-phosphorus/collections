@@ -84,48 +84,86 @@ void ArrayHeapPop(ArrayHeap *const restrict heap) {
 
     heap->Size--;
     while ((current * 2 + 1) < heap->Size) {
-        if (heap->compare(heap->array + heap->elementSize * (current * 2 + 1),
-                          heap->array + heap->elementSize * heap->Size) <= 0) {
-            // larger than or equal to left child
-            if (heap->compare(
-                    heap->array + heap->elementSize * (current * 2 + 2),
-                    heap->array + heap->elementSize * heap->Size) <= 0) {
-                // larger than or equal to left child and right child
-                break;
-            } else {
-                // larger than or equal to left child, but less than right child
-                memcpy(heap->array + heap->elementSize * current,
-                       heap->array + heap->elementSize * (current * 2 + 2),
-                       heap->elementSize);
-                current = current * 2 + 2;
-            }
-        } else if (current * 2 + 2 >= heap->Size ||
-                   heap->compare(
-                       heap->array + heap->elementSize * (current * 2 + 2),
-                       heap->array + heap->elementSize * heap->Size) <= 0) {
-            // less than left child, but larger than or equal to right child(or
-            // no right child)
-            memcpy(heap->array + heap->elementSize * current,
-                   heap->array + heap->elementSize * (current * 2 + 1),
-                   heap->elementSize);
-            current = current * 2 + 1;
-        } else {
-            // less than left child and right child
+        if (heap->compare(
+                heap->array + heap->elementSize * (current * 2 + 1),
+                heap->array + heap->elementSize * (current * 2 + 2)) >= 0) {
+            // left child is larger than or equal to right child
             if (heap->compare(
                     heap->array + heap->elementSize * (current * 2 + 1),
-                    heap->array + heap->elementSize * (current * 2 + 2)) >= 0) {
-                // left child is larger than or equal to right child
+                    heap->array + heap->elementSize * heap->Size) <= 0) {
+                // larger than or equal to left child
+                break;
+            } else {
+                // less than left child
                 memcpy(heap->array + heap->elementSize * current,
                        heap->array + heap->elementSize * (current * 2 + 1),
                        heap->elementSize);
                 current = current * 2 + 1;
+            }
+        } else {
+            // left child is less than right child
+            if (heap->compare(
+                    heap->array + heap->elementSize * (current * 2 + 2),
+                    heap->array + heap->elementSize * heap->Size) <= 0) {
+                // larger than or equal to right child
+                break;
             } else {
+                // less than right child
                 memcpy(heap->array + heap->elementSize * current,
                        heap->array + heap->elementSize * (current * 2 + 2),
                        heap->elementSize);
                 current = current * 2 + 2;
             }
         }
+        // if (heap->compare(heap->array + heap->elementSize * (current * 2
+        // + 1),
+        //                   heap->array + heap->elementSize * heap->Size)
+        //                   <= 0)
+        //                   {
+        //     // larger than or equal to left child
+        //     if (heap->compare(
+        //             heap->array + heap->elementSize * (current * 2 + 2),
+        //             heap->array + heap->elementSize * heap->Size) <= 0) {
+        //         // larger than or equal to left child and right child
+        //         break;
+        //     } else {
+        //         // larger than or equal to left child, but less than
+        //         right child memcpy(heap->array + heap->elementSize *
+        //         current,
+        //                heap->array + heap->elementSize * (current * 2 +
+        //                2), heap->elementSize);
+        //         current = current * 2 + 2;
+        //     }
+        // } else if (current * 2 + 2 >= heap->Size ||
+        //            heap->compare(
+        //                heap->array + heap->elementSize * (current * 2 +
+        //                2), heap->array + heap->elementSize * heap->Size)
+        //                <= 0) {
+        //     // less than left child, but larger than or equal to right
+        //     child(or
+        //     // no right child)
+        //     memcpy(heap->array + heap->elementSize * current,
+        //            heap->array + heap->elementSize * (current * 2 + 1),
+        //            heap->elementSize);
+        //     current = current * 2 + 1;
+        // } else {
+        //     // less than left child and right child
+        //     if (heap->compare(
+        //             heap->array + heap->elementSize * (current * 2 + 1),
+        //             heap->array + heap->elementSize * (current * 2 + 2))
+        //             >= 0) {
+        //         // left child is larger than or equal to right child
+        //         memcpy(heap->array + heap->elementSize * current,
+        //                heap->array + heap->elementSize * (current * 2 +
+        //                1), heap->elementSize);
+        //         current = current * 2 + 1;
+        //     } else {
+        //         memcpy(heap->array + heap->elementSize * current,
+        //                heap->array + heap->elementSize * (current * 2 +
+        //                2), heap->elementSize);
+        //         current = current * 2 + 2;
+        //     }
+        // }
     }
     memcpy(heap->array + heap->elementSize * current,
            heap->array + heap->elementSize * heap->Size, heap->elementSize);

@@ -4,15 +4,54 @@
 #include "basic/array-heap.h"
 #include "types.h"
 
+/**
+ * @brief Type of element in `PriorityQueue`.
+ * @attention It is no recommended to use this struct.
+ */
 typedef struct {
+    /**
+     * @private
+     * @brief Priority of this node.
+     */
     int priority;
+    /**
+     * @private
+     * @brief Value of this node.
+     */
     void *value;
 } PriorityQueueNode;
 
+/**
+ * @brief This struct is implemented by `ArrayHeap`.
+ * @attention There is no similar struct implemented by `LinkedHeap`. Because
+ * level order traversal is needed while pushing element into `LinkedHeap`,
+ * which will use queue.
+ * @warning Don't initialize or free instance of this struct directly. Please
+ * use functions below.
+ * @see `PriorityQueueConstruct`, `PriorityQueueNew`, `PriorityQueueDestruct`,
+ * `PriorityQueueDelete`.
+ */
 typedef struct {
+    /**
+     * @private
+     * @brief Heap.
+     * @warning Don't modify this member directly. It is maintained
+     * automatically.
+     */
     ArrayHeap *heap;
+    /**
+     * @private
+     * @brief Element size of this queue.
+     * @warning Don't modify this member directly.
+     */
     unsigned long elementSize;
 
+    /**
+     * @public
+     * @brief Current element quantity of this queue.
+     * @attention Don't modify the value of this member directly. It is
+     * maintained automatically.
+     */
     unsigned int Size;
 } PriorityQueue;
 
