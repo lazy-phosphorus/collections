@@ -37,6 +37,7 @@ typedef struct {
      * @brief Heap.
      * @warning Don't modify this member directly. It is maintained
      * automatically.
+     * @see `PriorityQueueFront`, `PriorityQueuePush`, `PriorityQueuePop`.
      */
     ArrayHeap *heap;
     /**

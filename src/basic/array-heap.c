@@ -90,30 +90,26 @@ void ArrayHeapPop(ArrayHeap *const restrict heap) {
             // left child is larger than or equal to right child
             if (heap->compare(
                     heap->array + heap->elementSize * (current * 2 + 1),
-                    heap->array + heap->elementSize * heap->Size) <= 0) {
-                // larger than or equal to left child
-                break;
-            } else {
+                    heap->array + heap->elementSize * heap->Size) > 0) {
                 // less than left child
                 memcpy(heap->array + heap->elementSize * current,
                        heap->array + heap->elementSize * (current * 2 + 1),
                        heap->elementSize);
                 current = current * 2 + 1;
-            }
+            } else
+                break;
         } else {
             // left child is less than right child
             if (heap->compare(
                     heap->array + heap->elementSize * (current * 2 + 2),
-                    heap->array + heap->elementSize * heap->Size) <= 0) {
-                // larger than or equal to right child
-                break;
-            } else {
+                    heap->array + heap->elementSize * heap->Size) > 0) {
                 // less than right child
                 memcpy(heap->array + heap->elementSize * current,
                        heap->array + heap->elementSize * (current * 2 + 2),
                        heap->elementSize);
                 current = current * 2 + 2;
-            }
+            } else
+                break;
         }
     }
     memcpy(heap->array + heap->elementSize * current,
