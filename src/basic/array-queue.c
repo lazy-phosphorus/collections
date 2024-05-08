@@ -4,6 +4,8 @@
 #include <malloc.h>
 #include <memory.h>
 
+#include "types.h"
+
 void ArrayQueueConstruct(ArrayQueue *const restrict queue,
                          const unsigned int initialCapacity,
                          const unsigned long elementSize) {
@@ -72,4 +74,29 @@ void ArrayQueuePop(ArrayQueue *const restrict queue) {
     queue->Size--;
     memmove(queue->array, queue->array + queue->elementSize,
             queue->Size * queue->elementSize);
+}
+
+Bool ArrayQueueSome(ArrayQueue *const restrict queue,
+                    TestFunction *const test) {
+    assert(queue != NULL);
+    assert(test != NULL);
+
+    void *temp = NULL;
+    for (unsigned int i = 0; i < queue->Size; i++) {
+        temp = queue->array + i * queue->elementSize;
+        if (test(temp) == TRUE) return TRUE;
+    }
+    return FALSE;
+}
+
+Bool ArrayQueueAll(ArrayQueue *const restrict queue, TestFunction *const test) {
+    assert(queue != NULL);
+    assert(test != NULL);
+
+    void *temp = NULL;
+    for (unsigned int i = 0; i < queue->Size; i++) {
+        temp = queue->array + i * queue->elementSize;
+        if (test(temp) == FALSE) return FALSE;
+    }
+    return TRUE;
 }

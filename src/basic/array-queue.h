@@ -1,6 +1,8 @@
 #ifndef __COLLECTIONS_ARRAY_QUEUE__
 #define __COLLECTIONS_ARRAY_QUEUE__
 
+#include "types.h"
+
 /**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
@@ -101,5 +103,27 @@ void ArrayQueuePush(ArrayQueue *const restrict queue,
  * @param queue `this`.
  */
 void ArrayQueuePop(ArrayQueue *const restrict queue);
+
+/**
+ * @brief Every value of elements in `queue` will be passed into `test()`. If
+ * `test()` returns `TRUE` AT LEAST ONCE, `TRUE` will be returned. Otherwise,
+ * `FALSE` will be returned. O(n).
+ *
+ * @param queue `this`
+ * @param test Function used in checking if some elements satisfy certain
+ * conditions.
+ */
+Bool ArrayQueueSome(ArrayQueue *const restrict queue, TestFunction *const test);
+
+/**
+ * @brief Every value of elements in `queue` will be passed into `test()`. If
+ * `test()` ALWAYS returns `TRUE`, `TRUE` will be returned. Otherwise,
+ * `FALSE` will be returned. O(n).
+ *
+ * @param queue `this`
+ * @param test Function used in checking if some elements satisfy certain
+ * conditions.
+ */
+Bool ArrayQueueAll(ArrayQueue *const restrict queue, TestFunction *const test);
 
 #endif  // __COLLECTIONS_ARRAY_QUEUE__

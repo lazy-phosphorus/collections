@@ -4,6 +4,8 @@
 #include <malloc.h>
 #include <memory.h>
 
+#include "types.h"
+
 void LinkedQueueNodeConstruct(LinkedQueueNode *const restrict node,
                               const void *const restrict value,
                               const unsigned long elementSize) {
@@ -103,4 +105,30 @@ void LinkedQueuePop(LinkedQueue *const restrict queue) {
     queue->head = node->next;
     LinkedQueueNodeDelete(&node);
     queue->Size--;
+}
+
+Bool LinkedQueueSome(LinkedQueue *const restrict queue,
+                     TestFunction *const test) {
+    assert(queue != NULL);
+    assert(test != NULL);
+
+    LinkedQueueNode *temp = queue->head;
+    while (temp != NULL) {
+        if (test(temp->value) == TRUE) return TRUE;
+        temp = temp->next;
+    }
+    return FALSE;
+}
+
+Bool LinkedQueueAll(LinkedQueue *const restrict queue,
+                    TestFunction *const test) {
+    assert(queue != NULL);
+    assert(test != NULL);
+
+    LinkedQueueNode *temp = queue->head;
+    while (temp != NULL) {
+        if (test(temp->value) == FALSE) return FALSE;
+        temp = temp->next;
+    }
+    return TRUE;
 }
