@@ -301,3 +301,37 @@ void DelinkedListQuickSort(DelinkedList *const restrict list) {
     __QuickSort(list, list->head, list->tail, cache);
     free(cache);
 }
+
+DelinkedListIterator DelinkedListGetIterator(
+    DelinkedList *const restrict list) {
+    assert(list != NULL);
+    return list->head;
+}
+
+DelinkedListIterator DelinkedListGetReverseIterator(
+    DelinkedList *const restrict list) {
+    assert(list != NULL);
+    return list->tail;
+}
+
+DelinkedListIterator DelinkedListIteratorNext(
+    DelinkedListIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->next;
+}
+
+DelinkedListIterator DelinkedListIteratorPrevious(
+    DelinkedListIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->previous;
+}
+
+void *DelinkedListIteratorGetValue(
+    DelinkedListIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->value;
+}
+
+Bool DelinkedListIteratorEnded(DelinkedListIterator const restrict iterator) {
+    return iterator == NULL;
+}

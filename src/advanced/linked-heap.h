@@ -34,15 +34,15 @@ typedef struct __LinkedHeapNode {
  * @attention It is not recommended to use this struct. Use `ArrayHeap` instead.
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `LinkedHeapConstruct`, `LinkedHeapNew`, `LinkedHeapDestruct`,
- * `LinkedHeapDelete`.
+ * @see `LinkedHeapConstruct()`, `LinkedHeapNew()`, `LinkedHeapDestruct()`,
+ * `LinkedHeapDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief Pointer refers to the top element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `LinkedHeapTop`, `LinkedHeapPush`, `LinkedHeapPop`.
+     * @see `LinkedHeapTop()`, `LinkedHeapPush()`, `LinkedHeapPop()`.
      */
     LinkedHeapNode *root;
     /**

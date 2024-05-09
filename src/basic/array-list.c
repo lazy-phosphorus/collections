@@ -239,3 +239,40 @@ void ArrayListQuickSort(ArrayList *const restrict list) {
     __QuickSort(list, 0, list->Size - 1, cache);
     free(cache);
 }
+
+ArrayListIterator ArrayListGetIterator(ArrayList *const restrict list) {
+    assert(list != NULL);
+    ArrayListIterator iterator = {list->array, list->elementSize, 0,
+                                  list->Size};
+    return iterator;
+}
+
+ArrayListIterator ArrayListGetReverseIterator(ArrayList *const restrict list) {
+    assert(list != NULL);
+    ArrayListIterator iterator = {list->array, list->elementSize,
+                                  list->Size - 1, list->Size};
+    return iterator;
+}
+
+ArrayListIterator ArrayListIteratorNext(ArrayListIterator const iterator) {
+    assert(iterator.current < iterator.size);
+    ArrayListIterator i = {iterator.array, iterator.elementSize,
+                           iterator.current + 1, iterator.size};
+    return i;
+}
+
+ArrayListIterator ArrayListIteratorPrevious(ArrayListIterator const iterator) {
+    assert(iterator.current != -1);
+    ArrayListIterator i = {iterator.array, iterator.elementSize,
+                           iterator.current - 1, iterator.size};
+    return i;
+}
+
+void *ArrayListIteratorGetValue(ArrayListIterator const iterator) {
+    assert(iterator.current < iterator.size && iterator.current != -1);
+    return iterator.array + iterator.current * iterator.elementSize;
+}
+
+Bool ArrayListIteratorEnded(ArrayListIterator const iterator) {
+    return iterator.current == iterator.size || iterator.current == -1;
+}

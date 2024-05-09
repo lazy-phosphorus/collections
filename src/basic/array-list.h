@@ -4,17 +4,29 @@
 #include "types.h"
 
 /**
+ * @brief Iterator of `ArrayList`.
+ * @attention This iterator has no void head node. You can call
+ * `ArrayListIteratorGetValue()` directly.
+ */
+typedef struct {
+    void *array;
+    unsigned long elementSize;
+    unsigned int current;
+    unsigned int size;
+} ArrayListIterator;
+
+/**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `ArrayListConstruct`, `ArrayListNew`, `ArrayListDestruct`,
- * `ArrayListDelete`.
+ * @see `ArrayListConstruct()`, `ArrayListNew()`, `ArrayListDestruct()`,
+ * `ArrayListDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief All elements will be stored in this member.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `ArrayListGet`, `ArrayListSet`.
+     * @see `ArrayListGet()`, `ArrayListSet()`.
      */
     void *array;
     /**
@@ -62,12 +74,12 @@ void ArrayListConstruct(ArrayList *const restrict list,
                         CompareFunction *const compare);
 
 /**
- * @brief Allocate a new list in heap. O(1).
+ * @brief Allocate a new list in list. O(1).
  *
  * @param initialCapacity Initial capacity of list.
  * @param elementSize Element size of list.
  * @param compare Function used in comparing two elements.
- * @return ArrayList* Pointer refering to a heap address.
+ * @return ArrayList* Pointer refering to a list address.
  */
 ArrayList *ArrayListNew(const unsigned int initialCapacity,
                         const unsigned long elementSize,
@@ -81,7 +93,7 @@ ArrayList *ArrayListNew(const unsigned int initialCapacity,
 void ArrayListDestruct(ArrayList *const restrict list);
 
 /**
- * @brief Release `list` in heap. O(1).
+ * @brief Release `list` in list. O(1).
  *
  * @param list Pointer refers to the target which is to be deleted. The
  * target will be set to `NULL`. If `NULL`, nothing will happen.
@@ -200,5 +212,53 @@ ArrayList *ArrayListSlice(const ArrayList *const restrict list,
  * @param list `this`.
  */
 void ArrayListQuickSort(ArrayList *const restrict list);
+
+/**
+ * @brief Get iterator of `list`.
+ *
+ * @param list `this`.
+ * @return ArrayListIterator Iterator.
+ */
+ArrayListIterator ArrayListGetIterator(ArrayList *const restrict list);
+
+/**
+ * @brief Get reverse iterator of `list`.
+ *
+ * @param list `this`.
+ * @return ArrayListIterator Iterator.
+ */
+ArrayListIterator ArrayListGetReverseIterator(ArrayList *const restrict list);
+
+/**
+ * @brief Move to the next element.
+ *
+ * @param iterator `this`.
+ * @return ArrayListIterator Renewed iterator.
+ */
+ArrayListIterator ArrayListIteratorNext(ArrayListIterator const iterator);
+
+/**
+ * @brief Move to the previous element.
+ *
+ * @param iterator `this`.
+ * @return ArrayListIterator Renewed iterator.
+ */
+ArrayListIterator ArrayListIteratorPrevious(ArrayListIterator const iterator);
+
+/**
+ * @brief Get value of current element.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *ArrayListIteratorGetValue(ArrayListIterator const iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool ArrayListIteratorEnded(ArrayListIterator const iterator);
 
 #endif  // __COLLECTIONS_ARRAY_LIST__

@@ -6,6 +6,8 @@
 /**
  * @brief Type of element in `LinkedList`.
  * @attention It is no recommended to use this struct.
+ * @see `LinkedListGetIterator()`, `LinkedListIteratorNext()`,
+ * `LinkedListIteratorGetValue()`, `LinkedListIteratorEnded()`
  */
 typedef struct __LinkedListNode {
     /**
@@ -21,26 +23,33 @@ typedef struct __LinkedListNode {
 } LinkedListNode;
 
 /**
+ * @brief Iterator of `LinkedList`.
+ * @attention This iterator has no void head node. You can call
+ * `LinkedListIteratorGetValue()` directly.
+ */
+typedef LinkedListNode *LinkedListIterator;
+
+/**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `LinkedListConstruct`, `LinkedListNew`, `LinkedListDestruct`,
- * `LinkedListDelete`.
+ * @see `LinkedListConstruct()`, `LinkedListNew()`, `LinkedListDestruct()`,
+ * `LinkedListDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief Pointer refers to the first element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `LinkedListFront`, `LinkedListSet`, `LinkedListPushFront`,
-     * `LinkedListPopFront`.
+     * @see `LinkedListFront()`, `LinkedListSet()`, `LinkedListPushFront()`,
+     * `LinkedListPopFront()`.
      */
     LinkedListNode *head;
     /**
      * @private
      * @brief Pointer refers to the last element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `LinkedListBack`, `LinkedListSet`, `LinkedListPushBack`,
-     * `LinkedListPopBack`.
+     * @see `LinkedListBack()`, `LinkedListSet()`, `LinkedListPushBack()`,
+     * `LinkedListPopBack()`.
      */
     LinkedListNode *tail;
     /**
@@ -238,10 +247,46 @@ int LinkedListFind(LinkedList *const restrict list,
  * @param list `this`.
  * @param start Start index.
  * @param size Size of returned list.
- * @return DelinkedList* New list with DEEP copied elements. This pointer will
+ * @return LinkedList* New list with DEEP copied elements. This pointer will
  * NOT automatically be released.
  */
 LinkedList *LinkedListSlice(LinkedList *const restrict list,
                             const unsigned int start, const unsigned int size);
+
+/**
+ * @brief Get iterator of `list`.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param list `this`.
+ * @return LinkedListIterator Iterator SHALLOW copied from `list->head`.
+ */
+LinkedListIterator LinkedListGetIterator(LinkedList *const restrict list);
+
+/**
+ * @brief Move to the next element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return LinkedListIterator Renewed iterator.
+ */
+LinkedListIterator LinkedListIteratorNext(
+    LinkedListIterator const restrict iterator);
+
+/**
+ * @brief Get value of current element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *LinkedListIteratorGetValue(LinkedListIterator const restrict iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool LinkedListIteratorEnded(LinkedListIterator const restrict iterator);
 
 #endif  // __COLLECTIONS_LINKED_LIST__

@@ -28,8 +28,8 @@ typedef struct {
  * which will use queue.
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `PriorityQueueConstruct`, `PriorityQueueNew`, `PriorityQueueDestruct`,
- * `PriorityQueueDelete`.
+ * @see `PriorityQueueConstruct()`, `PriorityQueueNew()`,
+ * `PriorityQueueDestruct()`, `PriorityQueueDelete()`.
  */
 typedef struct {
     /**
@@ -37,7 +37,7 @@ typedef struct {
      * @brief Heap.
      * @warning Don't modify this member directly. It is maintained
      * automatically.
-     * @see `PriorityQueueFront`, `PriorityQueuePush`, `PriorityQueuePop`.
+     * @see `PriorityQueueFront()`, `PriorityQueuePush()`, `PriorityQueuePop()`.
      */
     ArrayHeap *heap;
     /**

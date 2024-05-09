@@ -4,17 +4,29 @@
 #include "types.h"
 
 /**
+ * @brief Iterator of `ArrayQueue`.
+ * @attention This iterator has no void head node. You can call
+ * `ArrayQueueIteratorGetValue()` directly.
+ */
+typedef struct {
+    void *array;
+    unsigned long elementSize;
+    unsigned int current;
+    unsigned int size;
+} ArrayQueueIterator;
+
+/**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `ArrayQueueConstruct`, `ArrayQueueNew`, `ArrayQueueDestruct`,
- * `ArrayQueueDelete`.
+ * @see `ArrayQueueConstruct()`, `ArrayQueueNew()`, `ArrayQueueDestruct()`,
+ * `ArrayQueueDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief Pointer refers to the first element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `ArrayQueueTop`, `ArrayQueuePop`.
+     * @see `ArrayQueueTop()`, `ArrayQueuePop()`.
      */
     void *array;
     /**
@@ -125,5 +137,55 @@ Bool ArrayQueueSome(ArrayQueue *const restrict queue, TestFunction *const test);
  * conditions.
  */
 Bool ArrayQueueAll(ArrayQueue *const restrict queue, TestFunction *const test);
+
+/**
+ * @brief Get iterator of `queue`.
+ *
+ * @param queue `this`.
+ * @return ArrayQueueIterator Iterator.
+ */
+ArrayQueueIterator ArrayQueueGetIterator(ArrayQueue *const restrict queue);
+
+/**
+ * @brief Get reverse iterator of `queue`.
+ *
+ * @param queue `this`.
+ * @return ArrayQueueIterator Iterator.
+ */
+ArrayQueueIterator ArrayQueueGetReverseIterator(
+    ArrayQueue *const restrict queue);
+
+/**
+ * @brief Move to the next element.
+ *
+ * @param iterator `this`.
+ * @return ArrayQueueIterator Renewed iterator.
+ */
+ArrayQueueIterator ArrayQueueIteratorNext(ArrayQueueIterator const iterator);
+
+/**
+ * @brief Move to the previous element.
+ *
+ * @param iterator `this`.
+ * @return ArrayQueueIterator Renewed iterator.
+ */
+ArrayQueueIterator ArrayQueueIteratorPrevious(
+    ArrayQueueIterator const iterator);
+
+/**
+ * @brief Get value of current element.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *ArrayQueueIteratorGetValue(ArrayQueueIterator const iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool ArrayQueueIteratorEnded(ArrayQueueIterator const iterator);
 
 #endif  // __COLLECTIONS_ARRAY_QUEUE__

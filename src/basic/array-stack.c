@@ -71,3 +71,42 @@ void ArrayStackPop(ArrayStack *const restrict stack) {
     assert(stack->Size > 0);
     stack->Size--;
 }
+
+ArrayStackIterator ArrayStackGetIterator(ArrayStack *const restrict queue) {
+    assert(queue != NULL);
+    ArrayStackIterator iterator = {queue->array, queue->elementSize, 0,
+                                   queue->Size};
+    return iterator;
+}
+
+ArrayStackIterator ArrayStackGetReverseIterator(
+    ArrayStack *const restrict queue) {
+    assert(queue != NULL);
+    ArrayStackIterator iterator = {queue->array, queue->elementSize,
+                                   queue->Size - 1, queue->Size};
+    return iterator;
+}
+
+ArrayStackIterator ArrayStackIteratorNext(ArrayStackIterator const iterator) {
+    assert(iterator.current < iterator.size);
+    ArrayStackIterator i = {iterator.array, iterator.elementSize,
+                            iterator.current + 1, iterator.size};
+    return i;
+}
+
+ArrayStackIterator ArrayStackIteratorPrevious(
+    ArrayStackIterator const iterator) {
+    assert(iterator.current != -1);
+    ArrayStackIterator i = {iterator.array, iterator.elementSize,
+                            iterator.current - 1, iterator.size};
+    return i;
+}
+
+void *ArrayStackIteratorGetValue(ArrayStackIterator const iterator) {
+    assert(iterator.current < iterator.size && iterator.current != -1);
+    return iterator.array + iterator.current * iterator.elementSize;
+}
+
+Bool ArrayStackIteratorEnded(ArrayStackIterator const iterator) {
+    return iterator.current == iterator.size || iterator.current == -1;
+}

@@ -6,6 +6,8 @@
 /**
  * @brief Type of element in `LinkedQueue`.
  * @attention It is not recommended to use this struct.
+ * @see `LinkedQueueGetIterator()`, `LinkedQueueIteratorNext()`,
+ * `LinkedQueueIteratorGetValue()`, `LinkedQueueIteratorEnded()`
  */
 typedef struct __LinkedQueueNode {
     /**
@@ -21,24 +23,31 @@ typedef struct __LinkedQueueNode {
 } LinkedQueueNode;
 
 /**
+ * @brief Iterator of `LinkedQueue`.
+ * @attention This iterator has no void head node. You can call
+ * `LinkedQueueIteratorGetValue()` directly.
+ */
+typedef LinkedQueueNode *LinkedQueueIterator;
+
+/**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `LinkedQueueConstruct`, `LinkedQueueNew`, `LinkedQueueDestruct`,
- * `LinkedQueueDelete`.
+ * @see `LinkedQueueConstruct()`, `LinkedQueueNew()`, `LinkedQueueDestruct()`,
+ * `LinkedQueueDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief Pointer refers to the first element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `LinkedQueueTop`, `LinkedQueuePop`.
+     * @see `LinkedQueueTop()`, `LinkedQueuePop()`.
      */
     LinkedQueueNode *head;
     /**
      * @private
      * @brief Pointer refers to the last element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `LinkedQueuePush`.
+     * @see `LinkedQueuePush()`.
      */
     LinkedQueueNode *tail;
     /**
@@ -174,5 +183,41 @@ Bool LinkedQueueSome(LinkedQueue *const restrict queue,
  */
 Bool LinkedQueueAll(LinkedQueue *const restrict queue,
                     TestFunction *const test);
+
+/**
+ * @brief Get iterator of `queue`.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param queue `this`.
+ * @return LinkedQueueIterator Iterator SHALLOW copied from `queue->head`.
+ */
+LinkedQueueIterator LinkedQueueGetIterator(LinkedQueue *const restrict queue);
+
+/**
+ * @brief Move to the next element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return LinkedQueueIterator Renewed iterator.
+ */
+LinkedQueueIterator LinkedQueueIteratorNext(
+    LinkedQueueIterator const restrict iterator);
+
+/**
+ * @brief Get value of current element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *LinkedQueueIteratorGetValue(LinkedQueueIterator const restrict iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool LinkedQueueIteratorEnded(LinkedQueueIterator const restrict iterator);
 
 #endif  // __COLLECTIONS_LINKED_QUEUE__

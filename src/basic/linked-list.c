@@ -231,3 +231,23 @@ LinkedList *LinkedListSlice(LinkedList *const restrict list,
     }
     return slice;
 }
+
+LinkedListIterator LinkedListGetIterator(LinkedList *const restrict list) {
+    assert(list != NULL);
+    return list->head;
+}
+
+LinkedListIterator LinkedListIteratorNext(
+    LinkedListIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->next;
+}
+
+void *LinkedListIteratorGetValue(LinkedListIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->value;
+}
+
+Bool LinkedListIteratorEnded(LinkedListIterator const restrict iterator) {
+    return iterator == NULL;
+}

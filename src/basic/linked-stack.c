@@ -98,3 +98,23 @@ void LinkedStackPop(LinkedStack *const restrict stack) {
     LinkedStackNodeDelete(&node);
     stack->Size--;
 }
+
+LinkedStackIterator LinkedStackGetIterator(LinkedStack *const restrict stack) {
+    assert(stack != NULL);
+    return stack->tail;
+}
+
+LinkedStackIterator LinkedStackIteratorPrevious(
+    LinkedStackIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->previous;
+}
+
+void *LinkedStackIteratorGetValue(LinkedStackIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->value;
+}
+
+Bool LinkedStackIteratorEnded(LinkedStackIterator const restrict iterator) {
+    return iterator == NULL;
+}

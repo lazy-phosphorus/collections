@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "common.h"
 
 static Bool test(const void *value) {

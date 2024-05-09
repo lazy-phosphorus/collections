@@ -4,17 +4,29 @@
 #include "types.h"
 
 /**
+ * @brief Iterator of `ArrayHeap`.
+ * @attention This iterator has no void head node. You can call
+ * `ArrayHeapIteratorGetValue()` directly.
+ */
+typedef struct {
+    void *array;
+    unsigned long elementSize;
+    unsigned int current;
+    unsigned int size;
+} ArrayHeapIterator;
+
+/**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `ArrayHeapConstruct`, `ArrayHeapNew`, `ArrayHeapDestruct`,
- * `ArrayHeapDelete`.
+ * @see `ArrayHeapConstruct()`, `ArrayHeapNew()`, `ArrayHeapDestruct()`,
+ * `ArrayHeapDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief All elements will be stored in this member.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `ArrayHeapTop`, `ArrayHeapPush`, `ArrayHeapPop`.
+     * @see `ArrayHeapTop()`, `ArrayHeapPush()`, `ArrayHeapPop()`.
      */
     void *array;
     /**
@@ -113,5 +125,53 @@ void ArrayHeapPush(ArrayHeap *const restrict heap,
  * @param heap `this`
  */
 void ArrayHeapPop(ArrayHeap *const restrict heap);
+
+/**
+ * @brief Get iterator of `heap`.
+ *
+ * @param heap `this`.
+ * @return ArrayHeapIterator Iterator.
+ */
+ArrayHeapIterator ArrayHeapGetIterator(ArrayHeap *const restrict heap);
+
+/**
+ * @brief Get reverse iterator of `heap`.
+ *
+ * @param heap `this`.
+ * @return ArrayHeapIterator Iterator.
+ */
+ArrayHeapIterator ArrayHeapGetReverseIterator(ArrayHeap *const restrict heap);
+
+/**
+ * @brief Move to the next element.
+ *
+ * @param iterator `this`.
+ * @return ArrayHeapIterator Renewed iterator.
+ */
+ArrayHeapIterator ArrayHeapIteratorNext(ArrayHeapIterator const iterator);
+
+/**
+ * @brief Move to the previous element.
+ *
+ * @param iterator `this`.
+ * @return ArrayHeapIterator Renewed iterator.
+ */
+ArrayHeapIterator ArrayHeapIteratorPrevious(ArrayHeapIterator const iterator);
+
+/**
+ * @brief Get value of current element.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *ArrayHeapIteratorGetValue(ArrayHeapIterator const iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool ArrayHeapIteratorEnded(ArrayHeapIterator const iterator);
 
 #endif  // __COLLECTIONS_ARRAY_HEAP__

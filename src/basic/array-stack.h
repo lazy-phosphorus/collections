@@ -1,18 +1,32 @@
 #ifndef __COLLECTIONS_ARRAY_STACK__
 #define __COLLECTIONS_ARRAY_STACK__
 
+#include "types.h"
+
+/**
+ * @brief Iterator of `ArrayStack`.
+ * @attention This iterator has no void head node. You can call
+ * `ArrayStackIteratorGetValue()` directly.
+ */
+typedef struct {
+    void *array;
+    unsigned long elementSize;
+    unsigned int current;
+    unsigned int size;
+} ArrayStackIterator;
+
 /**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `ArrayStackConstruct`, `ArrayStackNew`, `ArrayStackDestruct`,
- * `ArrayStackDelete`.
+ * @see `ArrayStackConstruct()`, `ArrayStackNew()`, `ArrayStackDestruct()`,
+ * `ArrayStackDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief All elements will be stored in this member.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `ArrayStackPush`, `ArrayStackPop`.
+     * @see `ArrayStackPush()`, `ArrayStackPop()`.
      */
     void *array;
     /**
@@ -101,5 +115,55 @@ void ArrayStackPush(ArrayStack *const restrict stack,
  * @param stack `this`.
  */
 void ArrayStackPop(ArrayStack *const restrict stack);
+
+/**
+ * @brief Get iterator of `queue`.
+ *
+ * @param queue `this`.
+ * @return ArrayStackIterator Iterator.
+ */
+ArrayStackIterator ArrayStackGetIterator(ArrayStack *const restrict queue);
+
+/**
+ * @brief Get reverse iterator of `queue`.
+ *
+ * @param queue `this`.
+ * @return ArrayStackIterator Iterator.
+ */
+ArrayStackIterator ArrayStackGetReverseIterator(
+    ArrayStack *const restrict queue);
+
+/**
+ * @brief Move to the next element.
+ *
+ * @param iterator `this`.
+ * @return ArrayStackIterator Renewed iterator.
+ */
+ArrayStackIterator ArrayStackIteratorNext(ArrayStackIterator const iterator);
+
+/**
+ * @brief Move to the previous element.
+ *
+ * @param iterator `this`.
+ * @return ArrayStackIterator Renewed iterator.
+ */
+ArrayStackIterator ArrayStackIteratorPrevious(
+    ArrayStackIterator const iterator);
+
+/**
+ * @brief Get value of current element.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *ArrayStackIteratorGetValue(ArrayStackIterator const iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool ArrayStackIteratorEnded(ArrayStackIterator const iterator);
 
 #endif  // __COLLECTIONS_ARRAY_STACK__

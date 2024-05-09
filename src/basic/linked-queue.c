@@ -4,8 +4,6 @@
 #include <malloc.h>
 #include <memory.h>
 
-#include "types.h"
-
 void LinkedQueueNodeConstruct(LinkedQueueNode *const restrict node,
                               const void *const restrict value,
                               const unsigned long elementSize) {
@@ -131,4 +129,24 @@ Bool LinkedQueueAll(LinkedQueue *const restrict queue,
         temp = temp->next;
     }
     return TRUE;
+}
+
+LinkedQueueIterator LinkedQueueGetIterator(LinkedQueue *const restrict queue) {
+    assert(queue != NULL);
+    return queue->head;
+}
+
+LinkedQueueIterator LinkedQueueIteratorNext(
+    LinkedQueueIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->next;
+}
+
+void *LinkedQueueIteratorGetValue(LinkedQueueIterator const restrict iterator) {
+    assert(iterator != NULL);
+    return iterator->value;
+}
+
+Bool LinkedQueueIteratorEnded(LinkedQueueIterator const restrict iterator) {
+    return iterator == NULL;
 }

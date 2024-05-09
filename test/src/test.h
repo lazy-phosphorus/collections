@@ -2,9 +2,9 @@
 #define __TEST__
 
 typedef struct {
-    int a;
-    int b;
-    int c;
+    unsigned int a;
+    unsigned int b;
+    unsigned int c;
 } Test;
 
 int compare(const void *const a, const void *const b) {

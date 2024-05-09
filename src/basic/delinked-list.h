@@ -6,6 +6,9 @@
 /**
  * @brief Type of element in `DelinkedList`.
  * @attention It is no recommended to use this struct.
+ * @see `DelinkedListGetIterator()`, `DelinkedListGetReverseIterator()`,
+ * `DelinkedListIteratorNext()`, `DelinkedListIteratorPrevious()`,
+ * `DelinkedListIteratorGetValue()`, `DelinkedListIteratorEnded()`
  */
 typedef struct __DelinkedListNode {
     /**
@@ -26,25 +29,32 @@ typedef struct __DelinkedListNode {
 } DelinkedListNode;
 
 /**
+ * @brief Iterator of `DelinkedList`.
+ * @attention This iterator has no void head node. You can call
+ * `DelinkedListIteratorGetValue()` directly.
+ */
+typedef DelinkedListNode *DelinkedListIterator;
+
+/**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `DelinkedListConstruct`, `DelinkedListNew`, `DelinkedListDestruct`,
- * `DelinkedListDelete`.
+ * @see `DelinkedListConstruct()`, `DelinkedListNew()`,
+ * `DelinkedListDestruct()`, `DelinkedListDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief Pointer refers to the first element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `DelinkedListFront`, `DelinkedListSet`, `DelinkedListPushFront`,
-     * `DelinkedListPopFront`.
+     * @see `DelinkedListFront()`, `DelinkedListSet()`,
+     * `DelinkedListPushFront()`, `DelinkedListPopFront()`.
      */
     DelinkedListNode *head;
     /**
      * @private
      * @brief Pointer refers to the last element.
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `DelinkedListBack`, `DelinkedListSet`, `DelinkedListPushBack`,
+     * @see `DelinkedListBack()`, `DelinkedListSet()`, `DelinkedListPushBack()`,
      * `DelinkedListPopBack`.
      */
     DelinkedListNode *tail;
@@ -258,5 +268,63 @@ DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
  * @param list `this`.
  */
 void DelinkedListQuickSort(DelinkedList *const restrict list);
+
+/**
+ * @brief Get iterator of `list`.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param list `this`.
+ * @return DelinkedListIterator Iterator SHALLOW copied from `list->head`.
+ */
+DelinkedListIterator DelinkedListGetIterator(DelinkedList *const restrict list);
+
+/**
+ * @brief Get reverse iterator of `list`.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param list `this`
+ * @return DelinkedListIterator Iterator SHALLOW copied
+ * from `list->tail`.
+ */
+DelinkedListIterator DelinkedListGetReverseIterator(
+    DelinkedList *const restrict list);
+
+/**
+ * @brief Move to the next element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return DelinkedListIterator Renewed iterator.
+ */
+DelinkedListIterator DelinkedListIteratorNext(
+    DelinkedListIterator const restrict iterator);
+
+/**
+ * @brief Move to the previous element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return DelinkedListIterator Renewed iterator.
+ */
+DelinkedListIterator DelinkedListIteratorPrevious(
+    DelinkedListIterator const restrict iterator);
+
+/**
+ * @brief Get value of current element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *DelinkedListIteratorGetValue(
+    DelinkedListIterator const restrict iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool DelinkedListIteratorEnded(DelinkedListIterator const restrict iterator);
 
 #endif  // __COLLECTIONS_DELINKED_LIST__

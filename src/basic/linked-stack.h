@@ -1,9 +1,13 @@
 #ifndef __COLLECTIONS_LINKED_STACK__
 #define __COLLECTIONS_LINKED_STACK__
 
+#include "types.h"
+
 /**
  * @brief Type of element in `LinkedStack`.
  * @attention It is not recommended to use this struct.
+ * @see `LinkedStackGetIterator()`, `LinkedStackIteratorPrevious()`,
+ * `LinkedStackIteratorGetValue()`, `LinkedStackIteratorEnded()`
  */
 typedef struct __LinkedStackNode {
     /**
@@ -19,17 +23,24 @@ typedef struct __LinkedStackNode {
 } LinkedStackNode;
 
 /**
+ * @brief Iterator of `LinkedStack`.
+ * @attention This iterator has no void head node. You can call
+ * `LinkedStackIteratorGetValue()` directly.
+ */
+typedef LinkedStackNode *LinkedStackIterator;
+
+/**
  * @warning Don't initialize or free instance of this struct directly. Please
  * use functions below.
- * @see `LinkedStackConstruct`, `LinkedStackNew`, `LinkedStackDestruct`,
- * `LinkedStackDelete`.
+ * @see `LinkedStackConstruct()`, `LinkedStackNew()`, `LinkedStackDestruct()`,
+ * `LinkedStackDelete()`.
  */
 typedef struct {
     /**
      * @private
      * @brief Pointer refers to the last element(top element of the stack).
      * @warning Don't modify this member directly. Please use functions below.
-     * @see `LinkedStackTop`, `LinkedStackPush`, `LinkedStackPop`.
+     * @see `LinkedStackTop()`, `LinkedStackPush()`, `LinkedStackPop()`.
      */
     LinkedStackNode *tail;
     /**
@@ -140,5 +151,41 @@ void LinkedStackPush(LinkedStack *const restrict stack,
  * @param stack `this`.
  */
 void LinkedStackPop(LinkedStack *const restrict stack);
+
+/**
+ * @brief Get iterator of `stack`.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param stack `this`.
+ * @return LinkedStackIterator Iterator SHALLOW copied from `stack->head`.
+ */
+LinkedStackIterator LinkedStackGetIterator(LinkedStack *const restrict stack);
+
+/**
+ * @brief Move to the previous element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return LinkedStackIterator Renewed iterator.
+ */
+LinkedStackIterator LinkedStackIteratorPrevious(
+    LinkedStackIterator const restrict iterator);
+
+/**
+ * @brief Get value of current element.
+ * @attention The returned value is shallow copied. Don't free it.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *LinkedStackIteratorGetValue(LinkedStackIterator const restrict iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool LinkedStackIteratorEnded(LinkedStackIterator const restrict iterator);
 
 #endif  // __COLLECTIONS_LINKED_STACK__

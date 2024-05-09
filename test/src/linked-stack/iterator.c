@@ -6,11 +6,12 @@ int main() {
         Test test = {i, i + 1, i + 2};
         LinkedStackPush(stack, &test);
     }
-    for (unsigned int i = 0; i < 25; i++) {
-        Test *temp = (Test *)LinkedStackTop(stack);
+    LinkedStackIterator iterator = LinkedStackGetIterator(stack);
+    for (unsigned int i = 0; i < stack->Size; i++) {
+        Test *temp = (Test *)LinkedStackIteratorGetValue(iterator);
         if (temp->a != 24 - i || temp->b != 25 - i || temp->c != 26 - i)
             error(&stack, i);
-        LinkedStackPop(stack);
+        iterator = LinkedStackIteratorPrevious(iterator);
     }
     LinkedStackDelete(&stack);
     return 0;

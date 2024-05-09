@@ -115,3 +115,40 @@ void ArrayHeapPop(ArrayHeap *const restrict heap) {
     memcpy(heap->array + heap->elementSize * current,
            heap->array + heap->elementSize * heap->Size, heap->elementSize);
 }
+
+ArrayHeapIterator ArrayHeapGetIterator(ArrayHeap *const restrict heap) {
+    assert(heap != NULL);
+    ArrayHeapIterator iterator = {heap->array, heap->elementSize, 0,
+                                  heap->Size};
+    return iterator;
+}
+
+ArrayHeapIterator ArrayHeapGetReverseIterator(ArrayHeap *const restrict heap) {
+    assert(heap != NULL);
+    ArrayHeapIterator iterator = {heap->array, heap->elementSize,
+                                  heap->Size - 1, heap->Size};
+    return iterator;
+}
+
+ArrayHeapIterator ArrayHeapIteratorNext(ArrayHeapIterator const iterator) {
+    assert(iterator.current < iterator.size);
+    ArrayHeapIterator i = {iterator.array, iterator.elementSize,
+                           iterator.current + 1, iterator.size};
+    return i;
+}
+
+ArrayHeapIterator ArrayHeapIteratorPrevious(ArrayHeapIterator const iterator) {
+    assert(iterator.current != -1);
+    ArrayHeapIterator i = {iterator.array, iterator.elementSize,
+                           iterator.current - 1, iterator.size};
+    return i;
+}
+
+void *ArrayHeapIteratorGetValue(ArrayHeapIterator const iterator) {
+    assert(iterator.current < iterator.size && iterator.current != -1);
+    return iterator.array + iterator.current * iterator.elementSize;
+}
+
+Bool ArrayHeapIteratorEnded(ArrayHeapIterator const iterator) {
+    return iterator.current == iterator.size || iterator.current == -1;
+}

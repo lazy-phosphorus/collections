@@ -4,8 +4,6 @@
 #include <malloc.h>
 #include <memory.h>
 
-#include "types.h"
-
 void ArrayQueueConstruct(ArrayQueue *const restrict queue,
                          const unsigned int initialCapacity,
                          const unsigned long elementSize) {
@@ -99,4 +97,43 @@ Bool ArrayQueueAll(ArrayQueue *const restrict queue, TestFunction *const test) {
         if (test(temp) == FALSE) return FALSE;
     }
     return TRUE;
+}
+
+ArrayQueueIterator ArrayQueueGetIterator(ArrayQueue *const restrict queue) {
+    assert(queue != NULL);
+    ArrayQueueIterator iterator = {queue->array, queue->elementSize, 0,
+                                   queue->Size};
+    return iterator;
+}
+
+ArrayQueueIterator ArrayQueueGetReverseIterator(
+    ArrayQueue *const restrict queue) {
+    assert(queue != NULL);
+    ArrayQueueIterator iterator = {queue->array, queue->elementSize,
+                                   queue->Size - 1, queue->Size};
+    return iterator;
+}
+
+ArrayQueueIterator ArrayQueueIteratorNext(ArrayQueueIterator const iterator) {
+    assert(iterator.current < iterator.size);
+    ArrayQueueIterator i = {iterator.array, iterator.elementSize,
+                            iterator.current + 1, iterator.size};
+    return i;
+}
+
+ArrayQueueIterator ArrayQueueIteratorPrevious(
+    ArrayQueueIterator const iterator) {
+    assert(iterator.current != -1);
+    ArrayQueueIterator i = {iterator.array, iterator.elementSize,
+                            iterator.current - 1, iterator.size};
+    return i;
+}
+
+void *ArrayQueueIteratorGetValue(ArrayQueueIterator const iterator) {
+    assert(iterator.current < iterator.size && iterator.current != -1);
+    return iterator.array + iterator.current * iterator.elementSize;
+}
+
+Bool ArrayQueueIteratorEnded(ArrayQueueIterator const iterator) {
+    return iterator.current == iterator.size || iterator.current == -1;
 }

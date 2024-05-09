@@ -4,9 +4,6 @@
 #include <malloc.h>
 #include <memory.h>
 
-#include "basic/array-heap.h"
-#include "types.h"
-
 void PriorityQueueNodeConstruct(PriorityQueueNode *const restrict node,
                                 const int priority,
                                 const void *const restrict value,
