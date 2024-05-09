@@ -1,5 +1,5 @@
-#ifndef __ARRAY_HEAP_TEST__
-#define __ARRAY_HEAP_TEST__
+#ifndef __LINKED_HEAP_TEST__
+#define __LINKED_HEAP_TEST__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,4 +18,4 @@ int error(LinkedHeap **const restrict heap, const unsigned int i) {
     exit(-1);
 }
 
-#endif  // __ARRAY_HEAP_TEST__
+#endif  // __LINKED_HEAP_TEST__

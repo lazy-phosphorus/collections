@@ -1,7 +1,7 @@
 #ifndef __COLLECTIONS_PRIORITY_QUEUE__
 #define __COLLECTIONS_PRIORITY_QUEUE__
 
-#include "basic/array-heap.h"
+#include "array-heap.h"
 #include "types.h"
 
 /**
@@ -20,6 +20,8 @@ typedef struct {
      */
     void *value;
 } PriorityQueueNode;
+
+typedef ArrayHeapIterator PriorityQueueIterator;
 
 /**
  * @brief This struct is implemented by `ArrayHeap`.
@@ -162,6 +164,8 @@ void PriorityQueuePop(PriorityQueue *const restrict queue);
  * @brief Every value of elements in `queue` will be passed into `test()`. If
  * `test()` returns `TRUE` AT LEAST ONCE, `TRUE` will be returned. Otherwise,
  * `FALSE` will be returned. O(n).
+ * @attention This function will try to visit every element until `test()`
+ * returns `TRUE`, but it will NOT adhere to the priority order.
  *
  * @param queue `this`
  * @param test Function used in checking if some elements satisfy certain
@@ -174,6 +178,8 @@ Bool PriorityQueueSome(PriorityQueue *const restrict queue,
  * @brief Every value of elements in `queue` will be passed into `test()`. If
  * `test()` ALWAYS returns `TRUE`, `TRUE` will be returned. Otherwise,
  * `FALSE` will be returned. O(n).
+ * @attention This function will try to visit every element until `test()`
+ * returns `FALSE`, but it will NOT adhere to the priority order.
  *
  * @param queue `this`
  * @param test Function used in checking if some elements satisfy certain
@@ -181,5 +187,57 @@ Bool PriorityQueueSome(PriorityQueue *const restrict queue,
  */
 Bool PriorityQueueAll(PriorityQueue *const restrict queue,
                       TestFunction *const test);
+
+/**
+ * @brief Get iterator of `queue`.
+ *
+ * @param queue `this`.
+ * @return PriorityQueueIterator Iterator.
+ */
+PriorityQueueIterator PriorityQueueGetIterator(
+    PriorityQueue *const restrict queue);
+
+/**
+ * @brief Get reverse iterator of `queue`.
+ *
+ * @param queue `this`.
+ * @return PriorityQueueIterator Iterator.
+ */
+PriorityQueueIterator PriorityQueueGetReverseIterator(
+    PriorityQueue *const restrict queue);
+
+/**
+ * @brief Move to the next element.
+ *
+ * @param iterator `this`.
+ * @return PriorityQueueIterator Renewed iterator.
+ */
+PriorityQueueIterator PriorityQueueIteratorNext(
+    PriorityQueueIterator const iterator);
+
+/**
+ * @brief Move to the previous element.
+ *
+ * @param iterator `this`.
+ * @return PriorityQueueIterator Renewed iterator.
+ */
+PriorityQueueIterator PriorityQueueIteratorPrevious(
+    PriorityQueueIterator const iterator);
+
+/**
+ * @brief Get value of current element.
+ *
+ * @param iterator `this`.
+ * @return void* Value of element.
+ */
+void *PriorityQueueIteratorGetValue(PriorityQueueIterator const iterator);
+
+/**
+ * @brief Check if iterator reaches end.
+ *
+ * @param iterator `this`.
+ * @return Bool.
+ */
+Bool PriorityQueueIteratorEnded(PriorityQueueIterator const iterator);
 
 #endif  // __COLLECTIONS_PRIORITY_QUEUE__

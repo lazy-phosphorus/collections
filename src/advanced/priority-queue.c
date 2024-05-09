@@ -142,3 +142,48 @@ Bool PriorityQueueAll(PriorityQueue *const restrict queue,
     }
     return TRUE;
 }
+
+PriorityQueueIterator PriorityQueueGetIterator(
+    PriorityQueue *const restrict queue) {
+    assert(queue != NULL);
+    PriorityQueueIterator iterator = {
+        queue->heap->array, queue->heap->elementSize, 0, queue->heap->Size};
+    return iterator;
+}
+
+PriorityQueueIterator PriorityQueueGetReverseIterator(
+    PriorityQueue *const restrict queue) {
+    assert(queue != NULL);
+    PriorityQueueIterator iterator = {queue->heap->array,
+                                      queue->heap->elementSize,
+                                      queue->heap->Size - 1, queue->heap->Size};
+    return iterator;
+}
+
+PriorityQueueIterator PriorityQueueIteratorNext(
+    PriorityQueueIterator const iterator) {
+    assert(iterator.current < iterator.size);
+    PriorityQueueIterator i = {iterator.array, iterator.elementSize,
+                               iterator.current + 1, iterator.size};
+    return i;
+}
+
+PriorityQueueIterator PriorityQueueIteratorPrevious(
+    PriorityQueueIterator const iterator) {
+    assert(iterator.current != -1);
+    PriorityQueueIterator i = {iterator.array, iterator.elementSize,
+                               iterator.current - 1, iterator.size};
+    return i;
+}
+
+void *PriorityQueueIteratorGetValue(PriorityQueueIterator const iterator) {
+    assert(iterator.current < iterator.size && iterator.current != -1);
+    PriorityQueueNode *node =
+        (PriorityQueueNode *)(iterator.array +
+                              iterator.current * iterator.elementSize);
+    return node->value;
+}
+
+Bool PriorityQueueIteratorEnded(PriorityQueueIterator const iterator) {
+    return iterator.current == iterator.size || iterator.current == -1;
+}
