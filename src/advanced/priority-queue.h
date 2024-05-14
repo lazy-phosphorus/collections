@@ -162,28 +162,30 @@ void PriorityQueuePop(PriorityQueue *const restrict queue);
 
 /**
  * @brief Every value of elements in `queue` will be passed into `test()`. If
- * `test()` returns `TRUE` AT LEAST ONCE, `TRUE` will be returned. Otherwise,
- * `FALSE` will be returned. O(n).
+ * `test()` returns `TRUE`, `TRUE` will be returned immediately. If `FALSE` is
+ * always returned by `test()`, `FALSE` will be returned. O(n).
  * @attention This function will try to visit every element until `test()`
  * returns `TRUE`, but it will NOT adhere to the priority order.
  *
  * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
+ * @return Bool
  */
 Bool PriorityQueueSome(PriorityQueue *const restrict queue,
                        TestFunction *const test);
 
 /**
  * @brief Every value of elements in `queue` will be passed into `test()`. If
- * `test()` ALWAYS returns `TRUE`, `TRUE` will be returned. Otherwise,
- * `FALSE` will be returned. O(n).
+ * `test()` returns `FALSE`, `FALSE` will be returned immediately. If `TRUE` is
+ * always returned by `test()`, `TRUE` will be returned. O(n).
  * @attention This function will try to visit every element until `test()`
  * returns `FALSE`, but it will NOT adhere to the priority order.
  *
  * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
+ * @return Bool
  */
 Bool PriorityQueueAll(PriorityQueue *const restrict queue,
                       TestFunction *const test);

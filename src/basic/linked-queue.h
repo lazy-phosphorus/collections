@@ -162,24 +162,26 @@ void LinkedQueuePop(LinkedQueue *const restrict queue);
 
 /**
  * @brief Every value of elements in `queue` will be passed into `test()`. If
- * `test()` returns `TRUE` AT LEAST ONCE, `TRUE` will be returned. Otherwise,
- * `FALSE` will be returned. O(n).
+ * `test()` returns `TRUE`, `TRUE` will be returned immediately. If `FALSE` is
+ * always returned by `test()`, `FALSE` will be returned. O(n).
  *
  * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
+ * @return Bool
  */
 Bool LinkedQueueSome(LinkedQueue *const restrict queue,
                      TestFunction *const test);
 
 /**
  * @brief Every value of elements in `queue` will be passed into `test()`. If
- * `test()` ALWAYS returns `TRUE`, `TRUE` will be returned. Otherwise,
- * `FALSE` will be returned. O(n).
+ * `test()` returns `FALSE`, `FALSE` will be returned immediately. If `TRUE` is
+ * always returned by `test()`, `TRUE` will be returned. O(n).
  *
  * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
+ * @return Bool
  */
 Bool LinkedQueueAll(LinkedQueue *const restrict queue,
                     TestFunction *const test);

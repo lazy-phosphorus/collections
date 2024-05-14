@@ -133,7 +133,6 @@ void AvlTreeConstruct(AvlTree *const restrict tree,
 /**
  * @brief Allocate a new tree in heap. O(1).
  *
- * @param initialCapacity Initial capacity of tree.
  * @param elementSize Element size of tree.
  * @param compare Function used in comparing two elements.
  * @return AvlTree* Pointer refering to a heap address.
@@ -188,23 +187,27 @@ void AvlTreeRemove(AvlTree *const restrict tree,
 
 /**
  * @brief Every value of elements in `tree` will be passed into `test()`
- * according to priority. If `test()` returns `TRUE` AT LEAST ONCE, `TRUE` will
- * be returned. Otherwise, `FALSE` will be returned. O(n).
+ * according to priority. If `test()` returns `TRUE`, `TRUE` will be returned
+ * immediately. If `FALSE` is always returned by `test()`, `FALSE` will be
+ * returned. O(n).
  *
  * @param tree `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
+ * @return Bool
  */
 Bool AvlTreeSome(AvlTree *const restrict tree, TestFunction *const test);
 
 /**
  * @brief Every value of elements in `tree` will be passed into `test()`
- * according to priority. If `test()` ALWAYS returns `TRUE`, `TRUE` will
- * be returned. Otherwise, `FALSE` will be returned. O(n).
+ * according to priority. If `test()` returns `FALSE`, `FALSE` will be returned
+ * immediately. If `TRUE` is always returned by `test()`, `TRUE` will be
+ * returned. O(n).
  *
  * @param tree `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
+ * @return Bool
  */
 Bool AvlTreeAll(AvlTree *const restrict tree, TestFunction *const test);
 

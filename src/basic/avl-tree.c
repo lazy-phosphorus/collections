@@ -118,7 +118,10 @@ void *AvlTreeFind(const AvlTree *const restrict tree,
         else
             break;
     }
-    return node;
+    if (node != NULL)
+        return node->value;
+    else
+        return NULL;
 }
 
 static inline unsigned int __max(unsigned int a, unsigned int b) {
