@@ -76,7 +76,7 @@ void LinkedStackDelete(LinkedStack **const restrict stack) {
 
 void *LinkedStackTop(const LinkedStack *const restrict stack) {
     assert(stack != NULL);
-    if (stack->Size == 0) return NULL;
+    assert(stack->Size > 0);
     return stack->tail->value;
 }
 

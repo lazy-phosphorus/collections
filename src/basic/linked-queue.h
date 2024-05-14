@@ -165,7 +165,7 @@ void LinkedQueuePop(LinkedQueue *const restrict queue);
  * `test()` returns `TRUE` AT LEAST ONCE, `TRUE` will be returned. Otherwise,
  * `FALSE` will be returned. O(n).
  *
- * @param queue `this`
+ * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
  */
@@ -177,7 +177,7 @@ Bool LinkedQueueSome(LinkedQueue *const restrict queue,
  * `test()` ALWAYS returns `TRUE`, `TRUE` will be returned. Otherwise,
  * `FALSE` will be returned. O(n).
  *
- * @param queue `this`
+ * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
  */
@@ -185,7 +185,7 @@ Bool LinkedQueueAll(LinkedQueue *const restrict queue,
                     TestFunction *const test);
 
 /**
- * @brief Get iterator of `queue`.
+ * @brief Get iterator of `queue`. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param queue `this`.
@@ -194,7 +194,7 @@ Bool LinkedQueueAll(LinkedQueue *const restrict queue,
 LinkedQueueIterator LinkedQueueGetIterator(LinkedQueue *const restrict queue);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -204,7 +204,7 @@ LinkedQueueIterator LinkedQueueIteratorNext(
     LinkedQueueIterator const restrict iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -213,7 +213,7 @@ LinkedQueueIterator LinkedQueueIteratorNext(
 void *LinkedQueueIteratorGetValue(LinkedQueueIterator const restrict iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

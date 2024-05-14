@@ -254,7 +254,7 @@ LinkedList *LinkedListSlice(LinkedList *const restrict list,
                             const unsigned int start, const unsigned int size);
 
 /**
- * @brief Get iterator of `list`.
+ * @brief Get iterator of `list`. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
@@ -263,7 +263,7 @@ LinkedList *LinkedListSlice(LinkedList *const restrict list,
 LinkedListIterator LinkedListGetIterator(LinkedList *const restrict list);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -273,7 +273,7 @@ LinkedListIterator LinkedListIteratorNext(
     LinkedListIterator const restrict iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -282,7 +282,7 @@ LinkedListIterator LinkedListIteratorNext(
 void *LinkedListIteratorGetValue(LinkedListIterator const restrict iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

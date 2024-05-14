@@ -92,9 +92,8 @@ void PriorityQueueDelete(PriorityQueue **const restrict queue) {
 
 void *PriorityQueueFront(const PriorityQueue *const restrict queue) {
     assert(queue != NULL);
-
+    assert(queue->Size > 0);
     PriorityQueueNode *temp = (PriorityQueueNode *)ArrayHeapTop(queue->heap);
-    if (temp == NULL) return NULL;
     return temp->value;
 }
 
@@ -146,8 +145,8 @@ Bool PriorityQueueAll(PriorityQueue *const restrict queue,
 PriorityQueueIterator PriorityQueueGetIterator(
     PriorityQueue *const restrict queue) {
     assert(queue != NULL);
-    PriorityQueueIterator iterator = {
-        queue->heap->array, queue->heap->elementSize, 0, queue->heap->Size};
+    PriorityQueueIterator iterator = {queue->heap->array,
+                                      queue->heap->elementSize, 0, queue->Size};
     return iterator;
 }
 
@@ -155,8 +154,8 @@ PriorityQueueIterator PriorityQueueGetReverseIterator(
     PriorityQueue *const restrict queue) {
     assert(queue != NULL);
     PriorityQueueIterator iterator = {queue->heap->array,
-                                      queue->heap->elementSize,
-                                      queue->heap->Size - 1, queue->heap->Size};
+                                      queue->heap->elementSize, queue->Size - 1,
+                                      queue->Size};
     return iterator;
 }
 

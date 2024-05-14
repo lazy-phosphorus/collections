@@ -270,7 +270,7 @@ DelinkedList *DelinkedListSlice(DelinkedList *const restrict list,
 void DelinkedListQuickSort(DelinkedList *const restrict list);
 
 /**
- * @brief Get iterator of `list`.
+ * @brief Get iterator of `list`. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`.
@@ -279,7 +279,7 @@ void DelinkedListQuickSort(DelinkedList *const restrict list);
 DelinkedListIterator DelinkedListGetIterator(DelinkedList *const restrict list);
 
 /**
- * @brief Get reverse iterator of `list`.
+ * @brief Get reverse iterator of `list`. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param list `this`
@@ -290,7 +290,7 @@ DelinkedListIterator DelinkedListGetReverseIterator(
     DelinkedList *const restrict list);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -300,7 +300,7 @@ DelinkedListIterator DelinkedListIteratorNext(
     DelinkedListIterator const restrict iterator);
 
 /**
- * @brief Move to the previous element.
+ * @brief Move to the previous element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -310,7 +310,7 @@ DelinkedListIterator DelinkedListIteratorPrevious(
     DelinkedListIterator const restrict iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -320,7 +320,7 @@ void *DelinkedListIteratorGetValue(
     DelinkedListIterator const restrict iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

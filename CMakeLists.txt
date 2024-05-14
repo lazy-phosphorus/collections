@@ -1,73 +1,63 @@
+# Metadata
 cmake_minimum_required(VERSION 3.28)
 set(CMAKE_C_COMPILER "clang")
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 17)
-enable_testing()
 
+# Project infos
 project(collections LANGUAGES C)
 
+# Project settings
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+# Path settings
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_HEADER_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+# Include settings
 include_directories(${SOURCE_DIR} ${SOURCE_DIR}/basic ${SOURCE_DIR}/advanced)
 
+# Clean cache
 message(STATUS "Clean header output directory")
 file(GLOB files ${CMAKE_HEADER_OUTPUT_DIRECTORY}/*)
 foreach(file_path ${files})
     file(REMOVE ${file_path})
-endforeach()
-
+    endforeach()
 message(STATUS "Clean library output directory")
 file(GLOB files ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*)
 foreach(file_path ${files})
     file(REMOVE ${file_path})
 endforeach()
 
-# file(GLOB files ${SOURCE_DIR}/basic/*.c)
-# foreach(file_path ${files})
-#     get_filename_component(file_name ${file_path} NAME_WLE)
-#     add_library(${file_name}_shared SHARED ${file_path})
-#     add_library(${file_name}_static STATIC ${file_path})
-#     set_target_properties(${file_name}_shared PROPERTIES OUTPUT_NAME ${file_name})
-#     set_target_properties(${file_name}_static PROPERTIES OUTPUT_NAME ${file_name})
-#     set_target_properties(${file_name}_shared PROPERTIES CLEAN_DIRECT_OUTPUT 1)
-#     set_target_properties(${file_name}_static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
-# endforeach()
-
-# add_library(priority_queue_shared SHARED ${SOURCE_DIR}/advanced/priority-queue.c ${SOURCE_DIR}/basic/array-heap.c)
-# add_library(priority_queue_static STATIC ${SOURCE_DIR}/advanced/priority-queue.c ${SOURCE_DIR}/basic/array-heap.c)
-# set_target_properties(priority_queue_shared PROPERTIES OUTPUT_NAME priority-queue)
-# set_target_properties(priority_queue_static PROPERTIES OUTPUT_NAME priority-queue)
-# set_target_properties(priority_queue_shared PROPERTIES CLEAN_DIRECT_OUTPUT 1)
-# set_target_properties(priority_queue_static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
-
+# Generate libraries
 aux_source_directory(${SOURCE_DIR}/basic basic)
 aux_source_directory(${SOURCE_DIR}/advanced advanced)
-add_library(collections_shared SHARED ${basic} ${advanced})
 add_library(collections_static STATIC ${basic} ${advanced})
-set_target_properties(collections_shared PROPERTIES OUTPUT_NAME collections)
 set_target_properties(collections_static PROPERTIES OUTPUT_NAME collections)
-set_target_properties(collections_shared PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 set_target_properties(collections_static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+add_library(collections_dynamic SHARED ${basic} ${advanced})
+set_target_properties(collections_dynamic PROPERTIES OUTPUT_NAME collections)
+set_target_properties(collections_dynamic PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
-
-message(STATUS "Generate headers")
-file(GLOB files ${SOURCE_DIR}/basic/*.h)
-foreach(file_path ${files})
-    file(COPY ${file_path} DESTINATION ${CMAKE_HEADER_OUTPUT_DIRECTORY})
+# Copy headers
+file(GLOB headers ${SOURCE_DIR}/basic/*.h)
+foreach(header ${headers})
+    file(COPY ${header} DESTINATION ${CMAKE_HEADER_OUTPUT_DIRECTORY}/collections)
+endforeach()
+file(GLOB headers ${SOURCE_DIR}/advanced/*.h)
+foreach(header ${headers})
+    file(COPY ${header} DESTINATION ${CMAKE_HEADER_OUTPUT_DIRECTORY}/collections)
+endforeach()
+file(GLOB headers ${SOURCE_DIR}/*.h)
+foreach(header ${headers})
+    file(COPY ${header} DESTINATION ${CMAKE_HEADER_OUTPUT_DIRECTORY}/collections)
 endforeach()
 
-file(GLOB files ${SOURCE_DIR}/advanced/*.h)
-foreach(file_path ${files})
-    file(COPY ${file_path} DESTINATION ${CMAKE_HEADER_OUTPUT_DIRECTORY})
-endforeach()
+# Unit test
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    enable_testing()
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
+endif()
 
-file(GLOB files ${SOURCE_DIR}/*.h)
-foreach(file_path ${files})
-    file(COPY ${file_path} DESTINATION ${CMAKE_HEADER_OUTPUT_DIRECTORY})
-endforeach()
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)

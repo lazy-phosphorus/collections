@@ -5,6 +5,7 @@
 #include "array-list.h"
 #include "array-queue.h"
 #include "array-stack.h"
+#include "avl-tree.h"
 #include "delinked-list.h"
 #include "linked-heap.h"
 #include "linked-list.h"

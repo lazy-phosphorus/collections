@@ -214,7 +214,7 @@ ArrayList *ArrayListSlice(const ArrayList *const restrict list,
 void ArrayListQuickSort(ArrayList *const restrict list);
 
 /**
- * @brief Get iterator of `list`.
+ * @brief Get iterator of `list`. O(1).
  *
  * @param list `this`.
  * @return ArrayListIterator Iterator.
@@ -222,7 +222,7 @@ void ArrayListQuickSort(ArrayList *const restrict list);
 ArrayListIterator ArrayListGetIterator(ArrayList *const restrict list);
 
 /**
- * @brief Get reverse iterator of `list`.
+ * @brief Get reverse iterator of `list`. O(1).
  *
  * @param list `this`.
  * @return ArrayListIterator Iterator.
@@ -230,7 +230,7 @@ ArrayListIterator ArrayListGetIterator(ArrayList *const restrict list);
 ArrayListIterator ArrayListGetReverseIterator(ArrayList *const restrict list);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayListIterator Renewed iterator.
@@ -238,7 +238,7 @@ ArrayListIterator ArrayListGetReverseIterator(ArrayList *const restrict list);
 ArrayListIterator ArrayListIteratorNext(ArrayListIterator const iterator);
 
 /**
- * @brief Move to the previous element.
+ * @brief Move to the previous element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayListIterator Renewed iterator.
@@ -246,7 +246,7 @@ ArrayListIterator ArrayListIteratorNext(ArrayListIterator const iterator);
 ArrayListIterator ArrayListIteratorPrevious(ArrayListIterator const iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  *
  * @param iterator `this`.
  * @return void* Value of element.
@@ -254,7 +254,7 @@ ArrayListIterator ArrayListIteratorPrevious(ArrayListIterator const iterator);
 void *ArrayListIteratorGetValue(ArrayListIterator const iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

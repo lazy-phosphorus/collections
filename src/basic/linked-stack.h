@@ -153,7 +153,7 @@ void LinkedStackPush(LinkedStack *const restrict stack,
 void LinkedStackPop(LinkedStack *const restrict stack);
 
 /**
- * @brief Get iterator of `stack`.
+ * @brief Get iterator of `stack`. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param stack `this`.
@@ -162,7 +162,7 @@ void LinkedStackPop(LinkedStack *const restrict stack);
 LinkedStackIterator LinkedStackGetIterator(LinkedStack *const restrict stack);
 
 /**
- * @brief Move to the previous element.
+ * @brief Move to the previous element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -172,7 +172,7 @@ LinkedStackIterator LinkedStackIteratorPrevious(
     LinkedStackIterator const restrict iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  * @attention The returned value is shallow copied. Don't free it.
  *
  * @param iterator `this`.
@@ -181,7 +181,7 @@ LinkedStackIterator LinkedStackIteratorPrevious(
 void *LinkedStackIteratorGetValue(LinkedStackIterator const restrict iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

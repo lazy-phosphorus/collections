@@ -117,7 +117,7 @@ void ArrayStackPush(ArrayStack *const restrict stack,
 void ArrayStackPop(ArrayStack *const restrict stack);
 
 /**
- * @brief Get iterator of `queue`.
+ * @brief Get iterator of `queue`. O(1).
  *
  * @param queue `this`.
  * @return ArrayStackIterator Iterator.
@@ -125,7 +125,7 @@ void ArrayStackPop(ArrayStack *const restrict stack);
 ArrayStackIterator ArrayStackGetIterator(ArrayStack *const restrict queue);
 
 /**
- * @brief Get reverse iterator of `queue`.
+ * @brief Get reverse iterator of `queue`. O(1).
  *
  * @param queue `this`.
  * @return ArrayStackIterator Iterator.
@@ -134,7 +134,7 @@ ArrayStackIterator ArrayStackGetReverseIterator(
     ArrayStack *const restrict queue);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayStackIterator Renewed iterator.
@@ -142,7 +142,7 @@ ArrayStackIterator ArrayStackGetReverseIterator(
 ArrayStackIterator ArrayStackIteratorNext(ArrayStackIterator const iterator);
 
 /**
- * @brief Move to the previous element.
+ * @brief Move to the previous element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayStackIterator Renewed iterator.
@@ -151,7 +151,7 @@ ArrayStackIterator ArrayStackIteratorPrevious(
     ArrayStackIterator const iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  *
  * @param iterator `this`.
  * @return void* Value of element.
@@ -159,7 +159,7 @@ ArrayStackIterator ArrayStackIteratorPrevious(
 void *ArrayStackIteratorGetValue(ArrayStackIterator const iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

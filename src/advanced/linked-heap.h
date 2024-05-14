@@ -72,20 +72,24 @@ typedef struct {
  *
  * @param node Target to be constructed.
  * @param value Value of `node`. It will be DEEP copied.
+ * @param parent Parent of `node`.
  * @param elementSize Size of `value`.
  */
 void LinkedHeapNodeConstruct(LinkedHeapNode *const restrict node,
                              const void *const restrict value,
+                             LinkedHeapNode *const restrict parent,
                              unsigned long elementSize);
 
 /**
  * @brief Allocate a new node in heap. O(1).
  *
  * @param value Value of node. It will be DEEP copied.
+ * @param parent Parent of node.
  * @param elementSize Size of `value`.
  * @return LinkedHeapNode* Pointer refering to a heap address.
  */
 LinkedHeapNode *LinkedHeapNodeNew(const void *const restrict value,
+                                  LinkedHeapNode *const restrict parent,
                                   unsigned long elementSize);
 
 /**

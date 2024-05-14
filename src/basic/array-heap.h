@@ -127,7 +127,7 @@ void ArrayHeapPush(ArrayHeap *const restrict heap,
 void ArrayHeapPop(ArrayHeap *const restrict heap);
 
 /**
- * @brief Get iterator of `heap`.
+ * @brief Get iterator of `heap`. O(1).
  *
  * @param heap `this`.
  * @return ArrayHeapIterator Iterator.
@@ -135,7 +135,7 @@ void ArrayHeapPop(ArrayHeap *const restrict heap);
 ArrayHeapIterator ArrayHeapGetIterator(ArrayHeap *const restrict heap);
 
 /**
- * @brief Get reverse iterator of `heap`.
+ * @brief Get reverse iterator of `heap`. O(1).
  *
  * @param heap `this`.
  * @return ArrayHeapIterator Iterator.
@@ -143,7 +143,7 @@ ArrayHeapIterator ArrayHeapGetIterator(ArrayHeap *const restrict heap);
 ArrayHeapIterator ArrayHeapGetReverseIterator(ArrayHeap *const restrict heap);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayHeapIterator Renewed iterator.
@@ -151,7 +151,7 @@ ArrayHeapIterator ArrayHeapGetReverseIterator(ArrayHeap *const restrict heap);
 ArrayHeapIterator ArrayHeapIteratorNext(ArrayHeapIterator const iterator);
 
 /**
- * @brief Move to the previous element.
+ * @brief Move to the previous element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayHeapIterator Renewed iterator.
@@ -159,7 +159,7 @@ ArrayHeapIterator ArrayHeapIteratorNext(ArrayHeapIterator const iterator);
 ArrayHeapIterator ArrayHeapIteratorPrevious(ArrayHeapIterator const iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  *
  * @param iterator `this`.
  * @return void* Value of element.
@@ -167,7 +167,7 @@ ArrayHeapIterator ArrayHeapIteratorPrevious(ArrayHeapIterator const iterator);
 void *ArrayHeapIteratorGetValue(ArrayHeapIterator const iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

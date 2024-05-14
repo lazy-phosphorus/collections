@@ -77,7 +77,7 @@ void LinkedQueueDelete(LinkedQueue **const restrict queue) {
 
 void *LinkedQueueFront(const LinkedQueue *const restrict queue) {
     assert(queue != NULL);
-    if (queue->Size == 0) return NULL;
+    assert(queue->Size > 0);
     return queue->head->value;
 }
 

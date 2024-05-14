@@ -167,7 +167,7 @@ void PriorityQueuePop(PriorityQueue *const restrict queue);
  * @attention This function will try to visit every element until `test()`
  * returns `TRUE`, but it will NOT adhere to the priority order.
  *
- * @param queue `this`
+ * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
  */
@@ -181,7 +181,7 @@ Bool PriorityQueueSome(PriorityQueue *const restrict queue,
  * @attention This function will try to visit every element until `test()`
  * returns `FALSE`, but it will NOT adhere to the priority order.
  *
- * @param queue `this`
+ * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
  */
@@ -189,7 +189,7 @@ Bool PriorityQueueAll(PriorityQueue *const restrict queue,
                       TestFunction *const test);
 
 /**
- * @brief Get iterator of `queue`.
+ * @brief Get iterator of `queue`. O(1).
  *
  * @param queue `this`.
  * @return PriorityQueueIterator Iterator.
@@ -198,7 +198,7 @@ PriorityQueueIterator PriorityQueueGetIterator(
     PriorityQueue *const restrict queue);
 
 /**
- * @brief Get reverse iterator of `queue`.
+ * @brief Get reverse iterator of `queue`. O(1).
  *
  * @param queue `this`.
  * @return PriorityQueueIterator Iterator.
@@ -207,7 +207,7 @@ PriorityQueueIterator PriorityQueueGetReverseIterator(
     PriorityQueue *const restrict queue);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  *
  * @param iterator `this`.
  * @return PriorityQueueIterator Renewed iterator.
@@ -216,7 +216,7 @@ PriorityQueueIterator PriorityQueueIteratorNext(
     PriorityQueueIterator const iterator);
 
 /**
- * @brief Move to the previous element.
+ * @brief Move to the previous element. O(1).
  *
  * @param iterator `this`.
  * @return PriorityQueueIterator Renewed iterator.
@@ -225,7 +225,7 @@ PriorityQueueIterator PriorityQueueIteratorPrevious(
     PriorityQueueIterator const iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  *
  * @param iterator `this`.
  * @return void* Value of element.
@@ -233,7 +233,7 @@ PriorityQueueIterator PriorityQueueIteratorPrevious(
 void *PriorityQueueIteratorGetValue(PriorityQueueIterator const iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

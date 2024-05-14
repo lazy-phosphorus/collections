@@ -8,6 +8,7 @@
 
 void LinkedHeapNodeConstruct(LinkedHeapNode *const restrict node,
                              const void *const restrict value,
+                             LinkedHeapNode *const restrict parent,
                              unsigned long elementSize) {
     assert(node != NULL);
     assert(value != NULL);
@@ -16,15 +17,16 @@ void LinkedHeapNodeConstruct(LinkedHeapNode *const restrict node,
     node->value = malloc(elementSize);
     assert(node->value != NULL);
     memcpy(node->value, value, elementSize);
-    node->parent = NULL;
+    node->parent = parent;
     node->left = NULL;
     node->right = NULL;
 }
 
 LinkedHeapNode *LinkedHeapNodeNew(const void *const restrict value,
+                                  LinkedHeapNode *const restrict parent,
                                   unsigned long elementSize) {
     LinkedHeapNode *node = (LinkedHeapNode *)malloc(sizeof(LinkedHeapNode));
-    LinkedHeapNodeConstruct(node, value, elementSize);
+    LinkedHeapNodeConstruct(node, value, parent, elementSize);
     return node;
 }
 
@@ -95,8 +97,7 @@ void LinkedHeapDelete(LinkedHeap **const restrict heap) {
 
 void *LinkedHeapTop(const LinkedHeap *const restrict heap) {
     assert(heap != NULL);
-
-    if (heap->Size == 0) return NULL;
+    assert(heap->Size > 0);
     return heap->root->value;
 }
 
@@ -109,7 +110,7 @@ void LinkedHeapPush(LinkedHeap *const restrict heap,
     LinkedHeapNode *node = NULL;
     void *temp = NULL;
     if (heap->Size == 0) {
-        heap->root = LinkedHeapNodeNew(value, heap->elementSize);
+        heap->root = LinkedHeapNodeNew(value, NULL, heap->elementSize);
         heap->Size++;
         return;
     }
@@ -124,12 +125,10 @@ void LinkedHeapPush(LinkedHeap *const restrict heap,
     }
 
     if (node->left == NULL) {
-        node->left = LinkedHeapNodeNew(value, heap->elementSize);
-        node->left->parent = node;
+        node->left = LinkedHeapNodeNew(value, node, heap->elementSize);
         node = node->left;
     } else {
-        node->right = LinkedHeapNodeNew(value, heap->elementSize);
-        node->right->parent = node;
+        node->right = LinkedHeapNodeNew(value, node, heap->elementSize);
         node = node->right;
     }
 
@@ -199,5 +198,6 @@ void LinkedHeapPop(LinkedHeap *const restrict heap) {
                 break;
         }
     }
+    ArrayQueueDestruct(&queue);
     heap->Size--;
 }

@@ -43,7 +43,7 @@ void ArrayQueueDelete(ArrayQueue **const restrict queue) {
 
 void *ArrayQueueFront(const ArrayQueue *const restrict queue) {
     assert(queue != NULL);
-    if (queue->Size == 0) return NULL;
+    assert(queue->Size > 0);
     return queue->array;
 }
 

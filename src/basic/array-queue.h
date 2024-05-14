@@ -121,7 +121,7 @@ void ArrayQueuePop(ArrayQueue *const restrict queue);
  * `test()` returns `TRUE` AT LEAST ONCE, `TRUE` will be returned. Otherwise,
  * `FALSE` will be returned. O(n).
  *
- * @param queue `this`
+ * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
  */
@@ -132,14 +132,14 @@ Bool ArrayQueueSome(ArrayQueue *const restrict queue, TestFunction *const test);
  * `test()` ALWAYS returns `TRUE`, `TRUE` will be returned. Otherwise,
  * `FALSE` will be returned. O(n).
  *
- * @param queue `this`
+ * @param queue `this`.
  * @param test Function used in checking if some elements satisfy certain
  * conditions.
  */
 Bool ArrayQueueAll(ArrayQueue *const restrict queue, TestFunction *const test);
 
 /**
- * @brief Get iterator of `queue`.
+ * @brief Get iterator of `queue`. O(1).
  *
  * @param queue `this`.
  * @return ArrayQueueIterator Iterator.
@@ -147,7 +147,7 @@ Bool ArrayQueueAll(ArrayQueue *const restrict queue, TestFunction *const test);
 ArrayQueueIterator ArrayQueueGetIterator(ArrayQueue *const restrict queue);
 
 /**
- * @brief Get reverse iterator of `queue`.
+ * @brief Get reverse iterator of `queue`. O(1).
  *
  * @param queue `this`.
  * @return ArrayQueueIterator Iterator.
@@ -156,7 +156,7 @@ ArrayQueueIterator ArrayQueueGetReverseIterator(
     ArrayQueue *const restrict queue);
 
 /**
- * @brief Move to the next element.
+ * @brief Move to the next element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayQueueIterator Renewed iterator.
@@ -164,7 +164,7 @@ ArrayQueueIterator ArrayQueueGetReverseIterator(
 ArrayQueueIterator ArrayQueueIteratorNext(ArrayQueueIterator const iterator);
 
 /**
- * @brief Move to the previous element.
+ * @brief Move to the previous element. O(1).
  *
  * @param iterator `this`.
  * @return ArrayQueueIterator Renewed iterator.
@@ -173,7 +173,7 @@ ArrayQueueIterator ArrayQueueIteratorPrevious(
     ArrayQueueIterator const iterator);
 
 /**
- * @brief Get value of current element.
+ * @brief Get value of current element. O(1).
  *
  * @param iterator `this`.
  * @return void* Value of element.
@@ -181,7 +181,7 @@ ArrayQueueIterator ArrayQueueIteratorPrevious(
 void *ArrayQueueIteratorGetValue(ArrayQueueIterator const iterator);
 
 /**
- * @brief Check if iterator reaches end.
+ * @brief Check if iterator reaches end. O(1).
  *
  * @param iterator `this`.
  * @return Bool.

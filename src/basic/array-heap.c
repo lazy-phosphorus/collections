@@ -48,6 +48,7 @@ void ArrayHeapDelete(ArrayHeap **const restrict heap) {
 
 void *ArrayHeapTop(const ArrayHeap *const restrict heap) {
     assert(heap != NULL);
+    assert(heap->Size > 0);
     return heap->array;
 }
 

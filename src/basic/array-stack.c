@@ -44,7 +44,7 @@ void ArrayStackDelete(ArrayStack **const restrict stack) {
 
 void *ArrayStackTop(const ArrayStack *const restrict stack) {
     assert(stack != NULL);
-    if (stack->Size == 0) return NULL;
+    assert(stack->Size > 0);
     return stack->array + stack->elementSize * (stack->Size - 1);
 }
 
