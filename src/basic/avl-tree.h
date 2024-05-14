@@ -3,19 +3,71 @@
 
 #include "types.h"
 
+/**
+ * @brief Type of element in `AvlTree`.
+ * @attention It is no recommended to use this struct.
+ */
 typedef struct __AvlTreeNode {
+    /**
+     * @private
+     * @brief Pointer refers to the parent node.
+     */
     struct __AvlTreeNode *parent;
+    /**
+     * @private
+     * @brief Value of this node.
+     */
     void *value;
+    /**
+     * @private
+     * @brief Height of this node.
+     */
     unsigned int height;
+    /**
+     * @private
+     * @brief Pointer refers to the right child.
+     */
     struct __AvlTreeNode *right;
+    /**
+     * @private
+     * @brief Pointer refers to the left child.
+     */
     struct __AvlTreeNode *left;
 } AvlTreeNode;
 
+/**
+ * @warning Don't initialize or free instance of this struct directly. Please
+ * use functions below.
+ * @see `AvlTreeConstruct()`, `AvlTreeNew()`, `AvlTreeDestruct()`,
+ * `AvlTreeDelete()`.
+ */
 typedef struct {
+    /**
+     * @private
+     * @brief Pointer refers to the root node.
+     * @warning Don't modify thie member directly. Please use functions below.
+     * @see `AvlTreeInsert()`, `AvlTreeRemove()`.
+     */
     AvlTreeNode *root;
+    /**
+     * @private
+     * @brief Element size of this tree.
+     * @warning Don't modify this member directly.
+     */
     unsigned long elementSize;
+    /**
+     * @private
+     * @brief Functions used in comparing two elements.
+     * @warning Don't modify this member directly.
+     */
     CompareFunction *compare;
 
+    /**
+     * @public
+     * @brief Current element quantity of this tree.
+     * @attention Don't modify the value of this member directly. It is
+     * maintained automatically.
+     */
     unsigned int Size;
 } AvlTree;
 
